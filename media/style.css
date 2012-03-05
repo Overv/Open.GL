@@ -1,0 +1,76 @@
+@import url( http://fonts.googleapis.com/css?family=Gudea );
+
+body {
+	font-family: Gudea, sans-serif;
+	font-size: 16px;
+	color: #111;
+}
+
+#page {
+	width: 1000px;
+	margin: auto;
+	margin-top: 60px;
+}
+
+#nav {
+	width: 200px;
+	float: left;
+}
+
+#nav ul {
+	list-style-type: none;
+	margin-top: 70px;
+}
+
+#nav li {
+	position: relative;
+	left: -40px;
+	
+	padding: 3px;
+	margin-top: 2px;
+	
+	cursor: default;
+}
+
+#nav li.selected {
+	background: url( 'arrow.png' );
+	background-repeat: no-repeat;
+	color: #fff;
+}
+
+#nav a {
+	color: #111;
+	text-decoration: none;
+}
+
+#content {
+	width: 800px;
+	float: right;
+}
+
+#content a {
+	color: black;
+	text-decoration: none;
+	border-bottom: 1px dotted black;
+}
+
+#content a:hover {
+	border-bottom: 1px solid black;
+}
+
+#disqus_thread a { border: 0; }
+#disqus_thread a:hover { border: 0; }
+
+h1 {
+	font-size: 28px;
+}
+
+h2 {
+	font-size: 18px;
+}
+
+hr {
+	border: 0;
+	background-color: #999;
+	height: 1px;
+}
