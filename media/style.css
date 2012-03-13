@@ -74,3 +74,13 @@ hr {
 	background-color: #999;
 	height: 1px;
 }
+
+blockquote {
+	background: rgb( 226, 245, 167 );
+	border: 1px solid rgb( 189, 233, 56 );
+	padding: 10px;
+}
+
+blockquote p {
+	margin: 0;
+}
