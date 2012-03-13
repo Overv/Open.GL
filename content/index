@@ -6,4 +6,4 @@ transformations/Transformations
 depthstencils/Depth and stencils
 framebuffers/Frame buffers
 geometry/Geometry shaders
-geometry/Feedback buffers
+feedback/Feedback buffers
