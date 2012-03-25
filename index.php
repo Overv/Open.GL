@@ -41,7 +41,7 @@
 		</script>
 	</head>
 	
-	<body>
+	<body onload="addGLReferenceLinks()">
 		<div id="page">
 			<div id="nav">
 				<ul>
