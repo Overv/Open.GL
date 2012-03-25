@@ -48,6 +48,11 @@ body {
 	float: right;
 }
 
+#content img {
+	display: block;
+	margin: auto;
+}
+
 #content a {
 	color: black;
 	text-decoration: none;
