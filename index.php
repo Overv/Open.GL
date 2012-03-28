@@ -10,6 +10,11 @@
 	<head>
 		<title>OpenGL</title>
 		
+		<meta name="description" content="An extensive, yet beginner friendly guide to using modern OpenGL for game development." />
+		<meta name="author" content="Alexander Overvoorde" />
+		<meta name="keywords" content="opengl, opengl 3.2, deprecated, non-deprecated, tutorial, guide, cross-platform, game, games, graphics, sfml, sdl, glfw, glut, openglut, beginner, easy" />
+		<meta name="language" content="english" />
+		
 		<link rel="shortcut icon" type="image/png" href="media/tag.png" />
 		<link rel="stylesheet" type="text/css" href="media/style.css" />
 		
