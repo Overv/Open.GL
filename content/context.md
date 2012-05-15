@@ -141,7 +141,7 @@ When you run your application, you should see something like this:
 
 Note that SFML allows you to have multiple windows. If you want to make use of this feature, make sure to call `window.SetActive()` to activate a certain window for drawing operations.
 
-Now that you have a window and a context, let's get to [drawing things](/drawing).
+Now that you have a window and a context, there's [one more thing](#Onemorething) that needs to be done.
 
 SDL
 ========
@@ -233,7 +233,7 @@ When you run your application now, you should see something like this:
 
 <img src="media/img/c1_window.png" alt="" />
 
-Now that you have a window and a context, let's get to [drawing things](/drawing).
+Now that you have a window and a context, there's [one more thing](#Onemorething) that needs to be done.
 
 GLFW
 ========
@@ -311,4 +311,58 @@ If you want to learn more about handling input, you can refer to chapter 4 of th
 
 <img src="media/img/c1_window.png" alt="" />
 
-You should now have a window or a full screen surface with an OpenGL context. Let's start [drawing](/drawing) things.
+You should now have a window or a full screen surface with an OpenGL context. Before you can start drawing stuff however, there's [one more thing](#Onemorething) that needs to be done.
+
+One more thing
+========
+
+Unfortunately, we can't just call the functions we need yet. This is because it's the duty of the graphics card vendor to implement OpenGL functionality in their drivers based on what the graphics card supports. You wouldn't want your program to only be compatible with a single driver version and graphics card, so we'll have to do something clever.
+
+Your program needs to check which functions are available at runtime and link with them dynamically. This is done by finding the addresses of the functions, assigning them to function pointers and calling them. That looks something like this:
+
+	// Specify prototype of function
+	typedef void (*GENBUFFERS) ( GLsizei, GLuint* );
+
+	// Load address of function and assign it to a function pointer
+	GENBUFFERS glGenBuffers = (GENBUFFERS)wglGetProcAddress( "glGenBuffers" );
+	// or Linux:
+	GENBUFFERS glGenBuffers = (GENBUFFERS)glXGetProcAddress( "glGenBuffers" );
+	// or OSX:
+	GENBUFFERS glGenBuffers = (GENBUFFERS)NSGLGetProcAddress( "glGenBuffers" );
+
+	// Call function as normal
+	int buffer;
+	glGenBuffers( 1, &buffer );
+
+Let me begin by asserting that it is perfectly normal to be scared by this snippet of code. You may not be familiar with the concept of function pointers yet, but at least try to roughly understand what is happening here. You can imagine that going through this process of defining prototypes and finding addresses of functions is very tedious and in the end nothing more than a complete waste of time.
+
+The good news is that there are libraries that have solved this problem for us. The most popular and best maintained library right now is *GLEW* and there's no reason for that to change anytime soon. Nevertheless, the alternative library *GLEE* works almost completely the same save for the initialization and cleanup code.
+
+If you haven't built GLEW yet, do so now.
+
+* Start by linking your project with the static GLEW library in the `lib` folder. This file will be called either `libGLEW.a` or `glew32s.lib` depending on your platform.
+* Add the `include` folder to your include path.
+
+Now just include the header in your program, but make sure that it is included before the OpenGL headers or the library you used to create your window.
+
+	#define GLEW_STATIC
+	#include <GL/glew.h>
+
+Don't forget to define `GLEW_STATIC` either using this preprocessor directive or by adding the `-DGLEW_STATIC` directive to your compiler commandline parameters or project settings.
+
+> If you prefer to dynamically link with GLEW, leave out the define and link with `glew32.lib` instead of `glew32s.lib` on Windows. Don't forget to include `glew32.dll` or `libGLEW.so` with your executable!
+
+Now all that's left is calling `glewInit()` after the creation of your window and OpenGL context. Make sure that you've set up your project correctly by calling the `glGenBuffers` function, which was loaded by GLEW for you!
+
+	glewInit();
+
+	unsigned int vertexBuffer;
+	glGenBuffers( 1, &vertexBuffer );
+
+	printf( "%u\n", vertexBuffer );
+
+Your program should compile and run without issues and display the number `1` in your console. If you need more help with using GLEW, you can refer to the [website](http://glew.sourceforge.net/install.html) or ask in the comments.
+
+Now that we're past all of the configuration and initialization work, I'd advise you to make a copy of your current project so that you won't have to write all of the boilerplate code again when starting a new project.
+
+Now, let's get to [drawing things](/drawing)!
