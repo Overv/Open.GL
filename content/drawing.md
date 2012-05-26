@@ -55,7 +55,7 @@ This is done by creating a *Vertex Buffer Object* (VBO):
 	unsigned int vbo;
 	glGenBuffers( 1, &vbo ); // Generate 1 buffer
 
-This object exists only on the graphics card, so instead of a pointer you get a positive number as a reference to it. You will need this number to make the VBO active and to destroy it when you're done with it.
+The memory is managed by OpenGL, so instead of a pointer you get a positive number as a reference to it. You will need this number to make the VBO active and to destroy it when you're done with it.
 
 To upload the actual data to it you first have to make it the active object by calling `glBindBuffer`:
 
@@ -63,7 +63,8 @@ To upload the actual data to it you first have to make it the active object by c
 
 As hinted by the `GL_ARRAY_BUFFER` enum value there are other types of buffers, but they are not important right now. This statement makes the VBO we just created the active `array buffer`. Now that it's active we can copy the vertex data to it.
 
-	glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ) * sizeof( float ), vertices, GL_STATIC_DRAW );
+	glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ) * sizeof( float ),
+				  vertices, GL_STATIC_DRAW );
 
 Notice that this function doesn't refer to the id of our VBO, but instead to the active array buffer. The second parameter specifies the size in bytes, which is why we multiply by `sizeof(float)`. The final parameter is very important and its value depends on the `usage` of the vertex data. I'll outline the ones related to drawing here:
 
