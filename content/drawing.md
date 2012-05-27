@@ -311,7 +311,8 @@ They are loaded into video memory through a VBO just like the vertex data:
 	...
 
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ebo );
-	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( elements ) * sizeof( GLuint ), elements, GL_STATIC_DRAW );
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( elements ) * sizeof( GLuint ),
+				  elements, GL_STATIC_DRAW );
 
 The only thing that differs is the target, which is `GL_ELEMENT_ARRAY_BUFFER` this time.
 
