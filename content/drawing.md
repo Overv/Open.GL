@@ -52,10 +52,10 @@ The next step is to upload this vertex data to the graphics card. This is import
 
 This is done by creating a *Vertex Buffer Object* (VBO):
 
-	unsigned int vbo;
+	GLuint vbo;
 	glGenBuffers( 1, &vbo ); // Generate 1 buffer
 
-The memory is managed by OpenGL, so instead of a pointer you get a positive number as a reference to it. You will need this number to make the VBO active and to destroy it when you're done with it.
+The memory is managed by OpenGL, so instead of a pointer you get a positive number as a reference to it. `GLuint` is simply a cross-platform substitute for `unsigned int`, just like GLint is one for `int`. You will need this number to make the VBO active and to destroy it when you're done with it.
 
 To upload the actual data to it you first have to make it the active object by calling `glBindBuffer`:
 
@@ -75,3 +75,258 @@ Notice that this function doesn't refer to the id of our VBO, but instead to the
 This usage value will determine in what kind of memory the data is stored on your graphics card for the highest effiency. For example, VBOs with `GL_STREAM_DRAW` as type may store their data in memory that allows faster writing in favour of slightly slower drawing.
 
 The vertices with their attributes have been copied to the graphics card now, but they're not quite ready to be used yet. Remember that we can make up any kind of attribute we want and in any order, so now comes the moment where you have to explain to the graphics card how to handle these attributes. This is where you'll see how flexible modern OpenGL really is.
+
+Shaders
+========
+
+As discussed earlier, there are three shader stages your vertex data will pass through. Each shader stage has a strictly defined purpose and in older versions of OpenGL, you could only slightly tweak what happened and how it happened. With modern OpenGL, it's up to us to instruct the graphics card what to do with the data. This is why it's possible to decide per application what attributes each vertex should have. You'll have to implement both the vertex and fragment shader to get something on the screen, the geometry shader is optional and is discussed [later](geometry).
+
+Shaders are written in a C-style language called GLSL (OpenGL Shading Language). OpenGL will compile your program from source at runtime and copy it to the graphics card. Each version of OpenGL has its own version of the shader language with availability of a certain feature set and we will be using GLSL 1.50.
+
+Vertex shader
+--------
+
+The vertex shader is a program on the graphics card that processes each vertex and its attributes as they appear in the vertex array. Its duty is to output the final vertex position in device coordinates and to output any data the fragment shader requires. That's why the 3D transformation should take place here. The fragment shader depends on attributes like the color and texture coordinates, which will usually be passed from input to output without any calculations.
+
+Remember that our vertex position is already specified as device coordinates and no other attributes exist, so the vertex shader will be fairly bare bones.
+
+	#version 150
+
+	in vec2 position;
+
+	void main()
+	{
+		gl_Position = vec4( position, 0.0, 1.0 );
+	}
+
+The `#version` preprocessor directive is used to indicate that the code that follows is GLSL 1.50 code. Next, we specify that there is only one attribute, the position. Apart from the regular C types, GLSL has built-in vector and matrix types indentified by `vec*` and `mat*` identifiers. The type of the values within these constructs is always a `float`. The number after `vec` specifies the amount of components (x, y, z, w) and the number after `mat` specifies the amount of rows /columns. Since the position attribute consists of only an X and Y coordinate, `vec2` is perfect.
+
+> You can be quite creative when working with these vertex types. In the example above a shortcut was used to set the first two components of the `vec4` to those of `vec2`. These two lines are equal:
+> <br /><br />
+> `gl_Position = vec4( position, 0.0, 1.0 );`<br />
+> `gl_Position = vec4( position.x, position.y, 0.0, 1.0 );`
+> <br /><br />
+> When you're working with colors, you can also access the first three components with `r`, `g` and `b` instead of `x`, `y` and `z`. This makes no difference and can help with clarity.
+
+The final position of the vertex is assigned to the special `gl_Position` variable, because the position is needed for primitive assembly and many other built-in processes. For these to function correctly, the last value `w` needs to have a value of `1.0f`. Other than that, you're free to do anything you want with the attributes and we'll see how to output those when we add color to the triangle later in this chapter.
+
+Fragment shader
+--------
+
+The output from the vertex shader is interpolated over all the pixels on the screen covered by a primitive. These pixels are called fragments and this is what the fragment shader operates on. Just like the vertex shader it has one mandatory output, the final color of a fragment. It's up to you to write the code for computing this color from vertex colors, texture coordinates and any other data coming from the vertex shader.
+
+Our triangle only consists of white pixels, so the fragment shader simply outputs that color every time:
+
+	#version 150
+
+	out vec4 outColor;
+
+	void main()
+	{
+		outColor = vec4( 1.0, 1.0, 1.0, 1.0 );
+	}
+
+You'll immediately notice that we're not using some built-in variable for outputting the color, say `gl_FragColor`. This is because a fragment shader can in fact output multiple colors and we'll see how to handle this when actually loading these shaders. The `outColor` variable uses the type `vec4`, because each color consists of a red, green, blue and alpha component. Colors in OpenGL are generally represented as floating point numbers between `0.0` and `1.0` instead of the common `0` and `255`.
+
+Compiling shaders
+--------
+
+Compiling shaders is easy once you have loaded the source code (either from file or as a hardcoded string). Just like vertex buffers, it starts with creating a shader object and loading data into it.
+
+	GLuint vertexShader = glCreateShader( GL_VERTEX_SHADER );
+	glShaderSource( vertexShader, 1, &vertexSource, NULL );
+
+Unlike VBOs, you can simply pass a reference to shader functions instead of making it active or anything like that. The `glShaderSource` function can take multiple source strings in an array, but you'll usually have your source code in one `char` array. The last parameter can contain an array of source code string lengths, passing `NULL` simply makes it stop at the null terminator.
+
+All that's left is compiling the shader into code that can be executed by the graphics card now:
+
+	glCompileShader( vertexShader );
+
+Be aware that if the shader fails to compile, e.g. because of a syntax error, `glGetError` will **not** report an error! See the block below for info on how to debug shaders.
+
+> **Checking if a shader compiled successfully**
+><br /><br />
+> `GLint status;`<br />
+> `glGetShaderiv( vertexShader, GL_COMPILE_STATUS, &status );`
+> <br /><br />
+> If `status` is equal to `GL_TRUE`, then your shader was compiled successfully.
+> <br /><br />
+> **Retrieving the compile log**
+> <br /><br />
+> `char buffer[513];`<br />
+> `glGetShaderInfoLog( vertexShader, 512, NULL, buffer );`
+> <br /><br />
+> This will store the first 512 bytes + null terminator of the compile log in the specified buffer. The log may also report useful warnings even when compiling was successful, so it's useful to check it out from time to time when you develop your shaders.
+
+The fragment shader is compiled in exactly the same way:
+
+	GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
+	glShaderSource( fragmentShader, 1, &fragmentSource, NULL );
+	glCompileShader( fragmentShader );
+
+Again, be sure to check if your shader was compiled successfully, because it will save you from a headache later on.
+
+Combining shaders into a program
+--------
+
+Up until now the vertex and fragment shaders have been two separate objects. While they've been programmed to work together, they aren't actually connected yet. This connection is made by creating a *program* out of these two shaders.
+
+	unsigned int shaderProgram = glCreateProgram();
+	glAttachShader( shaderProgram, vertexShader );
+	glAttachShader( shaderProgram, fragmentShader );
+
+Since a fragment shader is allowed to write to multiple buffers, you need to explicitly specify which output is writing to which buffer. This will be the `0` buffer by default. This needs to happen before linking the program.
+
+	glBindFragDataLocation( shaderProgram, 0, "outColor" );
+
+After attaching both the fragment and vertex shaders, the connection is made by *linking* the program. It is allowed to make changes to the shaders after they've been added to a program (or multiple programs!), but the actual result will not change until a program has been linked again. It is also possible to attach multiple shaders for the same stage (e.g. fragment) if they're parts forming the whole shader together. A shader object can be deleted with `glDeleteShader`, but it will not actualy be removed before it has been detached from all programs with `glDetachShader`.
+
+	glLinkProgram( shaderProgram );
+
+To actually start using the shaders in the program, you just have to call:
+
+	glUseProgram( shaderProgram );
+
+Just like a vertex buffer, only one program can be active at a time.
+
+Making the link between vertex data and attributes
+--------
+
+Although we have our vertex data and shaders now, OpenGL still doesn't know how the attributes are formatted and ordered. We first need to retrieve a reference to the `position` input in the vertex shader:
+
+	GLint posAttrib = glGetAttribLocation( shaderProgram, "position" );
+
+Instead of retrieving the location with this function, it's also possible to force it to a value yourself by changing the `in` line in the vertex shader to include a location directive:
+
+	layout(location = 0) in vec2 position;
+
+If the location is not explicitly specified, it will be in the order of the input definitions. That means that `position` will always have location 0 in this example, since it's the first and only input.
+
+With the reference to the input, we can specify how the data for that input is retrieved from the array:
+
+	glVertexAttribPointer( posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0 );
+
+The second parameter specifies the amount of values for that input, which is the same as the number of components of the `vec`. The third one specifies the type of each component and the fourth one specifies whether the input values should be normalized between `-1.0` and `1.0` (or `0.0` and `1.0` depending on the format) if they aren't floating point numbers.
+
+The last two parameters are arguebly the most important here and specify how the attribute is layed out in the vertex data. The first number specifies how much bytes are between each position attribute in the array, where 0 means that there is no data in between. This is currently the case as the position of each vertex is immediately followed by the position of the next vertex. The last parameter specifies at how much bytes from the start of the array the attribute occurs. Since there are no other attributes, this is 0 as well.
+
+Don't worry if you don't fully understand this yet, as we'll see how to alter this to add more attributes soon enough.
+
+	glEnableVertexAttribArray( posAttrib );
+
+Last, but not least, the vertex attribute array needs to be enabled:
+
+Drawing
+========
+
+Now that you've loaded the vertex data, created the shader programs and linked the data to the attributes, you're ready to draw the triangle. Simply call `glDrawArrays` in your main loop:
+
+	glDrawArrays( GL_TRIANGLES, 0, 3 );
+
+The first parameter specifies the kind of primitive (commonly point, line, triangle or quad), the second parameter specifies how many vertices to skip at the beginning and the last parameter specifies the amount of **vertices** (not primitives!) to process.
+
+When you run your program now, you should see the following:
+
+<img src="media/img/c2_window.png" alt="" />
+
+If you don't see anything, make sure that the shaders have compiled correctly, that the program has linked correctly, that the attribute array has been enabled, that your vertex data is correct and that `glGetError` returns `0`. If you can't find the problem, try comparing your code to [this sample](code/c2_triangle.txt).
+
+Adding some colors
+========
+
+A solid white triangle is a little bit boring, and while we could change the color in the fragment shader to something nicer, it would be a lot more fun if each of the triangle's corners had a different color! Let's add a color attribute to accomplish this.
+
+We'll first have to add the extra attributes to the vertex data. Transparency isn't really relevant, so we'll only add the red, green and blue components:
+
+	float vertices[] = {
+		 0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
+		 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
+		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
+	};
+
+Then we have to change the vertex shader to take it as input and pass it to the fragment shader:
+
+	#version 150
+
+	in vec2 position;
+	in vec3 color;
+
+	out vec3 Color;
+
+	void main()
+	{
+		Color = color;
+		gl_Position = vec4( position, 0.0, 1.0 );
+	}
+
+And `Color` is added as input to the fragment shader:
+
+	#version 150
+
+	in vec3 Color;
+
+	out vec4 outColor;
+
+	void main()
+	{
+		outColor = vec4( Color, 1.0 );
+	}
+
+Make sure that the output of the vertex shader and the input of the fragment shader have the same name, or the shaders will not be linked properly.
+
+Now, we just need to alter the attribute pointer code a bit to accomodate for the new `X, Y, R, G, B` attribute order.
+
+	GLint posAttrib = glGetAttribLocation( shaderProgram, "position" );
+	glEnableVertexAttribArray( posAttrib );
+	glVertexAttribPointer( posAttrib, 2, GL_FLOAT, GL_FALSE,
+						   5*sizeof(float), 0 );
+
+	GLint colAttrib = glGetAttribLocation( shaderProgram, "color" );
+	glEnableVertexAttribArray( colAttrib );
+	glVertexAttribPointer( colAttrib, 3, GL_FLOAT, GL_FALSE,
+						   5*sizeof(float), (void*)( 2*sizeof(float) ) );
+
+And we're done!
+
+<img src="media/img/c2_window2.png" alt="" />
+
+You should now have a reasonably understanding of vertex attributes and shaders. If you ran into problems, ask in the comments or have a look at the altered [source code](code/c2_color_triangle.txt).
+
+Element buffers
+========
+
+Right now, the vertices are specified in the order in which they are drawn. If we wanted to add another triangle, we would have to add 3 additional vertices to the vertex array. There is a way to control the order, which also enables you to reuse existing vertices. This can save you a lot of memory when working with real 3D models later on, because each point is usually occupied by a corner of three triangles!
+
+An element array is filled with unsigned integers refering to vertices bound to `GL_ARRAY_BUFFER`. If we just want to draw them in the order they are in now, it'll look like this:
+
+	GLuint elements[] = {
+		0, 1, 2
+	};
+
+They are loaded into video memory through a VBO just like the vertex data:
+
+	GLuint ebo;
+	glGenBuffers( 1, &ebo );
+
+	...
+
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ebo );
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( elements ) * sizeof( GLuint ), elements, GL_STATIC_DRAW );
+
+The only thing that differs is the target, which is `GL_ELEMENT_ARRAY_BUFFER` this time.
+
+To actually make use of this buffer, you'll have to change the draw command:
+
+	glDrawElements( GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0 );
+
+The first parameter is the same as with `glDrawArrays`, but the other ones all refer to the element buffer. The second parameter specifies the amount of indices to draw, the third parameter specifies the type of the element data and the last parameter specifies the offset. The only real difference is that you're talking about indices instead of vertices now.
+
+The end result should look exactly the same, but try experimenting with it. If you run into trouble, have a look at the full [source code](code/c2_triangle_elements.txt).
+
+Exercises
+========
+
+- Alter the vertex shader so that the triangle is upside down. ([Solution](code/c2_exercise_1.txt))
+- Invert the colors of the triangle by altering the fragment shader. ([Solution](code/c2_exercise_2.txt))
+- Change the program so that there is only one color value, determining the shade of gray. ([Solution](code/c2_exercise_3.txt))
+- Draw a rectangle consisting of triangles with only 4 vertices by using an element array. ([Solution](code/c2_exercise_4.txt))
