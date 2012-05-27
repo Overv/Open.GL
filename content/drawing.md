@@ -171,7 +171,7 @@ Combining shaders into a program
 
 Up until now the vertex and fragment shaders have been two separate objects. While they've been programmed to work together, they aren't actually connected yet. This connection is made by creating a *program* out of these two shaders.
 
-	unsigned int shaderProgram = glCreateProgram();
+	GLuint shaderProgram = glCreateProgram();
 	glAttachShader( shaderProgram, vertexShader );
 	glAttachShader( shaderProgram, fragmentShader );
 
@@ -231,10 +231,45 @@ When you run your program now, you should see the following:
 
 If you don't see anything, make sure that the shaders have compiled correctly, that the program has linked correctly, that the attribute array has been enabled, that your vertex data is correct and that `glGetError` returns `0`. If you can't find the problem, try comparing your code to [this sample](code/c2_triangle.txt).
 
-Adding some colors
+Uniforms
 ========
 
-A solid white triangle is a little bit boring, and while we could change the color in the fragment shader to something nicer, it would be a lot more fun if each of the triangle's corners had a different color! Let's add a color attribute to accomplish this.
+Apart from vertex attributes, there is another way to pass data to the shaders called *uniforms*. These are essentially global variables, having the same value for all vertices and/or fragments. For lighting calculations for example, you would have the position of the light as uniform `vec3`. To demonstrate how to use these, let's make it possible to change the color of the triangle without changing the shader code.
+
+By making the color in the fragment shader a uniform, it will end up looking like this:
+
+	#version 150
+
+	uniform vec3 triangleColor;
+
+	out vec4 outColor;
+
+	void main()
+	{
+		outColor = vec4( triangleColor, 1.0 );
+	}
+
+The last component of the output color is transparency, which is not very interesting right now. If you run your program now you'll see that the triangle is black, because the value of `triangleColor` hasn't been set yet.
+
+Changing the value of a uniform is just like setting vertex attributes, you first have to grab the location:
+
+	GLint uniColor = glGetUniformLocation( shaderProgram, "triangleColor" );
+
+The values of uniforms are changed with any of the `glUniformXY` functions, where X is the number of components and Y is the type. Common types are `f` (float), `d` (double) and `i` (integer).
+
+	glUniform3f( uniColor, 1.0f, 0.0f, 0.0f );
+
+If you run your program now, you'll see that the triangle is red. To make things a little more exciting, try varying the color with the time by doing something like this in your main loop:
+
+	float time = (float)clock() / (float)CLOCKS_PER_SEC;
+	glUniform3f( uniColor, ( sin( time * 4.0f ) + 1.0f ) / 2.0f, 0.0f, 0.0f );
+
+See [the code](code/c2_triangle_uniform.txt) if you have any trouble getting this to work.
+
+Adding some more colors
+========
+
+A solid color triangle is a little bit boring, it would be a lot more fun if each of the triangle's corners had a different color! Let's add a color attribute to accomplish this.
 
 We'll first have to add the extra attributes to the vertex data. Transparency isn't really relevant, so we'll only add the red, green and blue components:
 

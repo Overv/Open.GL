@@ -356,7 +356,7 @@ Now all that's left is calling `glewInit()` after the creation of your window an
 
 	glewInit();
 
-	unsigned int vertexBuffer;
+	GLuint vertexBuffer;
 	glGenBuffers( 1, &vertexBuffer );
 
 	printf( "%u\n", vertexBuffer );
