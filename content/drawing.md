@@ -69,8 +69,8 @@ As hinted by the `GL_ARRAY_BUFFER` enum value there are other types of buffers, 
 Notice that this function doesn't refer to the id of our VBO, but instead to the active array buffer. The second parameter specifies the size in bytes, which is why we multiply by `sizeof(float)`. The final parameter is very important and its value depends on the `usage` of the vertex data. I'll outline the ones related to drawing here:
 
 - `GL_STATIC_DRAW`: The vertex data will be uploaded once and drawn many times (e.g. the world).
-- `GL_DYNAMIC_DRAW`: The vertex data will be changed from time to time, but drawn many times more than that (e.g. chunk in voxel world).
-- `GL_STREAM_DRAW`: The vertex data will change almost every time it's drawn.
+- `GL_DYNAMIC_DRAW`: The vertex data will be changed from time to time, but drawn many times more than that.
+- `GL_STREAM_DRAW`: The vertex data will change almost every time it's drawn (e.g. user interface).
 
 This usage value will determine in what kind of memory the data is stored on your graphics card for the highest effiency. For example, VBOs with `GL_STREAM_DRAW` as type may store their data in memory that allows faster writing in favour of slightly slower drawing.
 
@@ -81,7 +81,7 @@ Shaders
 
 As discussed earlier, there are three shader stages your vertex data will pass through. Each shader stage has a strictly defined purpose and in older versions of OpenGL, you could only slightly tweak what happened and how it happened. With modern OpenGL, it's up to us to instruct the graphics card what to do with the data. This is why it's possible to decide per application what attributes each vertex should have. You'll have to implement both the vertex and fragment shader to get something on the screen, the geometry shader is optional and is discussed [later](geometry).
 
-Shaders are written in a C-style language called GLSL (OpenGL Shading Language). OpenGL will compile your program from source at runtime and copy it to the graphics card. Each version of OpenGL has its own version of the shader language with availability of a certain feature set and we will be using GLSL 1.50.
+Shaders are written in a C-style language called GLSL (OpenGL Shading Language). OpenGL will compile your program from source at runtime and copy it to the graphics card. Each version of OpenGL has its own version of the shader language with availability of a certain feature set and we will be using GLSL 1.50. This version number may seem a bit off when we're using OpenGL 3.2, but that's because shaders were only introduced in OpenGL 2.0 as GLSL 1.10. Starting from OpenGL 3.3, this problem was solved and the GLSL version is the same as the OpenGL version.
 
 Vertex shader
 --------
@@ -175,7 +175,7 @@ Up until now the vertex and fragment shaders have been two separate objects. Whi
 	glAttachShader( shaderProgram, vertexShader );
 	glAttachShader( shaderProgram, fragmentShader );
 
-Since a fragment shader is allowed to write to multiple buffers, you need to explicitly specify which output is writing to which buffer. This will be the `0` buffer by default. This needs to happen before linking the program.
+Since a fragment shader is allowed to write to multiple buffers, you need to explicitly specify which output is writing to which buffer. This needs to happen before linking the program. However, since this is 0 by default and there's only one output right now, the following line of code is not necessary:
 
 	glBindFragDataLocation( shaderProgram, 0, "outColor" );
 
@@ -214,7 +214,7 @@ Don't worry if you don't fully understand this yet, as we'll see how to alter th
 
 	glEnableVertexAttribArray( posAttrib );
 
-Last, but not least, the vertex attribute array needs to be enabled:
+Last, but not least, the vertex attribute array needs to be enabled.
 
 Drawing
 ========
@@ -320,6 +320,8 @@ Now, we just need to alter the attribute pointer code a bit to accomodate for th
 	glEnableVertexAttribArray( colAttrib );
 	glVertexAttribPointer( colAttrib, 3, GL_FLOAT, GL_FALSE,
 						   5*sizeof(float), (void*)( 2*sizeof(float) ) );
+
+The fifth parameter is set to `5*sizeof(float)` now, because each vertex consists of 5 floating point attribute values. The offset of `2*sizeof(float)` for the color attribute is there because each vertex starts with 2 floating point values for the position that it has to skip over.
 
 And we're done!
 
