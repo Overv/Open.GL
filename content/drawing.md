@@ -196,10 +196,6 @@ Although we have our vertex data and shaders now, OpenGL still doesn't know how 
 
 	GLint posAttrib = glGetAttribLocation( shaderProgram, "position" );
 
-Instead of retrieving the location with this function, it's also possible to force it to a value yourself by changing the `in` line in the vertex shader to include a location directive:
-
-	layout(location = 0) in vec2 position;
-
 If the location is not explicitly specified, it will be in the order of the input definitions. That means that `position` will always have location 0 in this example, since it's the first and only input.
 
 With the reference to the input, we can specify how the data for that input is retrieved from the array:
