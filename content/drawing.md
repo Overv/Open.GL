@@ -192,19 +192,21 @@ Just like a vertex buffer, only one program can be active at a time.
 Making the link between vertex data and attributes
 --------
 
-Although we have our vertex data and shaders now, OpenGL still doesn't know how the attributes are formatted and ordered. We first need to retrieve a reference to the `position` input in the vertex shader:
+Although we have our vertex data and shaders now, OpenGL still doesn't know how the attributes are formatted and ordered. You first need to retrieve a reference to the `position` input in the vertex shader:
 
 	GLint posAttrib = glGetAttribLocation( shaderProgram, "position" );
 
-If the location is not explicitly specified, it will be in the order of the input definitions. That means that `position` will always have location 0 in this example, since it's the first and only input.
+The location is a number depending on the order of the input definitions. The first and only input `position` in this example will always have location 0.
 
-With the reference to the input, we can specify how the data for that input is retrieved from the array:
+With the reference to the input, you can specify how the data for that input is retrieved from the array:
 
 	glVertexAttribPointer( posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0 );
 
-The second parameter specifies the amount of values for that input, which is the same as the number of components of the `vec`. The third one specifies the type of each component and the fourth one specifies whether the input values should be normalized between `-1.0` and `1.0` (or `0.0` and `1.0` depending on the format) if they aren't floating point numbers.
+The first parameter references the input. The second parameter specifies the amount of values for that input, which is the same as the number of components of the `vec`. The third parameter specifies the type of each component and the fourth parameter specifies whether the input values should be normalized between `-1.0` and `1.0` (or `0.0` and `1.0` depending on the format) if they aren't floating point numbers.
 
-The last two parameters are arguebly the most important here and specify how the attribute is layed out in the vertex data. The first number specifies how much bytes are between each position attribute in the array, where 0 means that there is no data in between. This is currently the case as the position of each vertex is immediately followed by the position of the next vertex. The last parameter specifies at how much bytes from the start of the array the attribute occurs. Since there are no other attributes, this is 0 as well.
+The last two parameters are arguebly the most important here and specify how the attribute is layed out in the vertex array. The first number specifies the *stride*, or how much bytes are between each position attribute in the array. The value 0 means that there is no data in between. This is currently the case as the position of each vertex is immediately followed by the position of the next vertex. The last parameter specifies the *offset*, or how much bytes from the start of the array the attribute occurs. Since there are no other attributes, this is 0 as well.
+
+It is important to know that this function will not just store the stride and the offset, but also the VBO that is currently bound to `GL_ARRAY_BUFFER`. That means that you don't have to explicitly bind the correct VBO when the actual drawing functions are called. This also implies that you can use a different VBO for each attribute.
 
 Don't worry if you don't fully understand this yet, as we'll see how to alter this to add more attributes soon enough.
 
@@ -212,10 +214,30 @@ Don't worry if you don't fully understand this yet, as we'll see how to alter th
 
 Last, but not least, the vertex attribute array needs to be enabled.
 
+Vertex Array Objects
+--------
+
+You can imagine that real graphics programs use many different shaders and vertex layouts to take care of a wide variety of needs and special effects. Changing the active shader program is easy enough with a call to `glUseProgram`, but it would be quite inconvenient if you had to set up all of the attributes again every time.
+
+Luckily, OpenGL solves that problem with *Vertex Array Objects* (VAO). VAOs store all of the links between the attributes and your VBOs with raw vertex data..
+
+A VAO is created in the same way as a VBO:
+
+	GLuint vao;
+	glGenVertexArrays( 1, &vao );
+
+To start using it, simply bind it:
+
+	glBindVertexArray( vao );
+
+As soon as you've bound a certain VAO, every time you call `glVertexAttribPointer`, that information will be stored in that VAO. This makes switching between different vertex data and vertex formats as easy as binding a different VAO! Just remember that a VAO doesn't store any vertex data by itself, it just references the VBOs you've created and how to retrieve the attribute values from them.
+
+Since only calls after binding a VAO stick to it, make sure that you've created and bound the VAO at the start of your program.
+
 Drawing
 ========
 
-Now that you've loaded the vertex data, created the shader programs and linked the data to the attributes, you're ready to draw the triangle. Simply call `glDrawArrays` in your main loop:
+Now that you've loaded the vertex data, created the shader programs and linked the data to the attributes, you're ready to draw the triangle. The VAO that was used to store the attribute information is already bound, so you don't have to worry about that. All that's left is to simply call `glDrawArrays` in your main loop:
 
 	glDrawArrays( GL_TRIANGLES, 0, 3 );
 
@@ -225,7 +247,7 @@ When you run your program now, you should see the following:
 
 <img src="media/img/c2_window.png" alt="" />
 
-If you don't see anything, make sure that the shaders have compiled correctly, that the program has linked correctly, that the attribute array has been enabled, that your vertex data is correct and that `glGetError` returns `0`. If you can't find the problem, try comparing your code to [this sample](code/c2_triangle.txt).
+If you don't see anything, make sure that the shaders have compiled correctly, that the program has linked correctly, that the attribute array has been enabled, that the VAO has been bound before specifying the attributes, that your vertex data is correct and that `glGetError` returns `0`. If you can't find the problem, try comparing your code to [this sample](code/c2_triangle.txt).
 
 Uniforms
 ========
