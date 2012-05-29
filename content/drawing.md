@@ -291,7 +291,7 @@ See [the code](code/c2_triangle_uniform.txt) if you have any trouble getting thi
 Adding some more colors
 ========
 
-A solid color triangle is a little bit boring, it would be a lot more fun if each of the triangle's corners had a different color! Let's add a color attribute to accomplish this.
+Although uniforms have their place, color is something we'd rather like to specify per corner of the triangle! Let's add a color attribute to the vertices to accomplish this.
 
 We'll first have to add the extra attributes to the vertex data. Transparency isn't really relevant, so we'll only add the red, green and blue components:
 
@@ -354,7 +354,7 @@ You should now have a reasonably understanding of vertex attributes and shaders.
 Element buffers
 ========
 
-Right now, the vertices are specified in the order in which they are drawn. If we wanted to add another triangle, we would have to add 3 additional vertices to the vertex array. There is a way to control the order, which also enables you to reuse existing vertices. This can save you a lot of memory when working with real 3D models later on, because each point is usually occupied by a corner of three triangles!
+Right now, the vertices are specified in the order in which they are drawn. If you wanted to add another triangle, you would have to add 3 additional vertices to the vertex array. There is a way to control the order, which also enables you to reuse existing vertices. This can save you a lot of memory when working with real 3D models later on, because each point is usually occupied by a corner of three triangles!
 
 An element array is filled with unsigned integers refering to vertices bound to `GL_ARRAY_BUFFER`. If we just want to draw them in the order they are in now, it'll look like this:
 
@@ -373,7 +373,7 @@ They are loaded into video memory through a VBO just like the vertex data:
 	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( elements ) * sizeof( GLuint ),
 				  elements, GL_STATIC_DRAW );
 
-The only thing that differs is the target, which is `GL_ELEMENT_ARRAY_BUFFER` this time.
+The only thing that differs is the target, which is `GL_ELEMENT_ARRAY_BUFFER` this time. Something that will come as a surprise to you is that the VAO we've been happily relying on so far won't store the element buffer. You'll have to make sure the correct element buffer has been bound whenever you want to draw something with it.
 
 To actually make use of this buffer, you'll have to change the draw command:
 
@@ -381,7 +381,49 @@ To actually make use of this buffer, you'll have to change the draw command:
 
 The first parameter is the same as with `glDrawArrays`, but the other ones all refer to the element buffer. The second parameter specifies the amount of indices to draw, the third parameter specifies the type of the element data and the last parameter specifies the offset. The only real difference is that you're talking about indices instead of vertices now.
 
-The end result should look exactly the same, but try experimenting with it. If you run into trouble, have a look at the full [source code](code/c2_triangle_elements.txt).
+To see how an element buffer can be beneficial, let's try drawing a rectangle using two triangles. We'll start by doing it without an element buffer.
+
+	float vertices[] = {
+		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
+		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+		-0.5f, -0.5f, 1.0f, 1.0f, 1.0f, // Bottom-left
+		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f  // Top-left
+	};
+
+By calling `glDrawArrays` instead of `glDrawElements` like before, the element buffer will simply be ignored:
+
+	glDrawArrays( GL_TRIANGLES, 0, 6 );
+
+The rectangle is rendered as it should, but the repetition of vertex data is a waste of memory. Using an element buffer allows you to reuse data:
+
+	float vertices[] = {
+		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
+		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+		-0.5f, -0.5f, 1.0f, 1.0f, 1.0f  // Bottom-left
+	};
+
+	...
+
+	GLuint elements[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	...
+
+	glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
+
+The element buffer still specifies 6 vertices to form 2 triangles like before, but now we're able to reuse vertices! This may not seem like much of a big deal at this point, but when your graphics application loads many models into the relatively small graphics memory, element buffers will be an important area of optimization.
+
+<img src="media/img/c2_window4.png" alt="" />
+
+If you ran into trouble, have a look at the full [source code](code/c2_triangle_elements.txt).
+
+This chapter has covered all of the core principles of drawing things with OpenGL and it's absolutely essential that you have a good understanding of them before continuing. Therefore I advice you to do the exercises below before diving into [textures](/textures).
 
 Exercises
 ========
@@ -389,4 +431,3 @@ Exercises
 - Alter the vertex shader so that the triangle is upside down. ([Solution](code/c2_exercise_1.txt))
 - Invert the colors of the triangle by altering the fragment shader. ([Solution](code/c2_exercise_2.txt))
 - Change the program so that there is only one color value, determining the shade of gray. ([Solution](code/c2_exercise_3.txt))
-- Draw a rectangle consisting of triangles with only 4 vertices by using an element array. ([Solution](code/c2_exercise_4.txt))
