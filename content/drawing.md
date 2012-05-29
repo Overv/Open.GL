@@ -430,4 +430,4 @@ Exercises
 
 - Alter the vertex shader so that the triangle is upside down. ([Solution](code/c2_exercise_1.txt))
 - Invert the colors of the triangle by altering the fragment shader. ([Solution](code/c2_exercise_2.txt))
-- Change the program so that there is only one color value, determining the shade of gray. ([Solution](code/c2_exercise_3.txt))
+- Change the program so that each vertex has only one color value, determining the shade of gray. ([Solution](code/c2_exercise_3.txt))
