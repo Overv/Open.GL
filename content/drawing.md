@@ -252,7 +252,7 @@ If you don't see anything, make sure that the shaders have compiled correctly, t
 Uniforms
 ========
 
-Right now the white color of the triangle has been hardcoded into the shader code, but what if you wanted to change it after compiling the shader? As it turns out, vertex attributes are not the only way to pass data to shader programs. There is another way to pass data to the shaders called *uniforms*. These are essentially global variables, having the same value for all vertices and/or fragments. For lighting calculations for example, you could have the position of the light as uniform `vec3`. To demonstrate how to use these, let's make it possible to change the color of the triangle from the program itself.
+Right now the white color of the triangle has been hardcoded into the shader code, but what if you wanted to change it after compiling the shader? As it turns out, vertex attributes are not the only way to pass data to shader programs. There is another way to pass data to the shaders called *uniforms*. These are essentially global variables, having the same value for all vertices and/or fragments. To demonstrate how to use these, let's make it possible to change the color of the triangle from the program itself.
 
 By making the color in the fragment shader a uniform, it will end up looking like this:
 
@@ -282,7 +282,11 @@ If you run your program now, you'll see that the triangle is red. To make things
 	float time = (float)clock() / (float)CLOCKS_PER_SEC;
 	glUniform3f( uniColor, ( sin( time * 4.0f ) + 1.0f ) / 2.0f, 0.0f, 0.0f );
 
-As you can see, uniforms are a very powerful tool to control shaders at runtime. See [the code](code/c2_triangle_uniform.txt) if you have any trouble getting this to work.
+Although this example may not be very exciting, it does demonstrate that uniforms are essential for controlling the behaviour of shaders at runtime. Vertex attributes on the other hand are ideal for describing a single vertex.
+
+<img src="media/img/c2_window3.png" alt="" />
+
+See [the code](code/c2_triangle_uniform.txt) if you have any trouble getting this to work.
 
 Adding some more colors
 ========
