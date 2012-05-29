@@ -17,6 +17,11 @@ int main()
 	// Initialize GLEW
 	glewInit();
 
+	// Create Vertex Array Object
+	GLuint vao;
+	glGenVertexArrays( 1, &vao );
+	glBindVertexArray( vao );
+
 	// Create a Vertex Buffer Object and copy the vertex data to it
 	GLuint vbo;
 	glGenBuffers( 1, &vbo );

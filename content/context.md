@@ -338,7 +338,7 @@ Let me begin by asserting that it is perfectly normal to be scared by this snipp
 
 The good news is that there are libraries that have solved this problem for us. The most popular and best maintained library right now is *GLEW* and there's no reason for that to change anytime soon. Nevertheless, the alternative library *GLEE* works almost completely the same save for the initialization and cleanup code.
 
-If you haven't built GLEW yet, do so now.
+If you haven't built GLEW yet, do so now. We'll now add GLEW to your project.
 
 * Start by linking your project with the static GLEW library in the `lib` folder. This file will be called either `libGLEW.a` or `glew32s.lib` depending on your platform.
 * Add the `include` folder to your include path.
