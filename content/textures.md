@@ -161,8 +161,10 @@ Now just one thing remains: providing access to the texture in the fragment shad
 For this sample, the [image of the kitten](code/sample.png) used above will be loaded using the SOIL library. Make sure that it is located in the working directory of the application.
 
 	int width, height;
-	unsigned char* image = SOIL_load_image( "sample.png", &width, &height, 0, SOIL_LOAD_RGB );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+	unsigned char* image =
+		SOIL_load_image( "sample.png", &width, &height, 0, SOIL_LOAD_RGB );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+				  GL_UNSIGNED_BYTE, image );
 	SOIL_free_image_data( image );
 
 To sample a pixel from a 2D texture using the sampler, the function `texture2D` can be called with the relevant sampler and texture coordinate as parameters. We'll also multiply the sampled color with the color attribute to get an interesting effect. Your fragment shader will now look like this:
