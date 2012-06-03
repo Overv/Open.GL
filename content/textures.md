@@ -96,22 +96,17 @@ SOIL
 
 [SOIL](http://www.lonesock.net/soil.html) (Simple OpenGL Image Library) is a small and easy-to-use library that loads image files directly into texture objects or creates them for you. You can start using it in your project by linking with `SOIL` and adding the `src` directory to your include path. It includes Visual Studio project files to compile it yourself.
 
-To create a new texture object from an image, use the `SOIL_CREATE_NEW_ID` option:
+Although SOIL includes functions to automatically create a texture from an image, it uses features that aren't available in modern OpenGL. Because of this we'll simply use SOIL as image loader and create the texture ourselves.
 
-	GLuint tex = SOIL_load_OGL_texture(
-		"img.png",
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		0
-	);
+	int width, height;
+	unsigned char* image = SOIL_load_image( "img.png", &width, &height, 0, SOIL_LOAD_RGB );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
 
-You can start configuring the texture parameters and generating mipmaps after this. The second parameter specifies the channels that should be loaded, you could ignore alpha by passing a value of `SOIL_LOAD_RGB`. The last parameter allows you to specify extra options for creating and loading the texture.
+You can start configuring the texture parameters and generating mipmaps after this.
 
-- `SOIL_FLAG_MIPMAPS`: Automatically create mipmaps.
-- `SOIL_FLAG_INVERT_Y`: Load the image vertically flipped.
-- `SOIL_FLAG_COMPRESS_TO_DXT`: Load the image into a compressed format.
+	SOIL_free_image_data( image );
 
-This library also allows you to save a screenshot of your application. See the official website for more information.
+You can clean up the image data right after you've loaded it into the texture.
 
 Alternative options
 --------
@@ -165,12 +160,10 @@ Now just one thing remains: providing access to the texture in the fragment shad
 
 For this sample, the [image of the kitten](code/sample.png) used above will be loaded using the SOIL library. Make sure that it is located in the working directory of the application.
 
-	GLuint tex = SOIL_load_OGL_texture(
-		"sample.png",
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		0
-	);
+	int width, height;
+	unsigned char* image = SOIL_load_image( "sample.png", &width, &height, 0, SOIL_LOAD_RGB );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+	SOIL_free_image_data( image );
 
 To sample a pixel from a 2D texture using the sampler, the function `texture2D` can be called with the relevant sampler and texture coordinate as parameters. We'll also multiply the sampled color with the color attribute to get an interesting effect. Your fragment shader will now look like this:
 

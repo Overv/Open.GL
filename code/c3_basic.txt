@@ -82,7 +82,14 @@ int main()
 	glVertexAttribPointer( texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), (void*)( 5 * sizeof( float ) ) );
 
 	// Load texture
-	GLuint tex = SOIL_load_OGL_texture( "sample.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0 );
+	GLuint tex;
+	glGenTextures( 1, &tex );
+
+	int width, height;
+	unsigned char* image = SOIL_load_image( "sample.png", &width, &height, 0, SOIL_LOAD_RGB );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+	SOIL_free_image_data( image );
+
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
