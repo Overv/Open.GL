@@ -135,6 +135,8 @@ The vertex shader needs to be modified so that the texture coordinates are inter
 	
 	...
 
+	in vec2 texcoord;
+
 	out vec3 Color;
 	out vec2 Texcoord;
 
