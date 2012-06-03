@@ -421,7 +421,7 @@ The element buffer still specifies 6 vertices to form 2 triangles like before, b
 
 <img src="media/img/c2_window4.png" alt="" />
 
-If you ran into trouble, have a look at the full [source code](code/c2_triangle_elements.txt).
+If you run into trouble, have a look at the full [source code](code/c2_triangle_elements.txt).
 
 This chapter has covered all of the core principles of drawing things with OpenGL and it's absolutely essential that you have a good understanding of them before continuing. Therefore I advice you to do the exercises below before diving into [textures](/textures).
 
