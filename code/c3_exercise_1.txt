@@ -38,6 +38,7 @@ int main()
 	sf::Window window( sf::VideoMode( 800, 600, 32 ), "OpenGL", sf::Style::Titlebar | sf::Style::Close );
 
 	// Initialize GLEW
+	glewExperimental = GL_TRUE;
 	glewInit();
 
 	// Create Vertex Array Object
