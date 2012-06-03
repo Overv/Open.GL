@@ -63,10 +63,9 @@ To upload the actual data to it you first have to make it the active object by c
 
 As hinted by the `GL_ARRAY_BUFFER` enum value there are other types of buffers, but they are not important right now. This statement makes the VBO we just created the active `array buffer`. Now that it's active we can copy the vertex data to it.
 
-	glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ) * sizeof( float ),
-				  vertices, GL_STATIC_DRAW );
+	glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
 
-Notice that this function doesn't refer to the id of our VBO, but instead to the active array buffer. The second parameter specifies the size in bytes, which is why we multiply by `sizeof(float)`. The final parameter is very important and its value depends on the `usage` of the vertex data. I'll outline the ones related to drawing here:
+Notice that this function doesn't refer to the id of our VBO, but instead to the active array buffer. The second parameter specifies the size in bytes. The final parameter is very important and its value depends on the `usage` of the vertex data. I'll outline the ones related to drawing here:
 
 - `GL_STATIC_DRAW`: The vertex data will be uploaded once and drawn many times (e.g. the world).
 - `GL_DYNAMIC_DRAW`: The vertex data will be changed from time to time, but drawn many times more than that.
@@ -370,8 +369,7 @@ They are loaded into video memory through a VBO just like the vertex data:
 	...
 
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ebo );
-	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( elements ) * sizeof( GLuint ),
-				  elements, GL_STATIC_DRAW );
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( elements ), elements, GL_STATIC_DRAW );
 
 The only thing that differs is the target, which is `GL_ELEMENT_ARRAY_BUFFER` this time. Something that will come as a surprise to you is that the VAO we've been happily relying on so far won't store the element buffer. You'll have to make sure the correct element buffer has been bound whenever you want to draw something with it.
 
