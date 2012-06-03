@@ -88,4 +88,12 @@ int main()
 		// Swap buffers
 		window.Display();
 	}
+
+	glDeleteProgram( shaderProgram );
+	glDeleteShader( fragmentShader );
+	glDeleteShader( vertexShader );
+
+	glDeleteBuffers( 1, &vbo );
+
+	glDeleteVertexArrays( 1, &vao );
 }

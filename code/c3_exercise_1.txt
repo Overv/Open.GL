@@ -9,12 +9,12 @@
 
 // Shader sources
 const char* vertexSource = "#version 150\nin vec2 position; in vec3 color; in vec2 texcoord; out vec3 Color; out vec2 Texcoord; void main() { Color = color; Texcoord = texcoord; gl_Position = vec4( position, 0.0, 1.0 ); }";
-const char* fragmentSource = "#version 150\nin vec3 Color; in vec2 Texcoord; out vec4 outColor; uniform sampler2D texKitten; uniform float time; void main() { if ( Texcoord.y < 0.5 ) outColor = texture2D( texKitten, Texcoord ); else outColor = texture2D( texKitten, vec2( Texcoord.x, 1.0 - Texcoord.y ) ); }";
+const char* fragmentSource = "#version 150\nin vec3 Color; in vec2 Texcoord; out vec4 outColor; uniform sampler2D texKitten; uniform sampler2D texPuppy; uniform float time; void main() { outColor = mix( texture2D( texKitten, Texcoord ), texture2D( texPuppy, Texcoord ), ( sin( time * 3.0 ) + 1.0 ) / 2.0 ); }";
 
 int main()
 {
 	sf::Window window( sf::VideoMode( 800, 600, 32 ), "OpenGL", sf::Style::Titlebar | sf::Style::Close );
-	
+
 	// Initialize GLEW
 	glewInit();
 
@@ -82,23 +82,18 @@ int main()
 	glVertexAttribPointer( texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), (void*)( 5 * sizeof( float ) ) );
 
 	// Load textures
-	GLuint tex;
-	glGenTextures( 1, &tex );
+	GLuint textures[2];
+	glGenTextures( 2, textures );
 
 	glActiveTexture( GL_TEXTURE0 );
-	glBindTexture( GL_TEXTURE_2D, tex );
-
-	int width, height;
-	unsigned char* image = SOIL_load_image( "sample.png", &width, &height, 0, SOIL_LOAD_RGB );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-	
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-
+	glBindTexture( GL_TEXTURE_2D, textures[0] );
+		SOIL_load_OGL_texture( "sample.png", SOIL_LOAD_AUTO, textures[0], 0 );
 	glUniform1i( glGetUniformLocation( shaderProgram, "texKitten" ), 0 );
+
+	glActiveTexture( GL_TEXTURE1 );
+	glBindTexture( GL_TEXTURE_2D, textures[1] );
+		SOIL_load_OGL_texture( "sample2.png", SOIL_LOAD_AUTO, textures[1], 0 );
+	glUniform1i( glGetUniformLocation( shaderProgram, "texPuppy" ), 1 );
 
 	GLint uniTime = glGetUniformLocation( shaderProgram, "time" );
 
@@ -121,11 +116,22 @@ int main()
 
 		// Set the time uniform
 		glUniform1f( uniTime, (float)clock() / (float)CLOCKS_PER_SEC );
-		
+
 		// Draw a rectangle from the 2 triangles using 6 indices
 		glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
 
 		// Swap buffers
 		window.Display();
 	}
+
+	glDeleteTextures( 2, textures );
+
+	glDeleteProgram( shaderProgram );
+	glDeleteShader( fragmentShader );
+	glDeleteShader( vertexShader );
+
+	glDeleteBuffers( 1, &ebo );
+	glDeleteBuffers( 1, &vbo );
+
+	glDeleteVertexArrays( 1, &vao );
 }

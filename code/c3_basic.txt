@@ -118,4 +118,15 @@ int main()
 		// Swap buffers
 		window.Display();
 	}
+
+	glDeleteTextures( 1, &tex );
+
+	glDeleteProgram( shaderProgram );
+	glDeleteShader( fragmentShader );
+	glDeleteShader( vertexShader );
+
+	glDeleteBuffers( 1, &ebo );
+	glDeleteBuffers( 1, &vbo );
+
+	glDeleteVertexArrays( 1, &vao );
 }
