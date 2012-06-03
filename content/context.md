@@ -352,9 +352,12 @@ Don't forget to define `GLEW_STATIC` either using this preprocessor directive or
 
 > If you prefer to dynamically link with GLEW, leave out the define and link with `glew32.lib` instead of `glew32s.lib` on Windows. Don't forget to include `glew32.dll` or `libGLEW.so` with your executable!
 
-Now all that's left is calling `glewInit()` after the creation of your window and OpenGL context. Make sure that you've set up your project correctly by calling the `glGenBuffers` function, which was loaded by GLEW for you!
+Now all that's left is calling `glewInit()` after the creation of your window and OpenGL context. The `glewExperimental` line is necessary to force GLEW to use a modern OpenGL method for checking if a function is available.
 
+	glewExperimental = GL_TRUE;
 	glewInit();
+
+Make sure that you've set up your project correctly by calling the `glGenBuffers` function, which was loaded by GLEW for you!
 
 	GLuint vertexBuffer;
 	glGenBuffers( 1, &vertexBuffer );
