@@ -246,5 +246,5 @@ Exercises
 ========
 
 - Animate the blending between the textures by adding a `time` uniform. ([Solution](code/c3_exercise_1.txt))
-- Draw draw a reflection of the kitten in the lower half of the quad. ([Solution](code/c3_exercise_2.txt))
+- Draw a reflection of the kitten in the lower half of the quad. ([Solution](code/c3_exercise_2.txt))
 - Now try adding distortion with `sin` and the time variable to simulate water. ([Expected result](media/img/c3_window3.png), [Solution](code/c3_exercise_3.txt))
