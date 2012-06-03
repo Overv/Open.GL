@@ -241,3 +241,10 @@ The texture units of the samplers are set using the `glUniform` function you've 
 As always, have a look at the sample [source code](code/c3_multitexture.txt) if you have trouble getting the program to work.
 
 Now that texture sampling has been covered in this chapter, you're finally ready to dive into transformations and ultimately 3D. The knowledge you have at this point should be sufficient for producing most types of 2D games, except for transformations like rotation and scaling which will be covered in the [next chapter](/transformations).
+
+Exercises
+========
+
+- Animate the blending between the textures by adding a `time` uniform. ([Solution](code/c3_exercise_1.txt))
+- Draw draw a reflection of the kitten in the lower half of the quad. ([Solution](code/c3_exercise_2.txt))
+- Now try adding distorting it with `sin` and the time variable to simulate water. ([Expected result](media/img/c3_window3.png), [Solution](code/c3_exercise_3.txt))

@@ -1,0 +1,122 @@
+// Link statically with GLEW
+#define GLEW_STATIC
+
+// Headers
+#include <GL/glew.h>
+#include <SFML/Window.hpp>
+#include <iostream>
+#include <SOIL.h>
+
+// Shader sources
+const char* vertexSource = "#version 150\nin vec2 position; in vec3 color; in vec2 texcoord; out vec3 Color; out vec2 Texcoord; void main() { Color = color; Texcoord = texcoord; gl_Position = vec4( position, 0.0, 1.0 ); }";
+const char* fragmentSource = "#version 150\nin vec3 Color; in vec2 Texcoord; out vec4 outColor; uniform sampler2D texKitten; uniform float time; void main() { if ( Texcoord.y < 0.5 ) outColor = texture2D( texKitten, Texcoord ); else outColor = texture2D( texKitten, vec2( Texcoord.x + sin( Texcoord.y * 60.0 + time * 2.0 ) / 30.0, 1.0 - Texcoord.y ) ) * vec4( 0.7, 0.7, 1.0, 1.0 ); }";
+
+int main()
+{
+	sf::Window window( sf::VideoMode( 800, 600, 32 ), "OpenGL", sf::Style::Titlebar | sf::Style::Close );
+	
+	// Initialize GLEW
+	glewInit();
+
+	// Create Vertex Array Object
+	GLuint vao;
+	glGenVertexArrays( 1, &vao );
+	glBindVertexArray( vao );
+
+	// Create a Vertex Buffer Object and copy the vertex data to it
+	GLuint vbo;
+	glGenBuffers( 1, &vbo );
+
+	float vertices[] = {
+	//  Position   Color             Texcoords
+		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Top-left
+		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Top-right
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
+		-0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
+	};
+
+	glBindBuffer( GL_ARRAY_BUFFER, vbo );
+	glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ) * sizeof( float ), vertices, GL_STATIC_DRAW );
+
+	// Create an element array
+	GLuint ebo;
+	glGenBuffers( 1, &ebo );
+
+	GLuint elements[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ebo );
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( elements ) * sizeof( GLuint ), elements, GL_STATIC_DRAW );
+
+	// Create and compile the vertex shader
+	GLuint vertexShader = glCreateShader( GL_VERTEX_SHADER );
+	glShaderSource( vertexShader, 1, &vertexSource, NULL );
+	glCompileShader( vertexShader );
+
+	// Create and compile the fragment shader
+	GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
+	glShaderSource( fragmentShader, 1, &fragmentSource, NULL );
+	glCompileShader( fragmentShader );
+
+	// Link the vertex and fragment shader into a shader program
+	GLuint shaderProgram = glCreateProgram();
+	glAttachShader( shaderProgram, vertexShader );
+	glAttachShader( shaderProgram, fragmentShader );
+	glBindFragDataLocation( shaderProgram, 0, "outColor" );
+	glLinkProgram( shaderProgram );
+	glUseProgram( shaderProgram );
+
+	// Specify the layout of the vertex data
+	GLint posAttrib = glGetAttribLocation( shaderProgram, "position" );
+	glEnableVertexAttribArray( posAttrib );
+	glVertexAttribPointer( posAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), 0 );
+
+	GLint colAttrib = glGetAttribLocation( shaderProgram, "color" );
+	glEnableVertexAttribArray( colAttrib );
+	glVertexAttribPointer( colAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), (void*)( 2 * sizeof( float ) ) );
+
+	GLint texAttrib = glGetAttribLocation( shaderProgram, "texcoord" );
+	glEnableVertexAttribArray( texAttrib );
+	glVertexAttribPointer( texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), (void*)( 5 * sizeof( float ) ) );
+
+	// Load textures
+	GLuint tex;
+	glGenTextures( 1, &tex );
+
+	glActiveTexture( GL_TEXTURE0 );
+	glBindTexture( GL_TEXTURE_2D, tex );
+		SOIL_load_OGL_texture( "sample.png", SOIL_LOAD_AUTO, tex, 0 );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+	glUniform1i( glGetUniformLocation( shaderProgram, "texKitten" ), 0 );
+
+	GLint uniTime = glGetUniformLocation( shaderProgram, "time" );
+
+	while ( window.IsOpened() )
+	{
+		sf::Event windowEvent;
+		while ( window.GetEvent( windowEvent ) )
+		{
+			switch ( windowEvent.Type )
+			{
+			case sf::Event::Closed:
+				window.Close();
+				break;
+			}
+		}
+
+		// Clear the screen to black
+		glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
+		glClear( GL_COLOR_BUFFER_BIT );
+
+		// Set the time uniform
+		glUniform1f( uniTime, (float)clock() / (float)CLOCKS_PER_SEC );
+		
+		// Draw a rectangle from the 2 triangles using 6 indices
+		glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
+
+		// Swap buffers
+		window.Display();
+	}
+}
