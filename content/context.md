@@ -71,7 +71,7 @@ Building
 
 After you've downloaded the SFML binaries package or compiled it yourself, you'll find the needed files in the `lib` and `include` folders.
 
-- Add the `lib` folder to your library path and link with `sfml-system-s` and `sfml-window-s`. If you're using Visual Studio, use `lib/vs2008` instead.
+- Add the `lib` folder to your library path and link with `sfml-system` and `sfml-window`. With Visual Studio on Windows, link with the `sfml-system-s` and `sfml-window-s` files in `lib/vc2008` instead.
 - Add the `include` folder to your include path.
 
 > The SFML libraries have a simple naming convention for different configurations. If you want to dynamically link, simply remove the `-s` from the name, define `SFML_DYNAMIC` and copy the shared libraries. If you want to use the binaries with debug symbols, additionally append `-d` to the name.
@@ -340,7 +340,7 @@ The good news is that there are libraries that have solved this problem for us. 
 
 If you haven't built GLEW yet, do so now. We'll now add GLEW to your project.
 
-* Start by linking your project with the static GLEW library in the `lib` folder. This file will be called either `libGLEW.a` or `glew32s.lib` depending on your platform.
+* Start by linking your project with the static GLEW library in the `lib` folder. This is either `glew32s.lib` or `GLEW` depending on your platform.
 * Add the `include` folder to your include path.
 
 Now just include the header in your program, but make sure that it is included before the OpenGL headers or the library you used to create your window.
