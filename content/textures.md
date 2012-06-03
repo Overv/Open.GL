@@ -55,10 +55,10 @@ Before discussing mipmaps, let's first see the difference between nearest and li
 
 While linear interpolation gives a smoother result, it isn't always the most ideal option. Nearest neighbour interpolation is more suited in games that want to mimic 8 bit graphics, because of the pixelated look.
 
-You can specify which kind of interpolation should be used for two separate cases: scaling the image down and scaling the image up. These two cases are identified by the keywords `GL_TEXTURE_MIN_FILTER` and `GL_TEXTURE_MAX_FILTER`.
+You can specify which kind of interpolation should be used for two separate cases: scaling the image down and scaling the image up. These two cases are identified by the keywords `GL_TEXTURE_MIN_FILTER` and `GL_TEXTURE_MAG_FILTER`.
 
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAX_FILTER, GL_LINEAR );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
 As you've seen, there is another way to filter textures: mipmaps. Mipmaps are smaller copies of your texture that have been sized down and filtered in advance. It is recommended that you use them because they result in both a higher quality and higher performance.
 
@@ -73,7 +73,7 @@ To use mipmaps, select one of the four mipmap filtering methods.
 - `GL_NEAREST_MIPMAP_LINEAR`: Uses the two mipmaps that most closely match the size of the pixel being textured and samples with nearest neighbour interpolation.
 - `GL_LINEAR_MIPMAP_LINEAR`: Samples closest two mipmaps with linear interpolation.
 
-There are some other texture parameters available, but they're suited for specialized operations. You can read about them in the [specification](www.opengl.org/sdk/docs/man3/xhtml/glTexParameter.xml).
+There are some other texture parameters available, but they're suited for specialized operations. You can read about them in the [specification](http://www.opengl.org/sdk/docs/man3/xhtml/glTexParameter.xml).
 
 Loading texture images
 ========
@@ -247,4 +247,4 @@ Exercises
 
 - Animate the blending between the textures by adding a `time` uniform. ([Solution](code/c3_exercise_1.txt))
 - Draw draw a reflection of the kitten in the lower half of the quad. ([Solution](code/c3_exercise_2.txt))
-- Now try adding distorting it with `sin` and the time variable to simulate water. ([Expected result](media/img/c3_window3.png), [Solution](code/c3_exercise_3.txt))
+- Now try adding distortion with `sin` and the time variable to simulate water. ([Expected result](media/img/c3_window3.png), [Solution](code/c3_exercise_3.txt))
