@@ -8,8 +8,30 @@
 #include <SOIL.h>
 
 // Shader sources
-const char* vertexSource = "#version 150\nin vec2 position; in vec3 color; in vec2 texcoord; out vec3 Color; out vec2 Texcoord; void main() { Color = color; Texcoord = texcoord; gl_Position = vec4( position, 0.0, 1.0 ); }";
-const char* fragmentSource = "#version 150\nin vec3 Color; in vec2 Texcoord; out vec4 outColor; uniform sampler2D texKitten; uniform sampler2D texPuppy; uniform float time; void main() { outColor = mix( texture2D( texKitten, Texcoord ), texture2D( texPuppy, Texcoord ), ( sin( time * 3.0 ) + 1.0 ) / 2.0 ); }";
+const char* vertexSource =
+	"#version 150\n"
+	"in vec2 position;"
+	"in vec3 color;"
+	"in vec2 texcoord;"
+	"out vec3 Color;"
+	"out vec2 Texcoord;"
+	"void main() {"
+	"	Color = color;"
+	"	Texcoord = texcoord;"
+	"	gl_Position = vec4( position, 0.0, 1.0 );"
+	"}";
+const char* fragmentSource =
+	"#version 150\n"
+	"in vec3 Color;"
+	"in vec2 Texcoord;"
+	"out vec4 outColor;"
+	"uniform sampler2D texKitten;"
+	"uniform sampler2D texPuppy;"
+	"uniform float time;"
+	"void main() {"
+	"	float factor = ( sin( time * 3.0 ) + 1.0 ) / 2.0;"
+	"	outColor = mix( texture2D( texKitten, Texcoord ), texture2D( texPuppy, Texcoord ), factor );"
+	"}";
 
 int main()
 {
