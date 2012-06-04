@@ -197,7 +197,8 @@ To use SDL in an application, you need to tell SDL which modules you need and wh
 
 The `SDL_Init` function takes a bitfield with the modules to load. The video module includes everything you need to create a window with an associated OpenGL context. The `SDL_Surface` structure quite simply represents an area that can be drawn to.
 
-	SDL_Surface* surface = SDL_SetVideoMode( 800, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_OPENGL );
+	SDL_Surface* surface =
+	  SDL_SetVideoMode( 800, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_OPENGL );
 	SDL_WM_SetCaption( "OpenGL", 0 );
 
 The first three arguments are respectively for the width, height and pixel depth of the window. A pixel depth of 32 is what you want for nearly all modern systems. After that comes a few flags that specify what the surface should be capable of:
