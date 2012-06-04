@@ -246,7 +246,7 @@ When you run your program now, you should see the following:
 
 <img src="media/img/c2_window.png" alt="" />
 
-If you don't see anything, make sure that the shaders have compiled correctly, that the program has linked correctly, that the attribute array has been enabled, that the VAO has been bound before specifying the attributes, that your vertex data is correct and that `glGetError` returns `0`. If you can't find the problem, try comparing your code to [this sample](code/c2_triangle.txt).
+If you don't see anything, make sure that the shaders have compiled correctly, that the program has linked correctly, that the attribute array has been enabled, that the VAO has been bound before specifying the attributes, that your vertex data is correct and that `glGetError` returns `0`. If you can't find the problem, try comparing your code to [this sample](content/code/c2_triangle.txt).
 
 Uniforms
 ========
@@ -285,7 +285,7 @@ Although this example may not be very exciting, it does demonstrate that uniform
 
 <img src="media/img/c2_window3.png" alt="" />
 
-See [the code](code/c2_triangle_uniform.txt) if you have any trouble getting this to work.
+See [the code](content/code/c2_triangle_uniform.txt) if you have any trouble getting this to work.
 
 Adding some more colors
 ========
@@ -348,7 +348,7 @@ And we're done!
 
 <img src="media/img/c2_window2.png" alt="" />
 
-You should now have a reasonably understanding of vertex attributes and shaders. If you ran into problems, ask in the comments or have a look at the altered [source code](code/c2_color_triangle.txt).
+You should now have a reasonably understanding of vertex attributes and shaders. If you ran into problems, ask in the comments or have a look at the altered [source code](content/code/c2_color_triangle.txt).
 
 Element buffers
 ========
@@ -419,13 +419,13 @@ The element buffer still specifies 6 vertices to form 2 triangles like before, b
 
 <img src="media/img/c2_window4.png" alt="" />
 
-If you run into trouble, have a look at the full [source code](code/c2_triangle_elements.txt).
+If you run into trouble, have a look at the full [source code](content/code/c2_triangle_elements.txt).
 
 This chapter has covered all of the core principles of drawing things with OpenGL and it's absolutely essential that you have a good understanding of them before continuing. Therefore I advice you to do the exercises below before diving into [textures](/textures).
 
 Exercises
 ========
 
-- Alter the vertex shader so that the triangle is upside down. ([Solution](code/c2_exercise_1.txt))
-- Invert the colors of the triangle by altering the fragment shader. ([Solution](code/c2_exercise_2.txt))
-- Change the program so that each vertex has only one color value, determining the shade of gray. ([Solution](code/c2_exercise_3.txt))
+- Alter the vertex shader so that the triangle is upside down. ([Solution](content/code/c2_exercise_1.txt))
+- Invert the colors of the triangle by altering the fragment shader. ([Solution](content/code/c2_exercise_2.txt))
+- Change the program so that each vertex has only one color value, determining the shade of gray. ([Solution](content/code/c2_exercise_3.txt))

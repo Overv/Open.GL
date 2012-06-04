@@ -158,7 +158,7 @@ As two floats were added for the coordinates, one vertex is now 7 floats in size
 
 Now just one thing remains: providing access to the texture in the fragment shader to sample pixels from it. This is done by adding a uniform of type `sampler2D`, which will have a default value of 0. This only needs to be changed when access has to be provided to multiple textures, which will be considered in the next section.
 
-For this sample, the [image of the kitten](code/sample.png) used above will be loaded using the SOIL library. Make sure that it is located in the working directory of the application.
+For this sample, the [image of the kitten](content/code/sample.png) used above will be loaded using the SOIL library. Make sure that it is located in the working directory of the application.
 
 	int width, height;
 	unsigned char* image =
@@ -187,7 +187,7 @@ When running this application, you should get the following result:
 
 <img src="media/img/c3_window.png" alt="" />
 
-If you get a black screen, make sure that your shaders compiled successfully and that the image is correctly loaded. If you can't find the problem, try comparing your code to the [sample code](code/c3_basic.txt).
+If you get a black screen, make sure that your shaders compiled successfully and that the image is correctly loaded. If you can't find the problem, try comparing your code to the [sample code](content/code/c3_basic.txt).
 
 Texture units
 ========
@@ -200,7 +200,7 @@ The function `glActiveTexture` specifies which texture unit a texture object is 
 
 The amount of texture units supported differs per graphics card, but it will be at least 48. It is safe to say that you will never hit this limit in even the most extreme graphics applications.
 
-To practice with sampling from multiple textures, let's try blending the images of the kitten and [one of a puppy](code/sample2.png) to get the best of both worlds! Let's first modify the fragment shader to sample from two textures and blend the pixels:
+To practice with sampling from multiple textures, let's try blending the images of the kitten and [one of a puppy](content/code/sample2.png) to get the best of both worlds! Let's first modify the fragment shader to sample from two textures and blend the pixels:
 	
 	...
 
@@ -235,13 +235,13 @@ The texture units of the samplers are set using the `glUniform` function you've 
 
 <img src="media/img/c3_window2.png" alt="" />
 
-As always, have a look at the sample [source code](code/c3_multitexture.txt) if you have trouble getting the program to work.
+As always, have a look at the sample [source code](content/code/c3_multitexture.txt) if you have trouble getting the program to work.
 
 Now that texture sampling has been covered in this chapter, you're finally ready to dive into transformations and ultimately 3D. The knowledge you have at this point should be sufficient for producing most types of 2D games, except for transformations like rotation and scaling which will be covered in the [next chapter](/transformations).
 
 Exercises
 ========
 
-- Animate the blending between the textures by adding a `time` uniform. ([Solution](code/c3_exercise_1.txt))
-- Draw a reflection of the kitten in the lower half of the quad. ([Solution](code/c3_exercise_2.txt))
-- Now try adding distortion with `sin` and the time variable to simulate water. ([Expected result](media/img/c3_window3.png), [Solution](code/c3_exercise_3.txt))
+- Animate the blending between the textures by adding a `time` uniform. ([Solution](content/code/c3_exercise_1.txt))
+- Draw a reflection of the kitten in the lower half of the quad. ([Solution](content/code/c3_exercise_2.txt))
+- Now try adding distortion with `sin` and the time variable to simulate water. ([Expected result](media/img/c3_window3.png), [Solution](content/code/c3_exercise_3.txt))

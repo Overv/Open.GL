@@ -42,6 +42,15 @@
 		
 		<link rel="shortcut icon" type="image/png" href="media/tag.png" />
 		<link rel="stylesheet" type="text/css" href="media/style.css" />
+
+		<script type="text/x-mathjax-config">
+			// MathJax
+			MathJax.Hub.Config( {
+			  tex2jax: { inlineMath: [ [ '$', '$' ], [ '\\(', '\\)' ] ] },
+			  menuSettings: { context: "Browser" }
+			} );
+		</script>
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 		
 		<link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/zenburn.min.css" />
 		<script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
