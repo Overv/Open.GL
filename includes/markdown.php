@@ -908,7 +908,7 @@ class Markdown_Parser {
 			return $matches[0];
 		
 		$level = $matches[2]{0} == '=' ? 1 : 2;
-		$block = "<h$level" . ($level==1?' id="'.$this->runSpanGamut($matches[1]).'"':'') . ">".$this->runSpanGamut($matches[1])."</h$level>";
+		$block = "<h$level" . ($level==1?' id="'.str_replace(" ","",$this->runSpanGamut($matches[1])).'"':'') . ">".$this->runSpanGamut($matches[1])."</h$level>";
 		return "\n" . $this->hashBlock($block) . "\n\n";
 	}
 	function _doHeaders_callback_atx($matches) {

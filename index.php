@@ -1,8 +1,33 @@
 <?php
+	// Load chapter list
 	$navitems = explode( "\n", file_get_contents( "content/index" ) );
 	for ( $i = 0; $i < count( $navitems ); $i++ ) $navitems[$i] = explode( "/", $navitems[$i] );
+
+	// Requested content
 	$content = $navitems[0][0];
 	if ( isset( $_GET["content"] ) ) $content = $_GET["content"];
+
+	// Determine how to load the requested content
+	$notfound = !preg_match( "/^[a-z]+$/", $content ) || !file_exists( "content/" . $content . ".md" );
+	if ( $notfound )
+		$contentFile = "content/notfound.md";
+	else
+		$contentFile = "content/" . $content . ".md";
+
+	// Cache mechanism
+	$last_modified_time = gmdate( "r", filemtime( $contentFile ) ) . " GMT";
+	$etag = md5_file( $contentFile );
+	
+	if ( ( isset( $_SERVER["HTTP_IF_MODIFIED_SINCE"] ) && $_SERVER["HTTP_IF_MODIFIED_SINCE"] == $last_modified_time ) ||
+		( isset( $_SERVER["HTTP_IF_NONE_MATCH"] ) && str_replace( '"', '', stripslashes( $_SERVER['HTTP_IF_NONE_MATCH'] ) ) == $etag ) )
+	{
+		header( "HTTP/1.1 304 Not Modified" );
+		exit;
+	}
+
+	header( "ETag: " . $etag );
+	header( "Last-Modified: " . $last_modified_time );
+	header( "Cache-Control: public" );
 ?>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -10,7 +35,7 @@
 	<head>
 		<title>OpenGL</title>
 		
-		<meta name="description" content="An extensive, yet beginner friendly guide to using modern OpenGL for game development." />
+		<meta name="description" content="An extensive, yet beginner friendly guide to using modern OpenGL for game development on all major platforms." />
 		<meta name="author" content="Alexander Overvoorde" />
 		<meta name="keywords" content="opengl, opengl 3.2, deprecated, non-deprecated, tutorial, guide, cross-platform, game, games, graphics, sfml, sdl, glfw, glut, openglut, beginner, easy" />
 		<meta name="language" content="english" />
@@ -48,6 +73,10 @@
 	
 	<body>
 		<div id="page">
+			<!-- Work in progress ribbon -->
+			<img id="ribbon" src="media/ribbon.png" alt="Work in progress" />
+
+			<!-- Navigation items -->
 			<div id="nav">
 				<ul>
 					<?php
@@ -62,15 +91,12 @@
 				</ul>
 			</div>
 			
+			<!-- Content container -->
 			<div id="content">
 				<?php
 					include_once( "includes/markdown.php" );
 					
-					$notfound = !preg_match( "/^[a-z]+$/", $content ) || !file_exists( "content/" . $content . ".md" );
-					if ( $notfound )
-						print( Markdown( file_get_contents( "content/notfound.md" ) ) );
-					else
-						print( Markdown( file_get_contents( "content/" . $content . ".md" ) ) );
+					print( Markdown( file_get_contents( $contentFile ) ) );	
 					
 					if ( !$notfound )
 					{

@@ -5,7 +5,7 @@ This guide will teach you the basics of using OpenGL to develop modern graphics 
 
 To show you how much it pays off to do things yourself, we will be developing a voxel world renderer much like Minecraft throughout this guide. Each time you learn a new feature, you'll see how it can be used in practice by adding something to our game. This guide also contains a lot of interactive examples to make it both fun and easy to learn all the different aspects of using a low-level graphics library like OpenGL!
 
-As and added bonus, you always have the opportunity to ask questions at the end of each chapter in the comments section. I'll try to answer as many questions as possible, but always remember that there are plenty of people out there who are willing to help you with your issues. Make sure to help us help you by specifying your platform, compiler, the relevant code section, the result you expect and what is actually happening.
+As an added bonus, you always have the opportunity to ask questions at the end of each chapter in the comments section. I'll try to answer as many questions as possible, but always remember that there are plenty of people out there who are willing to help you with your issues. Make sure to help us help you by specifying your platform, compiler, the relevant code section, the result you expect and what is actually happening.
 
 Prerequisites
 ========
@@ -20,6 +20,6 @@ Before we can take off, you need to make sure you have all the things you need.
 
 Context creation will be explained for *SFML*, *GLFW* and *SDL*, so use whatever library suites you best. See the next chapter for the differences between the three if you're not sure which one to use.
 
-> You also have the option of creating the context yourself using Win32 or Xlib, but your code will not be portable anymore. That means you can not use the same code for all platforms.
+> You also have the option of creating the context yourself using Win32, Xlib or Cocoa, but your code will not be portable anymore. That means you can not use the same code for all platforms.
 
 If you've got everything you need, let's [begin](/context).

@@ -1,3 +1,0 @@
-Options +FollowSymlinks
-RewriteEngine on
-RewriteRule ^([a-z]+)$ /?content=$1 [NC]
