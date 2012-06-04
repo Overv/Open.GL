@@ -87,7 +87,7 @@ Now that the texture object has been configured it's time to load the texture im
 	};
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels );
 
-The first parameter after the texture target is the *level-of-detail*, where `0` is the base image. This parameter can be used to load your own mipmap images. The second parameter specifies the internal pixel format, the format in which pixels should be stored on the graphics card. Many different formats are available, including compressed formats, so it's certainly worth taking a look at all of the options. The third and fourth parameters specify the width and height of the image. The fifth parameter should always have a value of `0` per the [specification](www.opengl.org/sdk/docs/man3/xhtml/glTexImage2D.xml). The next two parameter describe the format of the pixels in the array that will be loaded and the final parameter specifies the array itself.
+The first parameter after the texture target is the *level-of-detail*, where `0` is the base image. This parameter can be used to load your own mipmap images. The second parameter specifies the internal pixel format, the format in which pixels should be stored on the graphics card. Many different formats are available, including compressed formats, so it's certainly worth taking a look at all of the options. The third and fourth parameters specify the width and height of the image. The fifth parameter should always have a value of `0` per the [specification](http://www.opengl.org/sdk/docs/man3/xhtml/glTexImage2D.xml). The next two parameter describe the format of the pixels in the array that will be loaded and the final parameter specifies the array itself.
 
 But how is the pixel array itself established? Textures in graphics applications will usually be a lot more sophisticated than simple patterns and will be loaded from files. Best practice is to have your files in a format that is natively supported by the hardware, but it may sometimes be more convenient to load textures from common image formats like JPG and PNG. Unfortunately OpenGL doesn't offer any helper functions to load pixels from these image files, but that's where third-party libraries come in handy again! The SOIL library will be discussed here along with some of the alternatives.
 
@@ -99,8 +99,10 @@ SOIL
 Although SOIL includes functions to automatically create a texture from an image, it uses features that aren't available in modern OpenGL. Because of this we'll simply use SOIL as image loader and create the texture ourselves.
 
 	int width, height;
-	unsigned char* image = SOIL_load_image( "img.png", &width, &height, 0, SOIL_LOAD_RGB );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+	unsigned char* image =
+		SOIL_load_image( "img.png", &width, &height, 0, SOIL_LOAD_RGB );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+				  GL_UNSIGNED_BYTE, image );
 
 You can start configuring the texture parameters and generating mipmaps after this.
 
@@ -111,7 +113,7 @@ You can clean up the image data right after you've loaded it into the texture.
 Alternative options
 --------
 
-Other libraries that support a wide range of file types like SOIL are [DevIL](http://openil.sourceforge.net/) and [FreeImage](http://freeimage.sourceforge.net/). If you're just interested in one file type, it's also possible to use libraries like [libpng](http://www.libpng.org/pub/png/libpng.html) and [libjpeg](http://libjpeg.sourceforge.net/) directly. If you're looking for more of an adventure, have a look at the specification of the [BMP](http://en.wikipedia.org/wiki/BMP_file_format) and [TGA](http://en.wikipedia.org/wiki/Truevision_TGA) file formats, it's not that hard to implement a loader from them yourself.
+Other libraries that support a wide range of file types like SOIL are [DevIL](http://openil.sourceforge.net/) and [FreeImage](http://freeimage.sourceforge.net/). If you're just interested in one file type, it's also possible to use libraries like [libpng](http://www.libpng.org/pub/png/libpng.html) and [libjpeg](http://libjpeg.sourceforge.net/) directly. If you're looking for more of an adventure, have a look at the specification of the [BMP](http://en.wikipedia.org/wiki/BMP_file_format) and [TGA](http://en.wikipedia.org/wiki/Truevision_TGA) file formats, it's not that hard to implement a loader for them yourself.
 
 Using a texture
 ========
@@ -220,15 +222,24 @@ Now that the two samplers are ready, you'll have to assign the first two texture
 
 	GLuint textures[2];
 	glGenTextures( 2, textures );
+	
+	int width, height;
+	unsigned char* image;
 
 	glActiveTexture( GL_TEXTURE0 );
 	glBindTexture( GL_TEXTURE_2D, textures[0] );
-		SOIL_load_OGL_texture( "sample.png", SOIL_LOAD_AUTO, textures[0], 0 );
+	image = SOIL_load_image( "sample.png", &width, &height, 0, SOIL_LOAD_RGB );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+				  GL_UNSIGNED_BYTE, image );
+	SOIL_free_image_data( image );
 	glUniform1i( glGetUniformLocation( shaderProgram, "texKitten" ), 0 );
-	
+
 	glActiveTexture( GL_TEXTURE1 );
 	glBindTexture( GL_TEXTURE_2D, textures[1] );
-		SOIL_load_OGL_texture( "sample2.png", SOIL_LOAD_AUTO, textures[1], 0 );
+	image = SOIL_load_image( "sample2.png", &width, &height, 0, SOIL_LOAD_RGB );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+				  GL_UNSIGNED_BYTE, image );
+	SOIL_free_image_data( image );
 	glUniform1i( glGetUniformLocation( shaderProgram, "texPuppy" ), 1 );
 
 The texture units of the samplers are set using the `glUniform` function you've seen in the previous chapter. It simply accepts an integer specifying the texture unit. This code should result in the following image.

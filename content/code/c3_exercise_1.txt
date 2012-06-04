@@ -107,15 +107,22 @@ int main()
 	// Load textures
 	GLuint textures[2];
 	glGenTextures( 2, textures );
+	
+	int width, height;
+	unsigned char* image;
 
 	glActiveTexture( GL_TEXTURE0 );
 	glBindTexture( GL_TEXTURE_2D, textures[0] );
-		SOIL_load_OGL_texture( "sample.png", SOIL_LOAD_AUTO, textures[0], 0 );
+		image = SOIL_load_image( "sample.png", &width, &height, 0, SOIL_LOAD_RGB );
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+		SOIL_free_image_data( image );
 	glUniform1i( glGetUniformLocation( shaderProgram, "texKitten" ), 0 );
-
+	
 	glActiveTexture( GL_TEXTURE1 );
 	glBindTexture( GL_TEXTURE_2D, textures[1] );
-		SOIL_load_OGL_texture( "sample2.png", SOIL_LOAD_AUTO, textures[1], 0 );
+		image = SOIL_load_image( "sample2.png", &width, &height, 0, SOIL_LOAD_RGB );
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+		SOIL_free_image_data( image );
 	glUniform1i( glGetUniformLocation( shaderProgram, "texPuppy" ), 1 );
 
 	GLint uniTime = glGetUniformLocation( shaderProgram, "time" );
