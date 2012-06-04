@@ -107,7 +107,7 @@ int main()
 	// Load textures
 	GLuint textures[2];
 	glGenTextures( 2, textures );
-
+	
 	int width, height;
 	unsigned char* image;
 
@@ -117,7 +117,7 @@ int main()
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
 		SOIL_free_image_data( image );
 	glUniform1i( glGetUniformLocation( shaderProgram, "texKitten" ), 0 );
-
+	
 	glActiveTexture( GL_TEXTURE1 );
 	glBindTexture( GL_TEXTURE_2D, textures[1] );
 		image = SOIL_load_image( "sample2.png", &width, &height, 0, SOIL_LOAD_RGB );

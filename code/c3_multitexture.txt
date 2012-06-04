@@ -105,7 +105,7 @@ int main()
 	// Load textures
 	GLuint textures[2];
 	glGenTextures( 2, textures );
-
+	
 	int width, height;
 	unsigned char* image;
 

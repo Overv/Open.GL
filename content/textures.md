@@ -113,7 +113,7 @@ You can clean up the image data right after you've loaded it into the texture.
 Alternative options
 --------
 
-Other libraries that support a wide range of file types like SOIL are [DevIL](http://openil.sourceforge.net/) and [FreeImage](http://freeimage.sourceforge.net/). If you're just interested in one file type, it's also possible to use libraries like [libpng](http://www.libpng.org/pub/png/libpng.html) and [libjpeg](http://libjpeg.sourceforge.net/) directly. If you're looking for more of an adventure, have a look at the specification of the [BMP](http://en.wikipedia.org/wiki/BMP_file_format) and [TGA](http://en.wikipedia.org/wiki/Truevision_TGA) file formats, it's not that hard to implement a loader fo them yourself.
+Other libraries that support a wide range of file types like SOIL are [DevIL](http://openil.sourceforge.net/) and [FreeImage](http://freeimage.sourceforge.net/). If you're just interested in one file type, it's also possible to use libraries like [libpng](http://www.libpng.org/pub/png/libpng.html) and [libjpeg](http://libjpeg.sourceforge.net/) directly. If you're looking for more of an adventure, have a look at the specification of the [BMP](http://en.wikipedia.org/wiki/BMP_file_format) and [TGA](http://en.wikipedia.org/wiki/Truevision_TGA) file formats, it's not that hard to implement a loader for them yourself.
 
 Using a texture
 ========
@@ -222,7 +222,7 @@ Now that the two samplers are ready, you'll have to assign the first two texture
 
 	GLuint textures[2];
 	glGenTextures( 2, textures );
-
+	
 	int width, height;
 	unsigned char* image;
 
