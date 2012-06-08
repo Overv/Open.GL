@@ -240,7 +240,7 @@ Now that you've loaded the vertex data, created the shader programs and linked t
 
 	glDrawArrays( GL_TRIANGLES, 0, 3 );
 
-The first parameter specifies the kind of primitive (commonly point, line, triangle or quad), the second parameter specifies how many vertices to skip at the beginning and the last parameter specifies the amount of **vertices** (not primitives!) to process.
+The first parameter specifies the kind of primitive (commonly point, line or triangle), the second parameter specifies how many vertices to skip at the beginning and the last parameter specifies the amount of **vertices** (not primitives!) to process.
 
 When you run your program now, you should see the following:
 

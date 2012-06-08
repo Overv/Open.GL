@@ -49,7 +49,7 @@ Since texture coordinates are resolution independent, they won't always match a 
 - `GL_LINEAR`: Returns the weighted average of the 4 pixels surrounding the given coordinates.
 - `GL_NEAREST_MIPMAP_NEAREST`, `GL_LINEAR_MIPMAP_NEAREST`, `GL_NEAREST_MIPMAP_LINEAR`, `GL_LINEAR_MIPMAP_LINEAR`: Sample from mipmaps instead.
 
-Before discussing mipmaps, let's first see the difference between nearest and linear interpolation. The original image is 16 times smaller than the quad it was rasterized on.
+Before discussing mipmaps, let's first see the difference between nearest and linear interpolation. The original image is 16 times smaller than the rectangle it was rasterized on.
 
 <img src="media/img/c3_filtering.png" alt="" />
 
@@ -254,5 +254,5 @@ Exercises
 ========
 
 - Animate the blending between the textures by adding a `time` uniform. ([Solution](content/code/c3_exercise_1.txt))
-- Draw a reflection of the kitten in the lower half of the quad. ([Solution](content/code/c3_exercise_2.txt))
+- Draw a reflection of the kitten in the lower half of the rectangle. ([Solution](content/code/c3_exercise_2.txt))
 - Now try adding distortion with `sin` and the time variable to simulate water. ([Expected result](media/img/c3_window3.png), [Solution](content/code/c3_exercise_3.txt))
