@@ -41,7 +41,7 @@
 		<meta name="language" content="english" />
 		
 		<link rel="shortcut icon" type="image/png" href="media/tag.png" />
-		<link rel="stylesheet" type="text/css" href="media/style.css" />
+		<link rel="stylesheet" type="text/css" href="media/stylesheet.css" />
 
 		<script type="text/x-mathjax-config">
 			// MathJax
