@@ -99,3 +99,21 @@ blockquote {
 blockquote p {
 	margin: 0;
 }
+
+.livedemo {
+	width: 690px;
+	height: 546px;
+	margin: auto;
+
+	position: relative;
+}
+
+.livedemo canvas {
+	width: 640px;
+	height: 480px;
+
+	position: absolute;
+
+	left: 20px;
+	top: 36px;
+}

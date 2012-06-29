@@ -283,7 +283,10 @@ If you run your program now, you'll see that the triangle is red. To make things
 
 Although this example may not be very exciting, it does demonstrate that uniforms are essential for controlling the behaviour of shaders at runtime. Vertex attributes on the other hand are ideal for describing a single vertex.
 
-<img src="media/img/c2_window3.png" alt="" />
+<div class="livedemo" id="demo_c2_uniforms" style="background: url( 'media/img/c2_window3.png' )">
+	<canvas width="640" height="480"></canvas>
+	<script type="text/javascript" src="content/demos/c2_uniforms.js"></script>
+</div>
 
 See [the code](content/code/c2_triangle_uniform.txt) if you have any trouble getting this to work.
 
