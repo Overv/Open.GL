@@ -7,7 +7,7 @@ A matrix is a rectangular array of mathematical expressions, much like a two-dim
 
 \[a = \begin{bmatrix} 1 & 2 \\ 3 & 4 \\ 5 & 6 \end{bmatrix}\]
 
-Matrices use a coordinate system `(i,j)` where `i` is the row and `j` is the column. That is why the matrix displayed above is called a 3-by-2 matrix. To refer to a specific value in the matrix, for example `5`, the \(a_{31}\) notation is used.
+Matrices values are indexed by `(i,j)` where `i` is the row and `j` is the column. That is why the matrix displayed above is called a 3-by-2 matrix. To refer to a specific value in the matrix, for example `5`, the \(a_{31}\) notation is used.
 
 Basic operations
 ========
@@ -119,7 +119,7 @@ The above is commonly recognized among mathematicians as an *indecipherable mess
 
 \[\begin{bmatrix} \color{red}1 & \color{red}2 \\ \color{blue}3 & \color{blue}4 \end{bmatrix} \begin{bmatrix} \color{green}a & \color{green}b \\ \color{purple}c & \color{purple}d \end{bmatrix} = \begin{bmatrix} \color{red}1\cdot \color{green}a+\color{red}2\cdot \color{purple}c & \color{red}1\cdot \color{green}b + \color{red}2\cdot \color{purple}d \\ \color{blue}3\cdot \color{green}a+\color{blue}4\cdot \color{purple}c & \color{blue}3\cdot \color{green}b+\color{blue}4\cdot \color{purple}d \end{bmatrix}\]
 
-Try to see the pattern here with help of the colors. The factors on the left side (`1,2` and `3,4`) of the multiplication dot are the values in the row of the first matrix. The factors on the right side are the values in the rows of the second matrix repeatedly.
+Try to see the pattern here with help of the colors. The factors on the left side (`1,2` and `3,4`) of the multiplication dot are the values in the row of the first matrix. The factors on the right side are the values in the rows of the second matrix repeatedly. It is not necessary to remember how exactly this works, but it's good to have seen how it's done at least once.
 
 Combining transformations
 --------
@@ -135,3 +135,197 @@ Now, let's try to transform a vector and see if it worked:
 \[\begin{bmatrix} \color{red}{2} & \color{red}0 & \color{red}0 & \color{red}1 \\ \color{blue}0 & \color{blue}{2} & \color{blue}0 & \color{blue}2 \\ \color{green}0 & \color{green}0 & \color{green}{2} & \color{green}3 \\ \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1 \end{bmatrix} \begin{pmatrix} x \\ y \\ z \\ 1 \end{pmatrix} = \begin{pmatrix} \color{red}2 x + \color{red}1 \\ \color{blue}2y + \color{blue}2 \\ \color{green}2z + \color{green}3 \\ 1 \end{pmatrix}\]
 
 Perfect! The vector is first scaled by two and then shifted in position by `(1,2,3)`.
+
+Transformations in OpenGL
+========
+
+You've seen in the previous sections how basic transformations can be applied to vectors to move them around in the world. The job of transforming 3D points into 2D coordinates on your screen is also accomplished through matrix transformations. Just like the graphics pipeline, transforming a vector is done step-by-step. Although OpenGL allows you to decide on these steps yourself, all 3D graphics applications use a variation of the process described here.
+
+<img src="media/img/c4_transformation.png" alt="" />
+
+Each transformation transforms a vector into a new coordinate system, thus moving to the next step. These transformations and coordinate systems will be discussed below in more detail.
+
+Model matrix
+--------
+
+The model matrix transforms a position in a model to the position in the world. This position is affected by the position, scale and rotation of the model that is being drawn. It is generally a combination of the simple transformations you've seen before. If you are already specifying your vertices in world coordinates (common when drawing a simple test scene), then this matrix can simply be set to the identity matrix.
+
+View matrix
+--------
+
+In real life you're used to moving the camera to alter the view of a certain scene, in OpenGL it's the other way around. The camera in OpenGL cannot move and is defined to be located at `(0,0,0)` facing the negative Z direction. That means that instead of moving and rotating the camera, the world is moved and rotated around the camera to construct the appropriate view.
+
+> Older versions of OpenGL forced you to use *ModelView* and *Projection* transformations. The ModelView matrix combined the model and view transformations into one. I personally find it is easier to separate the two, so the view transformation can be modified independently of the model matrix.
+
+That means that to simulate a camera transformation, you actually have to transform the world with the inverse of that transformation. Example: if you want to move the camera up, you have to move the world down instead.
+
+Projection matrix
+--------
+
+After the world has been aligned with your camera using the view transformation, the projection transformation can be applied, resulting in the clip coordinates. If you're doing a perspective transformation, these clip coordinates are not ready to be used as normalized device coordinates just yet.
+
+To transform the clipping coordinate into a normalized device coordinate, *perspective division* has to be performed. A clipping coordinate resulting from a perspective projection has a number different than 1 in the fourth row, also known as `w`. This number directly reflects the effect of objects further away being smaller than those up front.
+
+\[v_{normalized} = \begin{pmatrix} x_{clip} / w_{clip} \\ y_{clip} / w_{clip} \\ z_{clip} / w_{clip} \end{pmatrix}\]
+
+The `x` and `y` coordinates will be in the familiar `-1` and `1` range now, from which OpenGL can transform them into window coordinates. The `z` is known as the depth and will play an important role in the next chapter.
+
+The coordinates resulting from the projection transformation are called clipping coordinates because the value of `w` is used to determine whether an object is too close or behind the camera or too far away to be drawn. The projection matrix is created with those limits, so you'll be able to specify these yourself.
+
+Putting it all together
+--------
+
+To sum it all up, the final transformation of a vertex is the product of the model, view and projection matrices.
+
+\[v' = M_{proj}\cdot M_{view}\cdot M_{model}\cdot v\]
+
+This operation is typically performed in the vertex shader and assigned to the `gl_Position` return value in clipping coordinates. OpenGL will perform the perspective division and transformation into window coordinates. It is important to be aware of these steps, because you'll have to do them yourself when working with techniques like shadow mapping.
+
+Using transformations for 3D
+========
+
+Now that you know three important transformations, it is time to implement these in code to create an actual 3D scene. You can use any of the programs developed in the last two chapters as a base, but I'll use the texture blending sample from the end of the last chapter here.
+
+To introduce matrices in the code, we can make use of the GLM (OpenGL Math) library. This library comes with vector and matrix classes and will handle all the math efficiently without ever having to worry about it. It is a header-only library, which means you don't have to link with anything.
+
+To use it, add the GLM root directory to your include path and include these two headers:
+
+	#include <glm/glm.hpp>
+	#include <glm/gtc/matrix_transform.hpp>
+	#include <glm/gtc/type_ptr.hpp>
+
+The second header includes functions to ease the calculation of the view and projection matrices. The third header adds functionality for converting a matrix object into a float array for usage in OpenGL.
+
+A simple transformation
+--------
+
+Before diving straight into 3D, let's first try a simple 2D rotation.
+
+	glm::mat4 trans;
+	trans = glm::rotate( trans, 180.0f, glm::vec3( 0.0f, 0.0f, 1.0f ) );
+
+The first line creates a new 4-by-4 matrix, which is the identity matrix by default. The `glm::rotate` function multiplies this matrix by a rotation transformation of 180 degrees around the Z axis. Remember that since the screen lies in the XY plane, the Z axis is the axis you want to rotate points around.
+
+To see if it works, let's try to rotate a vector with this transformation:
+
+	glm::vec4 result = trans * glm::vec4( 1.0f, 0.0f, 0.0f, 1.0f );
+	printf( "%f, %f, %f\n", result.x, result.y, result.z );
+
+As expected, the output is `(-1,0,0)`. A counter-clockwise rotation of 180 degrees of a vector pointing to the right results in a vector pointing to the left. Note that the rotation would be clockwise if an axis `(0,0,-1)` was used.
+
+The next step is to perform this transformation in the vertex shader to rotate every drawn vertex. GLSL has a special `mat4` type to hold matrices and we can use that to upload the transformation to the GPU as uniform.
+
+	GLint uniTrans = glGetUniformLocation( shaderProgram, "trans" );
+	glUniformMatrix4fv( uniTrans, 1, GL_FALSE, glm::value_ptr( trans ) );
+
+The second parameter of the `glUniformMatrix4fv` function specifies how many matrices are to be uploaded, because you can have arrays of matrices in GLSL. The third parameter specifies whether the specified matrix should be transposed before usage. This is related to the way matrices are stored as `float` arrays in memory, you don't have to worry about it. The last parameter specifies the matrix to upload, where the `glm::value_ptr` function converts the matrix class into an array of 16 (4x4) floats.
+
+All that remains is updating the vertex shader to include this uniform and use it to transform each vertex:
+
+	#version 150
+
+	in vec2 position;
+	in vec3 color;
+	in vec2 texcoord;
+
+	out vec3 Color;
+	out vec2 Texcoord;
+
+	uniform mat4 trans;
+
+	void main() {
+		Color = color;
+		Texcoord = texcoord;
+		gl_Position = trans * vec4( position, 0.0, 1.0 );
+	}
+
+The primitives in your scene will now be upside down.
+
+<img src="media/img/c4_window.png" alt="" />
+
+To spice things up a bit, you could change the rotation with time:
+	
+	...
+
+	// Calculate transformation
+	glm::mat4 trans;
+	trans = glm::rotate(
+		trans,
+		(float)clock() / (float)CLOCKS_PER_SEC * 180.0f,
+		glm::vec3( 0.0f, 0.0f, 1.0f )
+	);
+	glUniformMatrix4fv( uniTrans, 1, GL_FALSE, glm::value_ptr( trans ) );
+	
+	// Draw a rectangle from the 2 triangles using 6 indices
+	glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
+
+	...
+
+This will result into something like this:
+
+> INSERT FLASHY WEBGL DEMO
+
+You can find the full code [here](content/code/c4_transformation.txt) if you have any issues.
+
+Going 3D
+--------
+
+The rotation above can be considered the model transformation, because it transforms the vertices in object space to world space using the rotation of the object.
+
+	glm::mat4 view = glm::lookAt(
+		glm::vec3( 1.2f, 1.2f, 1.2f ),
+		glm::vec3( 0.0f, 0.0f, 0.0f ),
+		glm::vec3( 0.0f, 0.0f, 1.0f )
+	);
+	GLint uniView = glGetUniformLocation( shaderProgram, "view" );
+	glUniformMatrix4fv( uniView, 1, GL_FALSE, glm::value_ptr( view ) );
+
+To create the view transformation, GLM offers the useful `glm::lookAt` function that simulates a moving camera. The first parameter specifies the position of the camera, the second the point centered on-screen and the third the `up` axis. Up here is defined as the Z axis, which implies that the XY plane is the "ground".
+
+	glm::mat4 proj = glm::perspective( 45.0f, 800.0f / 600.0f, 1.0f, 10.0f );
+	GLint uniProj = glGetUniformLocation( shaderProgram, "proj" );
+	glUniformMatrix4fv( uniProj, 1, GL_FALSE, glm::value_ptr( proj ) );
+
+Similarly, GLM comes with the `glm::perspective` function to create a perspective projection matrix. The first parameter is the vertical field-of-view, the second parameter the aspect ratio of the screen and the last two parameters are the *near* and *far* planes.
+
+> **Field-of-view** <br /><br />
+> The field-of-view defines the angle between the top and bottom of the 2D surface the world will be projected on. Zooming in games is often accomplished by decreasing this angle as opposed to moving the camera closer, because it more closely resembles real life.
+>
+> <img src="media/img/c4_fov.png" alt="" />
+>
+> By decreasing the angle, you can imagine that the "rays" from the camera spread out less and thus cover a smaller area of the scene.
+
+The near and far planes are known as the clipping planes. Any vertex closer to the camera than the `near` clipping plane and any vertex farther away than the `far` clipping plane is clipped as these influence the `w` value.
+
+Now piecing it all together, the vertex shader looks something like this:
+
+	#version 150
+
+	in vec2 position;
+	in vec3 color;
+	in vec2 texcoord;
+
+	out vec3 Color;
+	out vec2 Texcoord;
+
+	uniform mat4 model;
+	uniform mat4 view;
+	uniform mat4 proj;
+
+	void main() {
+	    Color = color;
+	    Texcoord = texcoord;
+	    gl_Position = proj * view * model * vec4( position, 0.0, 1.0 );
+	}
+
+Notice that I've renamed the matrix previously known as `trans` to `model` and it is still updated every frame.
+
+<img src="media/img/c4_window2.png" alt="" />
+
+Success! You can find the full code [here](content/code/c4_3d.txt) if you get stuck.
+
+Exercises
+========
+
+- Make the rectangle with the blended image grow bigger and smaller with `sin`. ([Solution](content/code/c4_exercise_1.txt))
+- Make the rectangle flip around the X axis after pressing the space bar and slowly stop again. ([Solution](content/code/c4_exercise_2.txt))
