@@ -263,7 +263,10 @@ To spice things up a bit, you could change the rotation with time:
 
 This will result into something like this:
 
-<img src="media/img/c4_window2.png" alt="" />
+<div class="livedemo" id="demo_c4_rotation" style="background: url( 'media/img/c4_window2.png' )">
+	<canvas width="640" height="480"></canvas>
+	<script type="text/javascript" src="content/demos/c4_rotation.js"></script>
+</div>
 
 You can find the full code [here](content/code/c4_transformation.txt) if you have any issues.
 
@@ -320,7 +323,10 @@ Now piecing it all together, the vertex shader looks something like this:
 
 Notice that I've renamed the matrix previously known as `trans` to `model` and it is still updated every frame.
 
-<img src="media/img/c4_window3.png" alt="" />
+<div class="livedemo" id="demo_c4_3d" style="background: url( 'media/img/c4_window3.png' )">
+	<canvas width="640" height="480"></canvas>
+	<script type="text/javascript" src="content/demos/c4_3d.js"></script>
+</div>
 
 Success! You can find the full code [here](content/code/c4_3d.txt) if you get stuck.
 

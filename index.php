@@ -54,6 +54,7 @@
 		
 		<link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/zenburn.min.css" />
 		<script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+		<script type="text/javascript" src="includes/glmatrix.js"></script>
 		<script type="text/javascript">
 			// Syntax highlighting
 			hljs.initHighlightingOnLoad();
@@ -78,11 +79,25 @@
 				var s = document.getElementsByTagName( "script" )[0]; s.parentNode.insertBefore( ga, s );
 			} )();
 
-			// Utility function
-			function elementInViewport( el ) {
-				var rect = el.getBoundingClientRect();
-				return rect.bottom > 0 && rect.top < window.innerHeight;
+			// WebGL demos
+			var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+			var callbacks = [];
+			var frame = function() {
+				var time = +new Date() / 1000;
+
+				for ( var i = 0; i < callbacks.length; i++ ) {
+					var rect = callbacks[i].canvas.getBoundingClientRect();
+
+					if ( rect.bottom > 0 && rect.top < window.innerHeight )
+						callbacks[i].callback( time );
+				}
+
+				requestAnimationFrame( frame );
 			}
+			function registerAnimatedCanvas( canvas, callback ) {
+				callbacks.push( { canvas: canvas, callback: callback } );
+			}
+			requestAnimationFrame( frame );
 		</script>
 	</head>
 	
