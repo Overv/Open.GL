@@ -263,7 +263,7 @@ To spice things up a bit, you could change the rotation with time:
 
 This will result into something like this:
 
-> INSERT FLASHY WEBGL DEMO
+<img src="media/img/c4_window2.png" alt="" />
 
 You can find the full code [here](content/code/c4_transformation.txt) if you have any issues.
 
@@ -320,7 +320,7 @@ Now piecing it all together, the vertex shader looks something like this:
 
 Notice that I've renamed the matrix previously known as `trans` to `model` and it is still updated every frame.
 
-<img src="media/img/c4_window2.png" alt="" />
+<img src="media/img/c4_window3.png" alt="" />
 
 Success! You can find the full code [here](content/code/c4_3d.txt) if you get stuck.
 
