@@ -188,7 +188,7 @@ Now that you know three important transformations, it is time to implement these
 
 To introduce matrices in the code, we can make use of the GLM (OpenGL Math) library. This library comes with vector and matrix classes and will handle all the math efficiently without ever having to worry about it. It is a header-only library, which means you don't have to link with anything.
 
-To use it, add the GLM root directory to your include path and include these two headers:
+To use it, add the GLM root directory to your include path and include these three headers:
 
 	#include <glm/glm.hpp>
 	#include <glm/gtc/matrix_transform.hpp>

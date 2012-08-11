@@ -142,6 +142,7 @@ int main()
 
 	GLint uniModel = glGetUniformLocation( shaderProgram, "model" );
 
+	// Set up projection
 	glm::mat4 view = glm::lookAt(
 		glm::vec3( 1.2f, 1.2f, 1.2f ),
 		glm::vec3( 0.0f, 0.0f, 0.0f ),

@@ -351,7 +351,7 @@ And we're done!
 
 <img src="media/img/c2_window2.png" alt="" />
 
-You should now have a reasonably understanding of vertex attributes and shaders. If you ran into problems, ask in the comments or have a look at the altered [source code](content/code/c2_color_triangle.txt).
+You should now have a reasonable understanding of vertex attributes and shaders. If you ran into problems, ask in the comments or have a look at the altered [source code](content/code/c2_color_triangle.txt).
 
 Element buffers
 ========
@@ -372,7 +372,8 @@ They are loaded into video memory through a VBO just like the vertex data:
 	...
 
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ebo );
-	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( elements ), elements, GL_STATIC_DRAW );
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER,
+		sizeof( elements ), elements, GL_STATIC_DRAW );
 
 The only thing that differs is the target, which is `GL_ELEMENT_ARRAY_BUFFER` this time. Something that will come as a surprise to you is that the VAO we've been happily relying on so far won't store the element buffer. You'll have to make sure the correct element buffer has been bound whenever you want to draw something with it.
 

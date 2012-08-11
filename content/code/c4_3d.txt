@@ -141,7 +141,8 @@ int main()
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
 	GLint uniModel = glGetUniformLocation( shaderProgram, "model" );
-
+	
+	// Set up projection
 	glm::mat4 view = glm::lookAt(
 		glm::vec3( 1.2f, 1.2f, 1.2f ),
 		glm::vec3( 0.0f, 0.0f, 0.0f ),
