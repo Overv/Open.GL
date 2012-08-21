@@ -20,8 +20,8 @@ To best demonstrate the use of these buffers, let's draw a cube instead of a fla
 
 We're also going to need to alter the color again later in this chapter, so make sure the fragment shader multiplies the texture color by the color attribute:
 
-	vec4 texColor = mix( texture2D( texKitten, Texcoord ),
-						 texture2D( texPuppy, Texcoord ), 0.5 );
+	vec4 texColor = mix( texture( texKitten, Texcoord ),
+						 texture( texPuppy, Texcoord ), 0.5 );
 	outColor = vec4( Color, 1.0 ) * texColor;
 
 Vertices are now 8 floats in size, so you'll have to update the vertex attribute offsets and strides as well. Finally, add the extra coordinate to the vertex array:

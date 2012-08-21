@@ -29,9 +29,9 @@ const char* fragmentSource =
 	"uniform float time;"
 	"void main() {"
 	"	if ( Texcoord.y < 0.5 )"
-	"		outColor = texture2D( texKitten, Texcoord );"
+	"		outColor = texture( texKitten, Texcoord );"
 	"	else"
-	"		outColor = texture2D( texKitten, vec2( Texcoord.x, 1.0 - Texcoord.y ) );"
+	"		outColor = texture( texKitten, vec2( Texcoord.x, 1.0 - Texcoord.y ) );"
 	"}";
 
 int main()

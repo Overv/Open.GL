@@ -33,7 +33,7 @@ const char* fragmentSource =
 	"uniform sampler2D texKitten;"
 	"uniform sampler2D texPuppy;"
 	"void main() {"
-	"	outColor = mix( texture2D( texKitten, Texcoord ), texture2D( texPuppy, Texcoord ), 0.5 );"
+	"	outColor = mix( texture( texKitten, Texcoord ), texture( texPuppy, Texcoord ), 0.5 );"
 	"}";
 
 int main()

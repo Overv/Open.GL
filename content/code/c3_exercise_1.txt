@@ -30,7 +30,7 @@ const char* fragmentSource =
 	"uniform float time;"
 	"void main() {"
 	"	float factor = ( sin( time * 3.0 ) + 1.0 ) / 2.0;"
-	"	outColor = mix( texture2D( texKitten, Texcoord ), texture2D( texPuppy, Texcoord ), factor );"
+	"	outColor = mix( texture( texKitten, Texcoord ), texture( texPuppy, Texcoord ), factor );"
 	"}";
 
 int main()

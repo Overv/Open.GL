@@ -169,7 +169,7 @@ For this sample, the [image of the kitten](content/code/sample.png) used above w
 				  GL_UNSIGNED_BYTE, image );
 	SOIL_free_image_data( image );
 
-To sample a pixel from a 2D texture using the sampler, the function `texture2D` can be called with the relevant sampler and texture coordinate as parameters. We'll also multiply the sampled color with the color attribute to get an interesting effect. Your fragment shader will now look like this:
+To sample a pixel from a 2D texture using the sampler, the function `texture` can be called with the relevant sampler and texture coordinate as parameters. We'll also multiply the sampled color with the color attribute to get an interesting effect. Your fragment shader will now look like this:
 
 	#version 150
 
@@ -182,7 +182,7 @@ To sample a pixel from a 2D texture using the sampler, the function `texture2D` 
 
 	void main()
 	{
-	    outColor = texture2D( tex, Texcoord ) * vec4( Color, 1.0 );
+	    outColor = texture( tex, Texcoord ) * vec4( Color, 1.0 );
 	}
 
 When running this application, you should get the following result:
@@ -211,8 +211,8 @@ To practice with sampling from multiple textures, let's try blending the images 
 
 	void main()
 	{
-		vec4 colKitten = texture2D( texKitten, Texcoord );
-		vec4 colPuppy = texture2D( texPuppy, Texcoord );
+		vec4 colKitten = texture( texKitten, Texcoord );
+		vec4 colPuppy = texture( texPuppy, Texcoord );
 	    outColor = mix( colKitten, colPuppy, 0.5 );
 	}
 
