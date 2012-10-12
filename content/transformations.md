@@ -49,7 +49,7 @@ I will mention each of the common vector transformations in this section and how
 
 This matrix is called the *identity matrix*, because just like the number `1`, it will always return the value it was originally multiplied by.
 
-Let's look at the most common vector transformations now and deduce how a matrices can be formed from them.
+Let's look at the most common vector transformations now and deduce how a matrix can be formed from them.
 
 Translation
 --------

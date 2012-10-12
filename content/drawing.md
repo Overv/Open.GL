@@ -375,7 +375,7 @@ They are loaded into video memory through a VBO just like the vertex data:
 	glBufferData( GL_ELEMENT_ARRAY_BUFFER,
 		sizeof( elements ), elements, GL_STATIC_DRAW );
 
-The only thing that differs is the target, which is `GL_ELEMENT_ARRAY_BUFFER` this time. Something that will come as a surprise to you is that the VAO we've been happily relying on so far won't store the element buffer. You'll have to make sure the correct element buffer has been bound whenever you want to draw something with it.
+The only thing that differs is the target, which is `GL_ELEMENT_ARRAY_BUFFER` this time.
 
 To actually make use of this buffer, you'll have to change the draw command:
 
