@@ -95,3 +95,162 @@ After this call, all rendering operations will store their result in the attachm
 	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 
 Note that although only the default framebuffer will be visible on your screen, you can read any framebuffer that is currently bound with a call to `glReadPixels` as long as it's not only bound to `GL_DRAW_FRAMEBUFFER`.
+
+Post-processing
+========
+
+In games nowadays post-processing effects seem almost just as important as the actual scenes being rendered on screen, and indeed some spectacular results can be accomplished with different techniques. Post-processing effects in realtime graphics are commonly implemented in fragment shaders with the rendered scene as input in the form of a texture. Framebuffer objects allow us to use a texture to contain the color buffer, so we can use them to prepare input for a post-processing effect.
+
+To use shaders to create a post-processing effect for a scene previously rendered to a texture, it is commonly rendered as a screen filling 2D rectangle. That way the original scene with the effect applied fills the screen at its original size as if it was rendered to the default framebuffer in the first place.
+
+Of course you can get creative with framebuffers and use them to do anything from portals to cameras in the game world by rendering a scene multiple times from different angles and display that on monitors or other objects in the final image. These uses are more specific, so I'll leave them as an exercise to you.
+
+Changing the code
+--------
+
+Unfortunately it's a bit more difficult to cover the changes to the code step-by-step here, especially if you've strayed from the sample code here. Now that you know how a framebuffer is created and bound however and with some care put into it, you should be able to do it. Let's globally walk through the steps here.
+
+- First try creating the framebuffer and checking if it is complete. Try binding it as render target and you'll see that your screen turns black because the scene is no longer rendered to the default framebuffer. Try changing the clear color of the scene and reading it back using `glReadPixels` to check if the scene renders properly to the new framebuffer.
+- Next, try creating a new shader program, vertex array object and vertex buffer object to render things in 2D as opposed to 3D. It is useful to switch back to the default framebuffer for this to easily see your results. Your 2D shader shouldn't need transformation matrices. Try rendering a rectangle in front of the 3D spinning cube scene this way.
+- Finally, try rendering the 3D scene to the framebuffer created by you and the rectangle to the default framebuffer. Now try using the texture of the framebuffer in the rectangle to render the scene.
+
+I've chosen to have only 2 position coordinates and 2 texture coordinates for my 2D rendering. My 2D shaders look like this:
+
+	#version 150
+	in vec2 position;
+	in vec2 texcoord;
+	out vec2 Texcoord;
+	void main() {
+		Texcoord = texcoord;
+		gl_Position = vec4( position, 0.0, 1.0 );
+	}
+
+<span></span>
+
+	#version 150
+	in vec2 Texcoord;
+	out vec4 outColor;
+	uniform sampler2D texFramebuffer;
+	void main() {
+		outColor = texture( texFramebuffer, Texcoord );
+	}
+
+With this shader, the output of your program should be the same as before you even knew about framebuffers. Rendering a frame roughly looks like this:
+
+	// Bind our framebuffer and draw 3D scene (spinning cube)
+	glBindFramebuffer( GL_FRAMEBUFFER, frameBuffer );
+	glBindVertexArray( vaoCube );
+	glEnable( GL_DEPTH_TEST );
+	glUseProgram( sceneShaderProgram );
+
+	glActiveTexture( GL_TEXTURE0 );
+	glBindTexture( GL_TEXTURE_2D, texKitten );
+	glActiveTexture( GL_TEXTURE1 );
+	glBindTexture( GL_TEXTURE_2D, texPuppy );
+
+	// Draw cube scene here
+
+	// Bind default framebuffer and draw contents of our framebuffer
+	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+	glBindVertexArray( vaoQuad );
+	glDisable( GL_DEPTH_TEST );
+	glUseProgram( screenShaderProgram );
+
+	glActiveTexture( GL_TEXTURE0 );
+	glBindTexture( GL_TEXTURE_2D, texColorBuffer );
+
+	glDrawArrays( GL_TRIANGLES, 0, 6 );
+
+The 3D and 2D drawing operations both have their own vertex array (cube versus quad), shader program (3D vs 2D post-processing) and textures. You can see that binding the color buffer texture is just as easy as binding regular textures. Do mind that calls like `glBindTexture` which change the OpenGL state are relatively expensive, so try keeping them to a minimum.
+
+I think that no matter how well I explain the general structure of the program here, some of you just like to look at some [new sample code](content/code/c6_base.txt) and perhaps run a `diff` on it and the code from the previous chapter.
+
+Post-processing effects
+========
+
+I will now discuss various interesting post-processing effects, how they work and what they look like.
+
+Color manipulation
+--------
+
+Inverting the colors is an option usually found in image manipulation programs, but you can also do it yourself using shaders!
+
+<img src="media/img/c6_invert.png" alt="" style="align: center" />
+
+As color values are floating point values ranging from `0.0` to `1.0`, inverting a channel is as simple as calculating `1.0 - channel`. If you do this for each channel (red, green, blue) you'll get an inverted color. In the fragment shader, that can be done like this.
+
+	outColor = vec4( 1.0, 1.0, 1.0, 1.0 ) - texture( texFramebuffer, Texcoord );
+
+This will also affect the alpha channel, but that doesn't matter because alpha blending is disabled by default.
+
+<div style="width: 700px; margin: auto">
+	<img src="media/img/c6_grayscale.png" alt="" style="display: inline" />
+	<img src="media/img/c6_grayscale2.png" alt="" style="display: inline" />
+</div>
+
+Making colors grayscale can be naively done by calculating the average intensity of each channel.
+
+	outColor = texture( texFramebuffer, Texcoord );
+	float avg = ( outColor.r + outColor.g + outColor.b ) / 3.0;
+	outColor = vec4( avg, avg, avg, 1.0 );
+
+This works fine, but humans are the most sensitive to blue and the least to green, so a better conversion would work with weighed channels.
+
+	outColor = texture( texFramebuffer, Texcoord );
+	float avg = 0.2126 * outColor.r + 0.7152 * outColor.g + 0.0722 * outColor.b;
+	outColor = vec4( avg, avg, avg, 1.0 );
+
+Blur
+--------
+
+There are two well known blur techniques: box blur and Gaussian blur. The latter results in a higher quality result, but the former is easier to implement and still approximates Gaussian blur fairly well.
+
+<img src="media/img/c6_blur.png" alt="" style="align: center" />
+
+Blurring is done by sampling pixels around a pixel and calculating the average color.
+
+	const float blurSizeH = 1.0 / 300.0;
+	const float blurSizeV = 1.0 / 200.0;
+	void main() {
+		vec4 sum = vec4( 0.0 );
+		for (int x = -4; x <= 4; x++)
+			for (int y = -4; y <= 4; y++)
+				sum += texture(
+					texFramebuffer,
+					vec2( Texcoord.x + x * blurSizeH, Texcoord.y + y * blurSizeV )
+				) / 81.0;
+		outColor = sum;
+	}
+
+You can see that a total amount of 81 samples is taken. You can change the amount of samples on the X and Y axes to control the amount of blur. The `blurSize` variables are used to determine the distance between each sample. A higher sample count and lower sample distance results in a better approximationg, but also rapidly decreases performance, so try finding a good balance.
+
+Sobel
+--------
+
+The Sobel operator is often used in edge detection algorithms, let's find out what it looks like.
+
+<img src="media/img/c6_sobel.png" alt="" style="align: center" />
+
+The fragment shader looks like this:
+
+	vec4 s1 = texture( texFramebuffer, Texcoord - 1.0 / 300.0 - 1.0 / 200.0 );
+	vec4 s2 = texture( texFramebuffer, Texcoord + 1.0 / 300.0 - 1.0 / 200.0 );
+	vec4 s3 = texture( texFramebuffer, Texcoord - 1.0 / 300.0 + 1.0 / 200.0 );
+	vec4 s4 = texture( texFramebuffer, Texcoord + 1.0 / 300.0 + 1.0 / 200.0 );
+	vec4 sx = 4.0 * ( ( s4 + s3 ) - ( s2 + s1 ) );
+	vec4 sy = 4.0 * ( ( s2 + s4 ) - ( s1 + s3 ) );
+	vec4 sobel = sqrt( sx * sx + sy * sy );
+	outColor = sobel;
+
+Just like the blur shader, a few samples are taken and combined in an interesting way. You can read more about the [technical details](http://en.wikipedia.org/wiki/Sobel_operator) elsewhere.
+
+Conclusion
+========
+
+The cool thing about shaders is that you can manipulate images on a per-pixel basis in realtime because of the immense parallel processing capabilities of your graphics card. It is no surprise that newer versions of software like Photoshop use the graphics card to accelerate image manipulation operations! There are many more complex effects like HDR, motion blur and SSAO (screen space ambient occlusion), but those involve a little more work than a single shader, so they're beyond the scope of this chapter.
+
+Exercises
+========
+
+- Try implementing the two-pass Gaussian blur effect by adding another framebuffer
+- Try adding a panel in the 3D scene displaying that very scene from a different angle
