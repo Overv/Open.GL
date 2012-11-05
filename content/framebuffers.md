@@ -222,7 +222,7 @@ Blurring is done by sampling pixels around a pixel and calculating the average c
 		outColor = sum;
 	}
 
-You can see that a total amount of 81 samples is taken. You can change the amount of samples on the X and Y axes to control the amount of blur. The `blurSize` variables are used to determine the distance between each sample. A higher sample count and lower sample distance results in a better approximationg, but also rapidly decreases performance, so try finding a good balance.
+You can see that a total amount of 81 samples is taken. You can change the amount of samples on the X and Y axes to control the amount of blur. The `blurSize` variables are used to determine the distance between each sample. A higher sample count and lower sample distance results in a better approximation, but also rapidly decreases performance, so try finding a good balance.
 
 Sobel
 --------
