@@ -17,7 +17,7 @@ You can not use this framebuffer yet at this point, because it is not *complete*
 
 - At least one buffer has been attached (e.g. color, depth, stencil)
 - There must be at least one color attachment *(OpenGL 4.1 and earlier)*
-- All attachments are complete
+- All attachments are complete *(For example, a texture attachment needs to have memory reserved)*
 - All attachments must have the same number of multisamples
 
 You can check if a framebuffer is complete at any time by calling `glCheckFramebufferStatus` and check if it returns `GL_FRAMEBUFFER_COMPLETE`. See the [reference](http://www.opengl.org/sdk/docs/man3/xhtml/glCheckFramebufferStatus.xml) for other return values. You don't have to do this check, but it's usually a good thing to verify, just like checking if your shaders compiled successfully.
@@ -26,7 +26,7 @@ Now, let's bind the framebuffer to work with it.
 
 	glBindFramebuffer( GL_FRAMEBUFFER, frameBuffer );
 
-The first parameter specifies the framebuffer the image should be attached to. OpenGL makes a distinction here between `GL_DRAW_FRAMEBUFFER` and `GL_READ_FRAMEBUFFER`. The framebuffer bound to read is used in calls to `glReadPixels`, but since this distinction in normal applications is fairly rare, you can have your actions apply to both by using `GL_FRAMEBUFFER`.
+The first parameter specifies the target the framebuffer should be attached to. OpenGL makes a distinction here between `GL_DRAW_FRAMEBUFFER` and `GL_READ_FRAMEBUFFER`. The framebuffer bound to read is used in calls to `glReadPixels`, but since this distinction in normal applications is fairly rare, you can have your actions apply to both by using `GL_FRAMEBUFFER`.
 
 	glDeleteFramebuffers( 1, &frameBuffer );
 

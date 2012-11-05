@@ -1,4 +1,4 @@
-Page not found!
+Segmentation fault
 ==========
 
-I'm sorry, but the content you were looking for does not seem to be available at the moment!
+I'm sorry, but it appears that the extension you were looking for is not available at the moment!
