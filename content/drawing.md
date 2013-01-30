@@ -152,10 +152,10 @@ Be aware that if the shader fails to compile, e.g. because of a syntax error, `g
 > <br /><br />
 > **Retrieving the compile log**
 > <br /><br />
-> `char buffer[513];`<br />
+> `char buffer[512];`<br />
 > `glGetShaderInfoLog( vertexShader, 512, NULL, buffer );`
 > <br /><br />
-> This will store the first 512 bytes + null terminator of the compile log in the specified buffer. The log may also report useful warnings even when compiling was successful, so it's useful to check it out from time to time when you develop your shaders.
+> This will store the first 511 bytes + null terminator of the compile log in the specified buffer. The log may also report useful warnings even when compiling was successful, so it's useful to check it out from time to time when you develop your shaders.
 
 The fragment shader is compiled in exactly the same way:
 

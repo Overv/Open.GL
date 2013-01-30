@@ -40,7 +40,7 @@ Your framebuffer can only be used as a render target if memory has been allocate
 Texture images
 --------
 
-We'd like to be able to render a scene and then use the result in the color buffer in another rendering operation, so a texture is ideal in this case. Creating a texture for use as an image for the color buffer of the new framebuffer is as simple.
+We'd like to be able to render a scene and then use the result in the color buffer in another rendering operation, so a texture is ideal in this case. Creating a texture for use as an image for the color buffer of the new framebuffer is as simple as creating any texture.
 
 	GLuint texColorBuffer;
 	glGenTextures( 1, &texColorBuffer );

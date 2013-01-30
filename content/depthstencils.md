@@ -172,7 +172,7 @@ Let's spice up the demo we have right now a bit by adding a floor with a reflect
 
 Now add the extra draw call to your main loop:
 
-	glDrawArrays( GL_TRIANGLES, 6, 36 );
+	glDrawArrays( GL_TRIANGLES, 36, 6 );
 
 To create the reflection of the cube itself, it is sufficient to draw it again but inverted on the Z-axis:
 
