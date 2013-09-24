@@ -153,8 +153,8 @@ Building
 
 After you've downloaded the SDL binaries or compiled them yourself, you'll find the needed files in the `lib` and `include` folders.
 
-- Add the `lib` folder to your library path and link with `SDL` and `SDLmain`.
-- SDL uses dynamic linking, so make sure that the shared library (`SDL.dll`, `SDL.so`) is with your executable.
+- Add the `lib` folder to your library path and link with `SDL2` and `SDL2main`.
+- SDL uses dynamic linking, so make sure that the shared library (`SDL2.dll`, `SDL2.so`) is with your executable.
 - Add the `include` folder to your include path.
 
 > SDL requires you to use the full prototype for `main`, you will get linker errors if you don't specify the prototype with command-line arguments.
@@ -173,7 +173,7 @@ To verify that you're ready, try compiling and running the following snippet of 
 		return 0;
 	}
 
-It should show a console application and exit after a second. If you run into any trouble, you can find more [detailed information](http://lazyfoo.net/SDL_tutorials/lesson01/index.php) for all kinds of platforms and compilers in the tutorials on the web.
+It should show a console application and exit after a second. If you run into any trouble, you can find more [detailed information](http://wiki.libsdl.org/FrontPage) for all kinds of platforms and compilers in the tutorials on the web.
 
 Code
 --------
@@ -195,40 +195,43 @@ To use SDL in an application, you need to tell SDL which modules you need and wh
 	SDL_Quit();
 	return 0;
 
-The `SDL_Init` function takes a bitfield with the modules to load. The video module includes everything you need to create a window with an associated OpenGL context. The `SDL_Surface` structure quite simply represents an area that can be drawn to.
+The `SDL_Init` function takes a bitfield with the modules to load. The video module includes everything you need to create a window and an OpenGL context. Create a window using the `SDL_CreateWindow` function.
 
-	SDL_Surface* surface =
-	  SDL_SetVideoMode( 800, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_OPENGL );
-	SDL_WM_SetCaption( "OpenGL", 0 );
+	SDL_Window* window = SDL_CreateWindow("OpenGL", 100, 100, 800, 600, SDL_WINDOW_OPENGL);
 
-The first three arguments are respectively for the width, height and pixel depth of the window. A pixel depth of 32 is what you want for nearly all modern systems. After that comes a few flags that specify what the surface should be capable of:
+The first argument specifies the title of the window, the next two the X and Y position and the two after those the width and height. The final parameter specifies window properties like:
 
-- *SDL_HWSURFACE* - Drawing should be hardware accelerated.
-- *SDL_DOUBLEBUF* - Enable the back buffer mechanism that was discussed earlier.
-- *SDL_OPENGL* - The surface should be capable of OpenGL.
-- **Optional** *SDL_FULLSCREEN* - The surface should be fullscreen.
+- *SDL_WINDOW_OPENGL* - Create a window ready for OpenGL.
+- *SDL_WINDOW_RESIZABLE* - Create a resizable window.
+- **Optional** *SDL_WINDOW_FULLSCREEN* - Create a fullscreen window.
 
-The reason the OpenGL flag is optional is because SDL also allows you to draw to the pixels on the surface directly. This is useful for software renderers and games that are specifically oriented around pixels, like falling sand games.
+After you've created the window, you can create the OpenGL context:
+
+	SDL_GLContext context = SDL_GL_CreateContext(window);
+	...
+	SDL_GL_DeleteContext(context);
+
+The context should be destroyed right before calling `SDL_Quit()` to clean up the resources.
 
 Then comes the most important part of the program, the event loop:
 
 	SDL_Event windowEvent;
-	while ( true )
+	while (true)
 	{
-		if ( SDL_PollEvent( &windowEvent ) )
+		if (SDL_PollEvent(&windowEvent))
 		{
-			if ( windowEvent.type == SDL_QUIT ) break;
+			if (windowEvent.type == SDL_QUIT) break;
 		}
 
-		SDL_GL_SwapBuffers();
+		SDL_GL_SwapWindow(window);
 	}
 
-The `SDL_PollEvent` function will check if there are any new events that have to be handled. An event can be anything from a mouse click to the user moving the window. Right now, the only event you need to respond to is the user pressing the little X button in the corner of the window. By breaking from the main loop, `SDL_Quit` is called and the window and graphics surface are destroyed. `SDL_GL_SwapBuffers` here takes care of swapping the front and back buffer after new things have been drawn by your application.
+The `SDL_PollEvent` function will check if there are any new events that have to be handled. An event can be anything from a mouse click to the user moving the window. Right now, the only event you need to respond to is the user pressing the little X button in the corner of the window. By breaking from the main loop, `SDL_Quit` is called and the window and graphics surface are destroyed. `SDL_GL_SwapWindow` here takes care of swapping the front and back buffer after new things have been drawn by your application.
 
 If you have a fullscreen window, it would be preferable to use escape as a means to close the window.
 
-	if ( windowEvent.type == SDL_KEYUP &&
-		windowEvent.key.keysym.sym == SDLK_ESCAPE ) break;
+	if (windowEvent.type == SDL_KEYUP &&
+		windowEvent.key.keysym.sym == SDLK_ESCAPE) break;
 
 When you run your application now, you should see something like this:
 
