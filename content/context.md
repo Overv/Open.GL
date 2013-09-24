@@ -256,13 +256,14 @@ After you've downloaded the GLFW binaries package from the website or compiled t
 
 Here is a simple snippet of code to check your build configuration:
 
-	#include <GL/glfw.h>
+	#include <GLFW/glfw3.h>
+	#include <thread>
 
 	int main()
 	{
-		glfwInit();
-		glfwSleep( 1.0 );
-		glfwTerminate();
+	    glfwInit();
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	    glfwTerminate();
 	}
 
 It should show a console application and exit after a second. If you run into any trouble, just ask in the comments and you'll receive help.
@@ -272,7 +273,7 @@ Code
 
 Start by simply including the GLFW header and define the entry point of the application.
 
-	#include <GL/glfw.h>
+	#include <GLFW/glfw3.h>
 
 	int main()
 	{
@@ -285,33 +286,39 @@ To use GLFW, it needs to be initialised when the program starts and you need to 
 	...
 	glfwTerminate();
 
-The next thing to do is creating and configuring the window. GLFW allows only one window at a time, so there's no window object to keep track of.
+The next thing to do is creating and configuring the window. Before calling `glfwCreateWindow`, we first set some options.
 
-	glfwOpenWindowHint( GLFW_OPENGL_VERSION_MAJOR, 3 );
-	glfwOpenWindowHint( GLFW_OPENGL_VERSION_MINOR, 2 );
-	glfwOpenWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2 );
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	glfwOpenWindowHint( GLFW_WINDOW_NO_RESIZE, GL_TRUE );
-	glfwOpenWindow( 800, 600, 0, 0, 0, 0, 0, 0, GLFW_WINDOW );
-	glfwSetWindowTitle( "OpenGL" );
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+	GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL", nullptr, nullptr); // Windowed
+	GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL", glfwGetPrimaryMonitor(), nullptr); // Fullscreen
 
 You'll immediately notice the first three lines of code that are only relevant for this library. It is specified that we require the OpenGL context to support OpenGL 3.2 at the least. The `GLFW_OPENGL_PROFILE` option specifies that we want a context that only supports the new core functionality.
 
-The purpose of `glfwSetWindowTitle` should be straight-forward, but `glfwOpenWindow` has a quite a lot of parameters. The first two specify the width and height of the drawing surface and the last parameter specifies the mode of the window. The mode must be either `GLFW_WINDOW` or `GLFW_FULLSCREEN`. The other parameters specify the pixel depth and the stencil and depth buffer accuracy. You don't need to worry about the latter two until you start using them. By passing `0` to the color depth parameters, the default pixel depth will be selected without an alpha channel. This is perfectly suitable for all regular graphics applications. The `glfwOpenWindowHint` function is used to specify additional requirements for the window.
+The first two parameters of glfwCreateWindow specify the width and height of the drawing surface and the third parameter specifies the window title. The fourth parameter should be set to `NULL` for windowed mode and `glfwGetPrimaryMonitor()` for fullscreen mode. The last parameter allows you to specify an existing OpenGL context to share resources like textures with. The `glfwWindowHint` function is used to specify additional requirements for a window.
+
+After creating the window, the OpenGL context has to be made active:
+
+	glfwMakeContextCurrent(window);
 
 Next comes the event loop, which in the case of GLFW works a little differently than the other libraries. GLFW uses a so-called *closed* event loop, which means you only have to handle events when you need to. That means your event loop will look really simple:
 
-	while( glfwGetWindowParam( GLFW_OPENED ) )
+	while(!glfwWindowShouldClose(window))
 	{
-		glfwSwapBuffers();
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 
-The only required function in the loop is `glfwSwapBuffers` to swap the back buffer and front buffer after you've finished drawing. If you are making a fullscreen application, you should also handle ESC to easily return to the desktop.
+The only required functions in the loop are `glfwSwapBuffers` to swap the back buffer and front buffer after you've finished drawing and `glfwPollEvents` to retrieve window events. If you are making a fullscreen application, you should  handle ESC to easily return to the desktop.
 
-	if ( glfwGetKey( GLFW_KEY_ESC ) == GLFW_PRESS )
-		break;
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GL_TRUE);
 
-If you want to learn more about handling input, you can refer to chapter 4 of the [manual](http://www.glfw.org/GLFWUsersGuide274.pdf).
+If you want to learn more about handling input, you can refer to the [documentation](http://www.glfw.org/docs/3.0/group__input.html).
 
 <img src="media/img/c1_window.png" alt="" />
 
