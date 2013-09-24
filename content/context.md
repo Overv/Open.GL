@@ -82,11 +82,11 @@ To verify that you've done this correctly, try compiling and running the followi
 
 	int main()
 	{
-		sf::Sleep( 1.f );
+		sf::sleep( sf::seconds(1.f) );
 		return 0;
 	}
 
-It should show a console application and exit after a second. If you run into any trouble, you can find more detailed information for [Visual Studio](http://www.sfml-dev.org/tutorials/1.6/start-vc.php), [Code::Blocks](http://www.sfml-dev.org/tutorials/1.6/start-cb.php) and [gcc](http://www.sfml-dev.org/tutorials/1.6/start-linux.php) in the tutorials on the SFML website.
+It should show a console application and exit after a second. If you run into any trouble, you can find more detailed information for [Visual Studio](http://sfml-dev.org/tutorials/2.1/start-vc.php), [Code::Blocks](http://sfml-dev.org/tutorials/2.1/start-cb.php) and [gcc](http://sfml-dev.org/tutorials/2.1/start-linux.php) in the tutorials on the SFML website.
 
 Code
 --------
@@ -108,10 +108,10 @@ The constructor can also take an `sf::WindowSettings` structure that allows you 
 
 When running this, you'll notice that the application instantly closes after creating the window. Let's add the event loop to deal with that.
 
-	while ( window.IsOpened() )
+	while ( window.isOpen() )
 	{
 		sf::Event windowEvent;
-		while ( window.GetEvent( windowEvent ) )
+		while ( window.pollEvent( windowEvent ) )
 		{
 
 		}
@@ -119,27 +119,27 @@ When running this, you'll notice that the application instantly closes after cre
 
 When something happens to your window, an event is posted to the event queue. There are is a wide variety of events, including window size changes, mouse movement and key presses. It's up to you to decide which events require additional action, but there is at least one that needs to be handled to make your application run well.
 
-	switch ( windowEvent.Type )
+	switch ( windowEvent.type )
 	{
 	case sf::Event::Closed:
-		window.Close();
+		window.close();
 		break;
 	}
 
 When the user attempts to close the window, the `Closed` event is fired and we act on that by closing the window. Try removing that line and you'll see that it's impossible to close the window by normal means. If you prefer a fullscreen window, you should add the escape key as a means to close the window:
 
 	case sf::Event::KeyPressed:
-		if ( windowEvent.Key.Code == sf::Key::Escape )
-			window.Close();
+		if ( windowEvent.key.code == sf::Keyboard::Escape )
+			window.close();
 		break;
 
-You have your window and the important events are acted upon, so you're now ready to put something on the screen. After drawing something, you can swap the back buffer and the front buffer with `window.Display()`.
+You have your window and the important events are acted upon, so you're now ready to put something on the screen. After drawing something, you can swap the back buffer and the front buffer with `window.display()`.
 
 When you run your application, you should see something like this:
 
 <img src="media/img/c1_window.png" alt="" />
 
-Note that SFML allows you to have multiple windows. If you want to make use of this feature, make sure to call `window.SetActive()` to activate a certain window for drawing operations.
+Note that SFML allows you to have multiple windows. If you want to make use of this feature, make sure to call `window.setActive()` to activate a certain window for drawing operations.
 
 Now that you have a window and a context, there's [one more thing](#Onemorething) that needs to be done.
 
