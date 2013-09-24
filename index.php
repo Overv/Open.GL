@@ -111,7 +111,7 @@
 	<body>
 		<div id="page">
 			<!-- Work in progress ribbon -->
-			<img id="ribbon" src="media/ribbon.png" alt="Work in progress" />
+			<a href="https://github.com/Overv/Open.GL"><img id="ribbon" src="media/ribbon_fork.png" alt="Fork me!" /></a>
 
 			<!-- Navigation items -->
 			<div id="nav">
