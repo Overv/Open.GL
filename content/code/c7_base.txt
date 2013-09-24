@@ -71,14 +71,13 @@ int main() {
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
     // Render loop
-    bool running = true;
-
-    while (running) {
+    while (window.isOpen()) {
         // Handle events
         sf::Event ev;
         while (window.pollEvent(ev)) {
             if (ev.type == sf::Event::Closed) {
-                running = false;
+                window.close();
+                break;
             }
         }
 

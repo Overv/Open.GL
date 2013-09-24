@@ -7,32 +7,44 @@
 // Vertex shader
 const char* vertexShaderSrc = GLSL(
     in vec2 pos;
+    in vec3 color;
+    in float sides;
+
+    out vec3 vColor;
+    out float vSides;
 
     void main() {
         gl_Position = vec4(pos, 0.0, 1.0);
+        vColor = color;
+        vSides = sides;
     }
 );
 
 // Geometry shader
 const char* geometryShaderSrc = GLSL(
     layout(points) in;
-    layout(triangle_strip, max_vertices = 5) out;
+    layout(line_strip, max_vertices = 64) out;
+
+    in vec3 vColor[];
+    in float vSides[];
+    out vec3 fColor;
+
+    const float PI = 3.1415926;
 
     void main() {
-        gl_Position = gl_in[0].gl_Position + vec4(-0.1, 0.1, 0.0, 0.0);
-        EmitVertex();
+        fColor = vColor[0];
 
-        gl_Position = gl_in[0].gl_Position + vec4(0.1, 0.1, 0.0, 0.0);
-        EmitVertex();
+        // Safe, floats can represent small integers exactly
+        for (int i = 0; i <= vSides[0]; i++) {
+            // Angle between each side in radians
+            float ang = PI * 2.0 / vSides[0] * i;
 
-        gl_Position = gl_in[0].gl_Position + vec4(0.1, -0.1, 0.0, 0.0);
-        EmitVertex();
+            // Offset from center of point (0.3 to accomodate for aspect ratio)
+            vec4 offset = vec4(cos(ang) * 0.3, -sin(ang) * 0.4, 0.0, 0.0);
+            gl_Position = gl_in[0].gl_Position + offset;
 
-        gl_Position = gl_in[0].gl_Position + vec4(-0.1, -0.1, 0.0, 0.0);
-        EmitVertex();
-
-        gl_Position = gl_in[0].gl_Position + vec4(-0.1, 0.1, 0.0, 0.0);
-        EmitVertex();
+            EmitVertex();
+        }
 
         EndPrimitive();
     }
@@ -40,9 +52,12 @@ const char* geometryShaderSrc = GLSL(
 
 // Fragment shader
 const char* fragmentShaderSrc = GLSL(
+    in vec3 fColor;
+
     out vec4 outColor;
+
     void main() {
-        outColor = vec4(1.0, 0.0, 0.0, 1.0);
+        outColor = vec4(fColor, 1.0);
     };
 );
 
@@ -78,10 +93,11 @@ int main() {
     glGenBuffers(1, &vbo);
 
     float points[] = {
-        -0.45f,  0.45f,
-         0.45f,  0.45f,
-         0.45f, -0.45f,
-        -0.45f, -0.45f,
+    //  Coordinates  Color             Sides
+        -0.45f,  0.45f, 1.0f, 0.0f, 0.0f,  4.0f,
+         0.45f,  0.45f, 0.0f, 1.0f, 0.0f,  8.0f,
+         0.45f, -0.45f, 0.0f, 0.0f, 1.0f, 16.0f,
+        -0.45f, -0.45f, 1.0f, 1.0f, 0.0f, 32.0f
     };
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -95,7 +111,15 @@ int main() {
     // Specify layout of point data
     GLint posAttrib = glGetAttribLocation(shaderProgram, "pos");
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
+
+    GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
+    glEnableVertexAttribArray(colAttrib);
+    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (2 * sizeof(float)));
+
+    GLint sidesAttrib = glGetAttribLocation(shaderProgram, "sides");
+    glEnableVertexAttribArray(sidesAttrib);
+    glVertexAttribPointer(sidesAttrib, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (5 * sizeof(float)));
 
     // Render loop
     while (window.isOpen()) {

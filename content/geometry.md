@@ -503,7 +503,7 @@ adding more points!
 Without a geometry shader, we'd have to rebuild the entire vertex buffer
 whenever any of these circles have to change, now we can simply change the value
 of a vertex attribute. In a game setting, this attribute could be changed based
-on player distance as described above.
+on player distance as described above. You can find the full code [here](content/code/c7_final.txt).
 
 Conclusion
 ==========

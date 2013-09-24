@@ -69,15 +69,15 @@ int main()
 	glEnableVertexAttribArray( posAttrib );
 	glVertexAttribPointer( posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0 );
 
-	while ( window.IsOpened() )
+	while ( window.isOpen() )
 	{
 		sf::Event windowEvent;
-		while ( window.GetEvent( windowEvent ) )
+		while ( window.pollEvent( windowEvent ) )
 		{
-			switch ( windowEvent.Type )
+			switch ( windowEvent.type )
 			{
 			case sf::Event::Closed:
-				window.Close();
+				window.close();
 				break;
 			}
 		}
@@ -90,7 +90,7 @@ int main()
 		glDrawArrays( GL_TRIANGLES, 0, 3 );
 
 		// Swap buffers
-		window.Display();
+		window.display();
 	}
 
 	glDeleteProgram( shaderProgram );

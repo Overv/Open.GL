@@ -278,18 +278,18 @@ int main()
 
 	GLuint uniColor = glGetUniformLocation( sceneShaderProgram, "overrideColor" );
 
-	while ( window.IsOpened() )
-	{
-		sf::Event windowEvent;
-		while ( window.GetEvent( windowEvent ) )
-		{
-			switch ( windowEvent.Type )
-			{
-			case sf::Event::Closed:
-				window.Close();
-				goto end;
-			}
-		}
+	while ( window.isOpen() )
+    {
+        sf::Event windowEvent;
+        while ( window.pollEvent( windowEvent ) )
+        {
+            switch ( windowEvent.type )
+            {
+            case sf::Event::Closed:
+                window.close();
+                break;
+            }
+        }
 
 		// Bind our framebuffer and draw 3D scene (spinning cube)
 		glBindFramebuffer( GL_FRAMEBUFFER, frameBuffer );
@@ -357,7 +357,7 @@ int main()
 		glDrawArrays( GL_TRIANGLES, 0, 6 );
 
 		// Swap buffers
-		window.Display();
+		window.display();
 	}
 	end:
 

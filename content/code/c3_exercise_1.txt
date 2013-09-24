@@ -137,15 +137,15 @@ int main()
 
 	GLint uniTime = glGetUniformLocation( shaderProgram, "time" );
 
-	while ( window.IsOpened() )
+	while ( window.isOpen() )
 	{
 		sf::Event windowEvent;
-		while ( window.GetEvent( windowEvent ) )
+		while ( window.pollEvent( windowEvent ) )
 		{
-			switch ( windowEvent.Type )
+			switch ( windowEvent.type )
 			{
 			case sf::Event::Closed:
-				window.Close();
+				window.close();
 				break;
 			}
 		}
@@ -161,7 +161,7 @@ int main()
 		glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
 
 		// Swap buffers
-		window.Display();
+		window.display();
 	}
 
 	glDeleteTextures( 2, textures );
