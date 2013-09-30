@@ -13,13 +13,13 @@ This program flow would look something like this in pseudocode:
 
 	int main()
 	{
-		createWindow( title, width, height );
-		createOpenGLContext( settings );
+		createWindow(title, width, height);
+		createOpenGLContext(settings);
 
-		while ( windowOpen )
+		while (windowOpen)
 		{
-			while ( event = newEvent() )
-				handleEvent( event );
+			while (event = newEvent())
+				handleEvent(event);
 
 			updateScene();
 
@@ -82,7 +82,7 @@ To verify that you've done this correctly, try compiling and running the followi
 
 	int main()
 	{
-		sf::sleep( sf::seconds(1.f) );
+		sf::sleep(sf::seconds(1.f));
 		return 0;
 	}
 
@@ -102,16 +102,16 @@ Start by including the window package and defining the entry point of your appli
 
 A window can be opened by creating a new instance of `sf::Window`. The basic constructor takes an `sf::VideoMode` structure, a title for the window and a window style. The `sf::VideoMode` structure specifies the width, height and optionally the pixel depth of the window. Finally, the requirement for a fixed size window is specified by overriding the default style of `Style::Resize|Style::Close`. It is also possible to create a fullscreen window by passing `Style::Fullscreen` as window style.
 
-	sf::Window window( sf::VideoMode( 800, 600 ), "OpenGL", sf::Style::Close );
+	sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Close);
 
 The constructor can also take an `sf::WindowSettings` structure that allows you to specify the anti-aliasing level and the accuracy of the depth and stencil buffers. The latter two will be discussed later, so you don't have to worry about these yet.
 
 When running this, you'll notice that the application instantly closes after creating the window. Let's add the event loop to deal with that.
 
-	while ( window.isOpen() )
+	while (window.isOpen())
 	{
 		sf::Event windowEvent;
-		while ( window.pollEvent( windowEvent ) )
+		while (window.pollEvent(windowEvent))
 		{
 
 		}
@@ -119,7 +119,7 @@ When running this, you'll notice that the application instantly closes after cre
 
 When something happens to your window, an event is posted to the event queue. There are is a wide variety of events, including window size changes, mouse movement and key presses. It's up to you to decide which events require additional action, but there is at least one that needs to be handled to make your application run well.
 
-	switch ( windowEvent.type )
+	switch (windowEvent.type)
 	{
 	case sf::Event::Closed:
 		window.close();
@@ -129,7 +129,7 @@ When something happens to your window, an event is posted to the event queue. Th
 When the user attempts to close the window, the `Closed` event is fired and we act on that by closing the window. Try removing that line and you'll see that it's impossible to close the window by normal means. If you prefer a fullscreen window, you should add the escape key as a means to close the window:
 
 	case sf::Event::KeyPressed:
-		if ( windowEvent.key.code == sf::Keyboard::Escape )
+		if (windowEvent.key.code == sf::Keyboard::Escape)
 			window.close();
 		break;
 
@@ -163,11 +163,11 @@ To verify that you're ready, try compiling and running the following snippet of 
 
 	#include <SDL.h>
 
-	int main( int argc, char *argv[] )
+	int main(int argc, char *argv[])
 	{
-		SDL_Init( SDL_INIT_EVERYTHING );
+		SDL_Init(SDL_INIT_EVERYTHING);
 		
-		SDL_Delay( 1000 );
+		SDL_Delay(1000);
 
 		SDL_Quit();
 		return 0;
@@ -183,14 +183,14 @@ Start by defining the entry point of your application and include the headers fo
 	#include <SDL.h>
 	#include <SDL_opengl.h>
 
-	int main( int argc, char *argv[] )
+	int main(int argc, char *argv[])
 	{
 		return 0;
 	}
 
 To use SDL in an application, you need to tell SDL which modules you need and when to unload them. You can do this with two lines of code.
 
-	SDL_Init( SDL_INIT_VIDEO );
+	SDL_Init(SDL_INIT_VIDEO);
 	...
 	SDL_Quit();
 	return 0;
@@ -289,7 +289,7 @@ To use GLFW, it needs to be initialised when the program starts and you need to 
 The next thing to do is creating and configuring the window. Before calling `glfwCreateWindow`, we first set some options.
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2 );
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -332,18 +332,18 @@ Unfortunately, we can't just call the functions we need yet. This is because it'
 Your program needs to check which functions are available at runtime and link with them dynamically. This is done by finding the addresses of the functions, assigning them to function pointers and calling them. That looks something like this:
 
 	// Specify prototype of function
-	typedef void (*GENBUFFERS) ( GLsizei, GLuint* );
+	typedef void (*GENBUFFERS) (GLsizei, GLuint*);
 
 	// Load address of function and assign it to a function pointer
-	GENBUFFERS glGenBuffers = (GENBUFFERS)wglGetProcAddress( "glGenBuffers" );
+	GENBUFFERS glGenBuffers = (GENBUFFERS)wglGetProcAddress("glGenBuffers");
 	// or Linux:
-	GENBUFFERS glGenBuffers = (GENBUFFERS)glXGetProcAddress( "glGenBuffers" );
+	GENBUFFERS glGenBuffers = (GENBUFFERS)glXGetProcAddress("glGenBuffers");
 	// or OSX:
-	GENBUFFERS glGenBuffers = (GENBUFFERS)NSGLGetProcAddress( "glGenBuffers" );
+	GENBUFFERS glGenBuffers = (GENBUFFERS)NSGLGetProcAddress("glGenBuffers");
 
 	// Call function as normal
 	int buffer;
-	glGenBuffers( 1, &buffer );
+	glGenBuffers(1, &buffer);
 
 Let me begin by asserting that it is perfectly normal to be scared by this snippet of code. You may not be familiar with the concept of function pointers yet, but at least try to roughly understand what is happening here. You can imagine that going through this process of defining prototypes and finding addresses of functions is very tedious and in the end nothing more than a complete waste of time.
 
@@ -371,9 +371,9 @@ Now all that's left is calling `glewInit()` after the creation of your window an
 Make sure that you've set up your project correctly by calling the `glGenBuffers` function, which was loaded by GLEW for you!
 
 	GLuint vertexBuffer;
-	glGenBuffers( 1, &vertexBuffer );
+	glGenBuffers(1, &vertexBuffer);
 
-	printf( "%u\n", vertexBuffer );
+	printf("%u\n", vertexBuffer);
 
 Your program should compile and run without issues and display the number `1` in your console. If you need more help with using GLEW, you can refer to the [website](http://glew.sourceforge.net/install.html) or ask in the comments.
 

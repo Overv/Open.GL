@@ -11,13 +11,13 @@ To best demonstrate the use of these buffers, let's draw a cube instead of a fla
 
 	in vec3 position;
 	...
-	gl_Position = proj * view * model * vec4( position, 1.0 );
+	gl_Position = proj * view * model * vec4(position, 1.0);
 
 We're also going to need to alter the color again later in this chapter, so make sure the fragment shader multiplies the texture color by the color attribute:
 
-	vec4 texColor = mix( texture( texKitten, Texcoord ),
-						 texture( texPuppy, Texcoord ), 0.5 );
-	outColor = vec4( Color, 1.0 ) * texColor;
+	vec4 texColor = mix(texture(texKitten, Texcoord),
+						 texture(texPuppy, Texcoord), 0.5);
+	outColor = vec4(Color, 1.0) * texColor;
 
 Vertices are now 8 floats in size, so you'll have to update the vertex attribute offsets and strides as well. Finally, add the extra coordinate to the vertex array:
 
@@ -31,11 +31,11 @@ Vertices are now 8 floats in size, so you'll have to update the vertex attribute
 
 Confirm that you've made all the required changes by running your program and checking if it still draws a flat spinning image of a kitten blended with a puppy. A single cube consists of 36 vertices (6 sides * 2 triangles * 3 vertices), so I will ease your life by providing the array [here](content/code/c5_vertices.txt).
 
-	glDrawArrays( GL_TRIANGLES, 0, 36 );
+	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 We will not make use of element buffers for drawing this cube, so you can use `glDrawArrays` to draw it. If you were confused by this explanation, you can compare your program to [this reference code](content/code/c5_cube.txt).
 
-<div class="livedemo" id="demo_c5_cube" style="background: url( 'media/img/c5_window.png' )">
+<div class="livedemo" id="demo_c5_cube" style="background: url('media/img/c5_window.png')">
 	<canvas width="640" height="480"></canvas>
 	<script type="text/javascript" src="content/demos/c5_cube.js"></script>
 </div>
@@ -53,17 +53,17 @@ If this depth is stored along with the color when a fragment is written, fragmen
 
 OpenGL offers a way to store these depth values in an extra buffer, called the *depth buffer*, and perform the required check for fragments automatically. The fragment shader will not run for fragments that are invisible, which can have a significant impact on performance. This functionality can be enabled by calling `glEnable`.
 
-	glEnable( GL_DEPTH_TEST );
+	glEnable(GL_DEPTH_TEST);
 
 If you enable this functionality now and run your application, you'll notice that you get a black screen. That happens because the depth buffer is filled with 0 depth for each pixel by default. Since no fragments will ever be closer than that they are all discarded.
 
 The depth buffer can be cleared along with the color buffer by extending the `glClear` call:
 
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 The default clear value for the depth is `1.0f`, which is equal to the depth of your far clipping plane and thus the furthest depth that can be represented. All fragments will be closer than that, so they will no longer be discarded. 
 
-<div class="livedemo" id="demo_c5_depth" style="background: url( 'media/img/c5_window2.png' )">
+<div class="livedemo" id="demo_c5_depth" style="background: url('media/img/c5_window2.png')">
 	<canvas width="640" height="480"></canvas>
 	<script type="text/javascript" src="content/demos/c5_depth.js"></script>
 </div>
@@ -83,7 +83,7 @@ In this case the stencil buffer was first cleared with zeroes and then a rectang
 
 Now that you have an understanding of what the stencil buffer is used for, we'll look at the relevant OpenGL calls.
 
-	glEnable( GL_STENCIL_TEST );
+	glEnable(GL_STENCIL_TEST);
 
 Stencil testing is enabled with a call to `glEnable`, just like depth testing. You don't have to add this call to your code just yet. I'll first go over the API details in the next two sections and then we'll make a cool demo.
 
@@ -100,7 +100,7 @@ The `glStencilFunc` call is used to specify the conditions under which a fragmen
 
 If you don't want stencils with a value lower than 2 to be affected, you would use:
 
-	glStencilFunc( GL_GEQUAL, 2, 0xFF );
+	glStencilFunc(GL_GEQUAL, 2, 0xFF);
 
 The mask value is set to all ones (in case of an 8 bit stencil buffer), so it will not affect the test.
 
@@ -125,14 +125,14 @@ Finally, `glStencilMask` can be used to control the bits that are written to the
 
 If, like in the example, you want to set all stencil values in a rectangular area to 1, you would use the following calls:
 
-	glStencilFunc( GL_ALWAYS, 1, 0xFF );
-	glStencilOp( GL_KEEP, GL_KEEP, GL_REPLACE );
-	glStencilMask( 0xFF );
+	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glStencilMask(0xFF);
 
 In this case the rectangle shouldn't actually be drawn to the color buffer, since it is only used to determine which stencil values should be affected.
 
-	glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
-	glDepthMask( GL_FALSE );
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	glDepthMask(GL_FALSE);
 
 The `glColorMask` function allows you to specify which data is written to the color buffer during a drawing operation. In this case you would want to disable all color channels (red, green, blue, alpha). Writing to the depth buffer needs to be disabled seperately as well with `glDepthMask`, so that cube drawing operation won't be affected by leftover depth values of the rectangle. This is cleaner than simply clearing the depth buffer again later.
 
@@ -141,11 +141,11 @@ Using values in drawing operations
 
 With the knowledge about setting values, using them for testing fragments in drawing operations becomes very simple. All you need to do now is re-enable color and depth writing if you had disabled those earlier and setting the test function to determine which fragments are drawn based on the values in the stencil buffer.
 
-	glStencilFunc( GL_EQUAL, 1, 0xFF );
+	glStencilFunc(GL_EQUAL, 1, 0xFF);
 
 If you use this call to set the test function, the stencil test will only pass for pixels with a stencil value equal to 1. A fragment will only be drawn if it passes both the stencil and depth test, so setting the `glStencilOp` is not necessary. In the case of the example above only the stencil values in the rectangular area were set to 1, so only the cube fragments in that area will be drawn.
 
-	glStencilMask( 0x00 );
+	glStencilMask(0x00);
 
 One small detail that is easy to overlook is that the cube draw call could still affect values in the stencil buffer. This problem can be solved by setting the stencil bit mask to all zeroes, which effectively disables stencil writing.
 
@@ -167,20 +167,20 @@ Let's spice up the demo we have right now a bit by adding a floor with a reflect
 
 Now add the extra draw call to your main loop:
 
-	glDrawArrays( GL_TRIANGLES, 36, 6 );
+	glDrawArrays(GL_TRIANGLES, 36, 6);
 
 To create the reflection of the cube itself, it is sufficient to draw it again but inverted on the Z-axis:
 
 	model = glm::scale(
-		glm::translate( model, glm::vec3( 0, 0, -1 ) ),
-		glm::vec3( 1, 1, -1 )
+		glm::translate(model, glm::vec3(0, 0, -1)),
+		glm::vec3(1, 1, -1)
 	);
-	glUniformMatrix4fv( uniModel, 1, GL_FALSE, glm::value_ptr( model ) );
-	glDrawArrays( GL_TRIANGLES, 0, 36 );
+	glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
+	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 I've set the color of the floor vertices to black so that the floor does not display the texture image, so you'll want to change the clear color to white to be able to see it. I've also changed the camera parameters a bit to get a good view of the scene.
 
-<div class="livedemo" id="demo_c5_floor" style="background: url( 'media/img/c5_window3.png' )">
+<div class="livedemo" id="demo_c5_floor" style="background: url('media/img/c5_window3.png')">
 	<canvas width="640" height="480"></canvas>
 	<script type="text/javascript" src="content/demos/c5_floor.js"></script>
 </div>
@@ -192,9 +192,9 @@ Two issues are noticeable in the rendered image:
 
 The first problem is easy to solve by temporarily disabling writing to the depth buffer when drawing the floor:
 
-	glDepthMask( GL_FALSE );
-	glDrawArrays( GL_TRIANGLES, 36, 6 );
-	glDepthMask( GL_TRUE );
+	glDepthMask(GL_FALSE);
+	glDrawArrays(GL_TRIANGLES, 36, 6);
+	glDepthMask(GL_TRUE);
 
 To fix the second problem, it is necessary to discard fragments that fall outside of the floor. Sounds like it's time to see what stencil testing is really worth!
 
@@ -209,30 +209,30 @@ It can be greatly beneficial at times like these to make a little list of the re
 
 The new drawing code looks like this:
 
-	glEnable( GL_STENCIL_TEST );
+	glEnable(GL_STENCIL_TEST);
 
 		// Draw floor
-		glStencilFunc( GL_ALWAYS, 1, 0xFF ); // Set any stencil to 1
-		glStencilOp( GL_KEEP, GL_KEEP, GL_REPLACE );
-		glStencilMask( 0xFF ); // Write to stencil buffer
-		glDepthMask( GL_FALSE ); // Don't write to depth buffer
-		glClear( GL_STENCIL_BUFFER_BIT ); // Clear stencil buffer (0 by default)
+		glStencilFunc(GL_ALWAYS, 1, 0xFF); // Set any stencil to 1
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glStencilMask(0xFF); // Write to stencil buffer
+		glDepthMask(GL_FALSE); // Don't write to depth buffer
+		glClear(GL_STENCIL_BUFFER_BIT); // Clear stencil buffer (0 by default)
 			
-		glDrawArrays( GL_TRIANGLES, 36, 6 );
+		glDrawArrays(GL_TRIANGLES, 36, 6);
 
 		// Draw cube reflection
-		glStencilFunc( GL_EQUAL, 1, 0xFF ); // Pass test if stencil value is 1
-		glStencilMask( 0x00 ); // Don't write anything to stencil buffer
-		glDepthMask( GL_TRUE ); // Write to depth buffer
+		glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass test if stencil value is 1
+		glStencilMask(0x00); // Don't write anything to stencil buffer
+		glDepthMask(GL_TRUE); // Write to depth buffer
 
 		model = glm::scale(
-			glm::translate( model, glm::vec3( 0, 0, -1 ) ),
-			glm::vec3( 1, 1, -1 )
+			glm::translate(model, glm::vec3(0, 0, -1)),
+			glm::vec3(1, 1, -1)
 		);
-		glUniformMatrix4fv( uniModel, 1, GL_FALSE, glm::value_ptr( model ) );
-		glDrawArrays( GL_TRIANGLES, 0, 36 );
+		glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-	glDisable( GL_STENCIL_TEST );
+	glDisable(GL_STENCIL_TEST);
 
 I've annotated the code above with comments, but the steps should be mostly clear from the stencil buffer section.
 
@@ -244,13 +244,13 @@ Now just one final touch is required, to darken the reflected cube a little to m
 
 And in the drawing code for the reflected cube
 
-	glUniform3f( uniColor, 0.3f, 0.3f, 0.3f );
-		glDrawArrays( GL_TRIANGLES, 0, 36 );
-	glUniform3f( uniColor, 1.0f, 1.0f, 1.0f );
+	glUniform3f(uniColor, 0.3f, 0.3f, 0.3f);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	glUniform3f(uniColor, 1.0f, 1.0f, 1.0f);
 
 where `uniColor` is the return value of a `glGetUniformLocation` call.
 
-<div class="livedemo" id="demo_c5_reflection" style="background: url( 'media/img/c5_window4.png' )">
+<div class="livedemo" id="demo_c5_reflection" style="background: url('media/img/c5_window4.png')">
 	<canvas width="640" height="480"></canvas>
 	<script type="text/javascript" src="content/demos/c5_reflection.js"></script>
 </div>

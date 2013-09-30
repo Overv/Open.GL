@@ -4,11 +4,11 @@ Textures objects and parameters
 Just like VBOs and VAOs, textures are objects that need to be generated first by calling a function. It won't be a surprise at this point what this function is called.
 
 	GLuint tex;
-	glGenTextures( 1, &tex );
+	glGenTextures(1, &tex);
 
 Textures are typically used for images to decorate 3D models with, but in reality they can be used to store many different kinds of data. It's possible to have 1D, 2D and even 3D textures, which can be used to store bulk data on the GPU. An example of another use for textures is storing terrain information. This article will pay attention to the use of textures for images, but the principles generally apply to all kinds of textures.
 
-	glBindTexture( GL_TEXTURE_2D, tex );
+	glBindTexture(GL_TEXTURE_2D, tex);
 
 Just like other objects, textures have to be bound to apply operations to them. Since images are 2D arrays of pixels, it will be bound to the `GL_TEXTURE_2D` target.
 
@@ -30,13 +30,13 @@ These explanations may still be a bit cryptic and since OpenGL is all about grap
 
 The clamping can be set per coordinate, where the equivalent of `(x,y,z)` in texture coordinates is called `(s,t,r)`. Texture parameter are changed with the `glTexParameter*` functions as demonstrated here.
 
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 As before, the `i` here indicates the type of the value you want to specify. If you use `GL_CLAMP_TO_BORDER` and you want to change the border color, you need to change the value of `GL_TEXTURE_BORDER_COLOR` by passing an RGBA float array:
 
 	float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	glTexParameterfv( GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color );
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
 
 This operation will set the border color to red.
 
@@ -57,12 +57,12 @@ While linear interpolation gives a smoother result, it isn't always the most ide
 
 You can specify which kind of interpolation should be used for two separate cases: scaling the image down and scaling the image up. These two cases are identified by the keywords `GL_TEXTURE_MIN_FILTER` and `GL_TEXTURE_MAG_FILTER`.
 
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 As you've seen, there is another way to filter textures: mipmaps. Mipmaps are smaller copies of your texture that have been sized down and filtered in advance. It is recommended that you use them because they result in both a higher quality and higher performance.
 
-	glGenerateMipmap( GL_TEXTURE_2D );
+	glGenerateMipmap(GL_TEXTURE_2D);
 
 Generating them is as simple as calling the function above, so there's no excuse for not using them! Note that you *do* have to load the texture image itself before mipmaps can be generated from it.
 
@@ -85,7 +85,7 @@ Now that the texture object has been configured it's time to load the texture im
 		0.0f, 0.0f, 0.0f,	1.0f, 1.0f, 1.0f,
 		1.0f, 1.0f, 1.0f,	0.0f, 0.0f, 0.0f
 	};
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels );
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
 
 The first parameter after the texture target is the *level-of-detail*, where `0` is the base image. This parameter can be used to load your own mipmap images. The second parameter specifies the internal pixel format, the format in which pixels should be stored on the graphics card. Many different formats are available, including compressed formats, so it's certainly worth taking a look at all of the options. The third and fourth parameters specify the width and height of the image. The fifth parameter should always have a value of `0` per the [specification](http://www.opengl.org/sdk/docs/man3/xhtml/glTexImage2D.xml). The next two parameter describe the format of the pixels in the array that will be loaded and the final parameter specifies the array itself. The function begins loading the image at coordinate `(0,0)`, so pay attention to this.
 
@@ -100,13 +100,13 @@ Although SOIL includes functions to automatically create a texture from an image
 
 	int width, height;
 	unsigned char* image =
-		SOIL_load_image( "img.png", &width, &height, 0, SOIL_LOAD_RGB );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-				  GL_UNSIGNED_BYTE, image );
+		SOIL_load_image("img.png", &width, &height, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+				  GL_UNSIGNED_BYTE, image);
 
 You can start configuring the texture parameters and generating mipmaps after this.
 
-	SOIL_free_image_data( image );
+	SOIL_free_image_data(image);
 
 You can clean up the image data right after you've loaded it into the texture.
 
@@ -146,15 +146,15 @@ The vertex shader needs to be modified so that the texture coordinates are inter
 	
 Just like when the color attribute was added, the attribute pointers need to be adapted to the new format:
 
-	glVertexAttribPointer( posAttrib, 2, GL_FLOAT, GL_FALSE,
-						   7*sizeof(float), 0 );
-	glVertexAttribPointer( colAttrib, 3, GL_FLOAT, GL_FALSE,
-						   7*sizeof(float), (void*)( 2*sizeof(float) ) );
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
+						   7*sizeof(float), 0);
+	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
+						   7*sizeof(float), (void*)(2*sizeof(float)));
 
-	GLint texAttrib = glGetAttribLocation( shaderProgram, "texcoord" );
-	glEnableVertexAttribArray( texAttrib );
-	glVertexAttribPointer( texAttrib, 2, GL_FLOAT, GL_FALSE,
-						   7*sizeof(float), (void*)( 5*sizeof(float) ) );
+	GLint texAttrib = glGetAttribLocation(shaderProgram, "texcoord");
+	glEnableVertexAttribArray(texAttrib);
+	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE,
+						   7*sizeof(float), (void*)(5*sizeof(float)));
 
 As two floats were added for the coordinates, one vertex is now 7 floats in size and the texture coordinate attribute consists of 2 of those floats.
 
@@ -164,10 +164,10 @@ For this sample, the [image of the kitten](content/code/sample.png) used above w
 
 	int width, height;
 	unsigned char* image =
-		SOIL_load_image( "sample.png", &width, &height, 0, SOIL_LOAD_RGB );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-				  GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
+		SOIL_load_image("sample.png", &width, &height, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+				  GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
 
 To sample a pixel from a 2D texture using the sampler, the function `texture` can be called with the relevant sampler and texture coordinate as parameters. We'll also multiply the sampled color with the color attribute to get an interesting effect. Your fragment shader will now look like this:
 
@@ -182,7 +182,7 @@ To sample a pixel from a 2D texture using the sampler, the function `texture` ca
 
 	void main()
 	{
-	    outColor = texture( tex, Texcoord ) * vec4( Color, 1.0 );
+	    outColor = texture(tex, Texcoord) * vec4(Color, 1.0);
 	}
 
 When running this application, you should get the following result:
@@ -198,7 +198,7 @@ The sampler in your fragment shader is bound to texture unit `0`. Texture units 
 
 The function `glActiveTexture` specifies which texture unit a texture object is bound to when `glBindTexture` is called.
 
-	glActiveTexture( GL_TEXTURE0 );
+	glActiveTexture(GL_TEXTURE0);
 
 The amount of texture units supported differs per graphics card, but it will be at least 48. It is safe to say that you will never hit this limit in even the most extreme graphics applications.
 
@@ -211,9 +211,9 @@ To practice with sampling from multiple textures, let's try blending the images 
 
 	void main()
 	{
-		vec4 colKitten = texture( texKitten, Texcoord );
-		vec4 colPuppy = texture( texPuppy, Texcoord );
-	    outColor = mix( colKitten, colPuppy, 0.5 );
+		vec4 colKitten = texture(texKitten, Texcoord);
+		vec4 colPuppy = texture(texPuppy, Texcoord);
+	    outColor = mix(colKitten, colPuppy, 0.5);
 	}
 
 The `mix` function here is a special GLSL function that linearly interpolates between two variables based on the third parameter. A value of `0.0` will result in the first value, a value of `1.0` will result in the second value and a value inbetween will result in a mixture of both values. You'll have the chance to experiment with this in the exercises.
@@ -221,26 +221,26 @@ The `mix` function here is a special GLSL function that linearly interpolates be
 Now that the two samplers are ready, you'll have to assign the first two texture units to them and bind the two textures to those units. This is done by adding the proper `glActiveTexture` calls to the texture loading code.
 
 	GLuint textures[2];
-	glGenTextures( 2, textures );
+	glGenTextures(2, textures);
 	
 	int width, height;
 	unsigned char* image;
 
-	glActiveTexture( GL_TEXTURE0 );
-	glBindTexture( GL_TEXTURE_2D, textures[0] );
-	image = SOIL_load_image( "sample.png", &width, &height, 0, SOIL_LOAD_RGB );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-				  GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-	glUniform1i( glGetUniformLocation( shaderProgram, "texKitten" ), 0 );
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	image = SOIL_load_image("sample.png", &width, &height, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+				  GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glUniform1i(glGetUniformLocation(shaderProgram, "texKitten"), 0);
 
-	glActiveTexture( GL_TEXTURE1 );
-	glBindTexture( GL_TEXTURE_2D, textures[1] );
-	image = SOIL_load_image( "sample2.png", &width, &height, 0, SOIL_LOAD_RGB );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-				  GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-	glUniform1i( glGetUniformLocation( shaderProgram, "texPuppy" ), 1 );
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, textures[1]);
+	image = SOIL_load_image("sample2.png", &width, &height, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+				  GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glUniform1i(glGetUniformLocation(shaderProgram, "texPuppy"), 1);
 
 The texture units of the samplers are set using the `glUniform` function you've seen in the previous chapter. It simply accepts an integer specifying the texture unit. This code should result in the following image.
 

@@ -11,7 +11,7 @@ Creating a new framebuffer
 The first thing you need is a framebuffer object to manage your new framebuffer.
 
 	GLuint frameBuffer;
-	glGenFramebuffers( 1, &frameBuffer );
+	glGenFramebuffers(1, &frameBuffer);
 
 You can not use this framebuffer yet at this point, because it is not *complete*. A framebuffer is generally complete if:
 
@@ -24,11 +24,11 @@ You can check if a framebuffer is complete at any time by calling `glCheckFrameb
 
 Now, let's bind the framebuffer to work with it.
 
-	glBindFramebuffer( GL_FRAMEBUFFER, frameBuffer );
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 
 The first parameter specifies the target the framebuffer should be attached to. OpenGL makes a distinction here between `GL_DRAW_FRAMEBUFFER` and `GL_READ_FRAMEBUFFER`. The framebuffer bound to read is used in calls to `glReadPixels`, but since this distinction in normal applications is fairly rare, you can have your actions apply to both by using `GL_FRAMEBUFFER`.
 
-	glDeleteFramebuffers( 1, &frameBuffer );
+	glDeleteFramebuffers(1, &frameBuffer);
 
 Don't forget to clean up after you're done.
 
@@ -43,15 +43,15 @@ Texture images
 We'd like to be able to render a scene and then use the result in the color buffer in another rendering operation, so a texture is ideal in this case. Creating a texture for use as an image for the color buffer of the new framebuffer is as simple as creating any texture.
 
 	GLuint texColorBuffer;
-	glGenTextures( 1, &texColorBuffer );
-	glBindTexture( GL_TEXTURE_2D, texColorBuffer );
+	glGenTextures(1, &texColorBuffer);
+	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 
 	glTexImage2D(
 		GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
 	);
 
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 The difference between this texture and the textures you've seen before is the `NULL` value for the data parameter. That makes sense, because the data is going to be created dynamically this time with rendering operations. Since this is the image for the color buffer, the `format` and `internalformat` parameters are a bit more restricted. The `format` parameter will typically be limited to either `GL_RGB` or `GL_RGBA` and the `internalformat` to the color formats.
 
@@ -71,9 +71,9 @@ Renderbuffer Object images
 As we're using a depth and stencil buffer to render the spinning cube of cuteness, we'll have to create them as well. OpenGL allows you to combine those into one image, so we'll have to create just one more before we can use the framebuffer. Although we could do this by creating another texture, it is more efficient to store these buffers in a Renderbuffer Object, because we're only interested in reading the color buffer in a shader.
 
 	GLuint rboDepthStencil;
-	glGenRenderbuffers( 1, &rboDepthStencil );
-	glBindRenderbuffer( GL_RENDERBUFFER, rboDepthStencil );
-	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600 );
+	glGenRenderbuffers(1, &rboDepthStencil);
+	glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
 
 Creating a renderbuffer object is very similar to creating a texture, the difference being is that this object is designed to be used as image instead of a general purpose data buffer like a texture. I've chosen the `GL_DEPTH24_STENCIL8` internal format here, which is suited for holding both the depth and stencil buffer with 24 and 8 bits of precision respectively.
 
@@ -88,11 +88,11 @@ Using a framebuffer
 
 Selecting a framebuffer as render target is very easy, in fact it can be done with a single call.
 
-	glBindFramebuffer( GL_FRAMEBUFFER, frameBuffer );
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 
 After this call, all rendering operations will store their result in the attachments of the newly created framebuffer. To switch back to the default framebuffer visible on your screen, simply pass `0`.
 
-	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 Note that although only the default framebuffer will be visible on your screen, you can read any framebuffer that is currently bound with a call to `glReadPixels` as long as it's not only bound to `GL_DRAW_FRAMEBUFFER`.
 
@@ -122,7 +122,7 @@ I've chosen to have only 2 position coordinates and 2 texture coordinates for my
 	out vec2 Texcoord;
 	void main() {
 		Texcoord = texcoord;
-		gl_Position = vec4( position, 0.0, 1.0 );
+		gl_Position = vec4(position, 0.0, 1.0);
 	}
 
 <span></span>
@@ -132,34 +132,34 @@ I've chosen to have only 2 position coordinates and 2 texture coordinates for my
 	out vec4 outColor;
 	uniform sampler2D texFramebuffer;
 	void main() {
-		outColor = texture( texFramebuffer, Texcoord );
+		outColor = texture(texFramebuffer, Texcoord);
 	}
 
 With this shader, the output of your program should be the same as before you even knew about framebuffers. Rendering a frame roughly looks like this:
 
 	// Bind our framebuffer and draw 3D scene (spinning cube)
-	glBindFramebuffer( GL_FRAMEBUFFER, frameBuffer );
-	glBindVertexArray( vaoCube );
-	glEnable( GL_DEPTH_TEST );
-	glUseProgram( sceneShaderProgram );
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+	glBindVertexArray(vaoCube);
+	glEnable(GL_DEPTH_TEST);
+	glUseProgram(sceneShaderProgram);
 
-	glActiveTexture( GL_TEXTURE0 );
-	glBindTexture( GL_TEXTURE_2D, texKitten );
-	glActiveTexture( GL_TEXTURE1 );
-	glBindTexture( GL_TEXTURE_2D, texPuppy );
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texKitten);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texPuppy);
 
 	// Draw cube scene here
 
 	// Bind default framebuffer and draw contents of our framebuffer
-	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-	glBindVertexArray( vaoQuad );
-	glDisable( GL_DEPTH_TEST );
-	glUseProgram( screenShaderProgram );
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindVertexArray(vaoQuad);
+	glDisable(GL_DEPTH_TEST);
+	glUseProgram(screenShaderProgram);
 
-	glActiveTexture( GL_TEXTURE0 );
-	glBindTexture( GL_TEXTURE_2D, texColorBuffer );
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 
-	glDrawArrays( GL_TRIANGLES, 0, 6 );
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 The 3D and 2D drawing operations both have their own vertex array (cube versus quad), shader program (3D vs 2D post-processing) and textures. You can see that binding the color buffer texture is just as easy as binding regular textures. Do mind that calls like `glBindTexture` which change the OpenGL state are relatively expensive, so try keeping them to a minimum.
 
@@ -179,7 +179,7 @@ Inverting the colors is an option usually found in image manipulation programs, 
 
 As color values are floating point values ranging from `0.0` to `1.0`, inverting a channel is as simple as calculating `1.0 - channel`. If you do this for each channel (red, green, blue) you'll get an inverted color. In the fragment shader, that can be done like this.
 
-	outColor = vec4( 1.0, 1.0, 1.0, 1.0 ) - texture( texFramebuffer, Texcoord );
+	outColor = vec4(1.0, 1.0, 1.0, 1.0) - texture(texFramebuffer, Texcoord);
 
 This will also affect the alpha channel, but that doesn't matter because alpha blending is disabled by default.
 
@@ -190,15 +190,15 @@ This will also affect the alpha channel, but that doesn't matter because alpha b
 
 Making colors grayscale can be naively done by calculating the average intensity of each channel.
 
-	outColor = texture( texFramebuffer, Texcoord );
-	float avg = ( outColor.r + outColor.g + outColor.b ) / 3.0;
-	outColor = vec4( avg, avg, avg, 1.0 );
+	outColor = texture(texFramebuffer, Texcoord);
+	float avg = (outColor.r + outColor.g + outColor.b) / 3.0;
+	outColor = vec4(avg, avg, avg, 1.0);
 
 This works fine, but humans are the most sensitive to blue and the least to green, so a better conversion would work with weighed channels.
 
-	outColor = texture( texFramebuffer, Texcoord );
+	outColor = texture(texFramebuffer, Texcoord);
 	float avg = 0.2126 * outColor.r + 0.7152 * outColor.g + 0.0722 * outColor.b;
-	outColor = vec4( avg, avg, avg, 1.0 );
+	outColor = vec4(avg, avg, avg, 1.0);
 
 Blur
 --------
@@ -212,12 +212,12 @@ Blurring is done by sampling pixels around a pixel and calculating the average c
 	const float blurSizeH = 1.0 / 300.0;
 	const float blurSizeV = 1.0 / 200.0;
 	void main() {
-		vec4 sum = vec4( 0.0 );
+		vec4 sum = vec4(0.0);
 		for (int x = -4; x <= 4; x++)
 			for (int y = -4; y <= 4; y++)
 				sum += texture(
 					texFramebuffer,
-					vec2( Texcoord.x + x * blurSizeH, Texcoord.y + y * blurSizeV )
+					vec2(Texcoord.x + x * blurSizeH, Texcoord.y + y * blurSizeV)
 				) / 81.0;
 		outColor = sum;
 	}
@@ -233,13 +233,13 @@ The Sobel operator is often used in edge detection algorithms, let's find out wh
 
 The fragment shader looks like this:
 
-	vec4 s1 = texture( texFramebuffer, Texcoord - 1.0 / 300.0 - 1.0 / 200.0 );
-	vec4 s2 = texture( texFramebuffer, Texcoord + 1.0 / 300.0 - 1.0 / 200.0 );
-	vec4 s3 = texture( texFramebuffer, Texcoord - 1.0 / 300.0 + 1.0 / 200.0 );
-	vec4 s4 = texture( texFramebuffer, Texcoord + 1.0 / 300.0 + 1.0 / 200.0 );
-	vec4 sx = 4.0 * ( ( s4 + s3 ) - ( s2 + s1 ) );
-	vec4 sy = 4.0 * ( ( s2 + s4 ) - ( s1 + s3 ) );
-	vec4 sobel = sqrt( sx * sx + sy * sy );
+	vec4 s1 = texture(texFramebuffer, Texcoord - 1.0 / 300.0 - 1.0 / 200.0);
+	vec4 s2 = texture(texFramebuffer, Texcoord + 1.0 / 300.0 - 1.0 / 200.0);
+	vec4 s3 = texture(texFramebuffer, Texcoord - 1.0 / 300.0 + 1.0 / 200.0);
+	vec4 s4 = texture(texFramebuffer, Texcoord + 1.0 / 300.0 + 1.0 / 200.0);
+	vec4 sx = 4.0 * ((s4 + s3) - (s2 + s1));
+	vec4 sy = 4.0 * ((s2 + s4) - (s1 + s3));
+	vec4 sobel = sqrt(sx * sx + sy * sy);
 	outColor = sobel;
 
 Just like the blur shader, a few samples are taken and combined in an interesting way. You can read more about the [technical details](http://en.wikipedia.org/wiki/Sobel_operator) elsewhere.

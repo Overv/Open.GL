@@ -202,21 +202,21 @@ A simple transformation
 Before diving straight into 3D, let's first try a simple 2D rotation.
 
 	glm::mat4 trans;
-	trans = glm::rotate( trans, 180.0f, glm::vec3( 0.0f, 0.0f, 1.0f ) );
+	trans = glm::rotate(trans, 180.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 
 The first line creates a new 4-by-4 matrix, which is the identity matrix by default. The `glm::rotate` function multiplies this matrix by a rotation transformation of 180 degrees around the Z axis. Remember that since the screen lies in the XY plane, the Z axis is the axis you want to rotate points around.
 
 To see if it works, let's try to rotate a vector with this transformation:
 
-	glm::vec4 result = trans * glm::vec4( 1.0f, 0.0f, 0.0f, 1.0f );
-	printf( "%f, %f, %f\n", result.x, result.y, result.z );
+	glm::vec4 result = trans * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	printf("%f, %f, %f\n", result.x, result.y, result.z);
 
 As expected, the output is `(-1,0,0)`. A counter-clockwise rotation of 180 degrees of a vector pointing to the right results in a vector pointing to the left. Note that the rotation would be clockwise if an axis `(0,0,-1)` was used.
 
 The next step is to perform this transformation in the vertex shader to rotate every drawn vertex. GLSL has a special `mat4` type to hold matrices and we can use that to upload the transformation to the GPU as uniform.
 
-	GLint uniTrans = glGetUniformLocation( shaderProgram, "trans" );
-	glUniformMatrix4fv( uniTrans, 1, GL_FALSE, glm::value_ptr( trans ) );
+	GLint uniTrans = glGetUniformLocation(shaderProgram, "trans");
+	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
 
 The second parameter of the `glUniformMatrix4fv` function specifies how many matrices are to be uploaded, because you can have arrays of matrices in GLSL. The third parameter specifies whether the specified matrix should be transposed before usage. This is related to the way matrices are stored as `float` arrays in memory, you don't have to worry about it. The last parameter specifies the matrix to upload, where the `glm::value_ptr` function converts the matrix class into an array of 16 (4x4) floats.
 
@@ -236,7 +236,7 @@ All that remains is updating the vertex shader to include this uniform and use i
 	void main() {
 		Color = color;
 		Texcoord = texcoord;
-		gl_Position = trans * vec4( position, 0.0, 1.0 );
+		gl_Position = trans * vec4(position, 0.0, 1.0);
 	}
 
 The primitives in your scene will now be upside down.
@@ -252,18 +252,18 @@ To spice things up a bit, you could change the rotation with time:
 	trans = glm::rotate(
 		trans,
 		(float)clock() / (float)CLOCKS_PER_SEC * 180.0f,
-		glm::vec3( 0.0f, 0.0f, 1.0f )
+		glm::vec3(0.0f, 0.0f, 1.0f)
 	);
-	glUniformMatrix4fv( uniTrans, 1, GL_FALSE, glm::value_ptr( trans ) );
+	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
 	
 	// Draw a rectangle from the 2 triangles using 6 indices
-	glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	...
 
 This will result into something like this:
 
-<div class="livedemo" id="demo_c4_rotation" style="background: url( 'media/img/c4_window2.png' )">
+<div class="livedemo" id="demo_c4_rotation" style="background: url('media/img/c4_window2.png')">
 	<canvas width="640" height="480"></canvas>
 	<script type="text/javascript" src="content/demos/c4_rotation.js"></script>
 </div>
@@ -276,18 +276,18 @@ Going 3D
 The rotation above can be considered the model transformation, because it transforms the vertices in object space to world space using the rotation of the object.
 
 	glm::mat4 view = glm::lookAt(
-		glm::vec3( 1.2f, 1.2f, 1.2f ),
-		glm::vec3( 0.0f, 0.0f, 0.0f ),
-		glm::vec3( 0.0f, 0.0f, 1.0f )
+		glm::vec3(1.2f, 1.2f, 1.2f),
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f)
 	);
-	GLint uniView = glGetUniformLocation( shaderProgram, "view" );
-	glUniformMatrix4fv( uniView, 1, GL_FALSE, glm::value_ptr( view ) );
+	GLint uniView = glGetUniformLocation(shaderProgram, "view");
+	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
 To create the view transformation, GLM offers the useful `glm::lookAt` function that simulates a moving camera. The first parameter specifies the position of the camera, the second the point centered on-screen and the third the `up` axis. Up here is defined as the Z axis, which implies that the XY plane is the "ground".
 
-	glm::mat4 proj = glm::perspective( 45.0f, 800.0f / 600.0f, 1.0f, 10.0f );
-	GLint uniProj = glGetUniformLocation( shaderProgram, "proj" );
-	glUniformMatrix4fv( uniProj, 1, GL_FALSE, glm::value_ptr( proj ) );
+	glm::mat4 proj = glm::perspective(45.0f, 800.0f / 600.0f, 1.0f, 10.0f);
+	GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
+	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
 Similarly, GLM comes with the `glm::perspective` function to create a perspective projection matrix. The first parameter is the vertical field-of-view, the second parameter the aspect ratio of the screen and the last two parameters are the *near* and *far* planes.
 
@@ -318,12 +318,12 @@ Now piecing it all together, the vertex shader looks something like this:
 	void main() {
 	    Color = color;
 	    Texcoord = texcoord;
-	    gl_Position = proj * view * model * vec4( position, 0.0, 1.0 );
+	    gl_Position = proj * view * model * vec4(position, 0.0, 1.0);
 	}
 
 Notice that I've renamed the matrix previously known as `trans` to `model` and it is still updated every frame.
 
-<div class="livedemo" id="demo_c4_3d" style="background: url( 'media/img/c4_window3.png' )">
+<div class="livedemo" id="demo_c4_3d" style="background: url('media/img/c4_window3.png')">
 	<canvas width="640" height="480"></canvas>
 	<script type="text/javascript" src="content/demos/c4_3d.js"></script>
 </div>
