@@ -3,11 +3,6 @@ Extra buffers
 
 Up until now there is only one type of output buffer you've made use of, the color buffer. This chapter will discuss two additional types, the *depth buffer* and the *stencil buffer*. For each of these a problem will be presented and subsequently solved with that specific buffer.
 
-The depth and stencil buffers are optional, so you need to make sure that they're created before you try using them. SFML and SDL users can continue to the next section, but GLFW users will have to make a slight modification to their program.
-
-	glfwOpenWindow( 800, 600, 0, 0, 0, 0, 24, 8, GLFW_WINDOW );
-
-The `glfwOpenWindow` call above creates a 24 bit depth buffer and an 8 bit stencil buffer. These numbers determine the accuracy of the buffers.
 
 Preparations
 ========
