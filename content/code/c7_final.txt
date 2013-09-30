@@ -2,10 +2,10 @@
 #include <GL/glew.h>
 
 // Shader macro
-#define GLSL(src) "#version 150\n" #src
+#define GLSL(src) "#version 150 core\n" #src
 
 // Vertex shader
-const char* vertexShaderSrc = GLSL(
+const GLchar* vertexShaderSrc = GLSL(
     in vec2 pos;
     in vec3 color;
     in float sides;
@@ -21,7 +21,7 @@ const char* vertexShaderSrc = GLSL(
 );
 
 // Geometry shader
-const char* geometryShaderSrc = GLSL(
+const GLchar* geometryShaderSrc = GLSL(
     layout(points) in;
     layout(line_strip, max_vertices = 64) out;
 
@@ -34,7 +34,7 @@ const char* geometryShaderSrc = GLSL(
     void main() {
         fColor = vColor[0];
 
-        // Safe, floats can represent small integers exactly
+        // Safe, GLfloats can represent small integers exactly
         for (int i = 0; i <= vSides[0]; i++) {
             // Angle between each side in radians
             float ang = PI * 2.0 / vSides[0] * i;
@@ -51,7 +51,7 @@ const char* geometryShaderSrc = GLSL(
 );
 
 // Fragment shader
-const char* fragmentShaderSrc = GLSL(
+const GLchar* fragmentShaderSrc = GLSL(
     in vec3 fColor;
 
     out vec4 outColor;
@@ -92,7 +92,7 @@ int main() {
     GLuint vbo;
     glGenBuffers(1, &vbo);
 
-    float points[] = {
+    GLfloat points[] = {
     //  Coordinates  Color             Sides
         -0.45f,  0.45f, 1.0f, 0.0f, 0.0f,  4.0f,
          0.45f,  0.45f, 0.0f, 1.0f, 0.0f,  8.0f,
@@ -111,15 +111,15 @@ int main() {
     // Specify layout of point data
     GLint posAttrib = glGetAttribLocation(shaderProgram, "pos");
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
 
     GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
     glEnableVertexAttribArray(colAttrib);
-    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (2 * sizeof(float)));
+    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
 
     GLint sidesAttrib = glGetAttribLocation(shaderProgram, "sides");
     glEnableVertexAttribArray(sidesAttrib);
-    glVertexAttribPointer(sidesAttrib, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (5 * sizeof(float)));
+    glVertexAttribPointer(sidesAttrib, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) (5 * sizeof(GLfloat)));
 
     // Render loop
     while (window.isOpen()) {

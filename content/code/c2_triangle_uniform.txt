@@ -7,14 +7,14 @@
 #include <iostream>
 
 // Shader sources
-const char* vertexSource =
-	"#version 150\n"
+const GLchar* vertexSource =
+	"#version 150 core\n"
 	"in vec2 position;"
 	"void main() {"
 	"	gl_Position = vec4( position, 0.0, 1.0 );"
 	"}";
-const char* fragmentSource =
-	"#version 150\n"
+const GLchar* fragmentSource =
+	"#version 150 core\n"
 	"out vec4 outColor;"
 	"uniform vec3 triangleColor;"
 	"void main() {"
@@ -38,7 +38,7 @@ int main()
 	GLuint vbo;
 	glGenBuffers( 1, &vbo );
 
-	float vertices[] = {
+	GLfloat vertices[] = {
 		0.0f, 0.5f,
 		0.5f, -0.5f,
 		-0.5f, -0.5f
@@ -87,7 +87,7 @@ int main()
 		}
 
 		// Set the color of the triangle
-		float time = (float)clock() / (float)CLOCKS_PER_SEC;
+		GLfloat time = (GLfloat)clock() / (GLfloat)CLOCKS_PER_SEC;
 		glUniform3f( uniColor, ( sin( time * 4.0f ) + 1.0f ) / 2.0f, 0.0f, 0.0f );
 
 		// Clear the screen to black

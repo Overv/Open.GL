@@ -8,8 +8,8 @@
 #include <SOIL.h>
 
 // Shader sources
-const char* vertexSource =
-	"#version 150\n"
+const GLchar* vertexSource =
+	"#version 150 core\n"
 	"in vec2 position;"
 	"in vec3 color;"
 	"in vec2 texcoord;"
@@ -20,8 +20,8 @@ const char* vertexSource =
 	"	Texcoord = texcoord;"
 	"	gl_Position = vec4( position, 0.0, 1.0 );"
 	"}";
-const char* fragmentSource =
-	"#version 150\n"
+const GLchar* fragmentSource =
+	"#version 150 core\n"
 	"in vec3 Color;"
 	"in vec2 Texcoord;"
 	"out vec4 outColor;"
@@ -50,7 +50,7 @@ int main()
 	GLuint vbo;
 	glGenBuffers( 1, &vbo );
 
-	float vertices[] = {
+	GLfloat vertices[] = {
 	//  Position   Color             Texcoords
 		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Top-left
 		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Top-right
@@ -94,15 +94,15 @@ int main()
 	// Specify the layout of the vertex data
 	GLint posAttrib = glGetAttribLocation( shaderProgram, "position" );
 	glEnableVertexAttribArray( posAttrib );
-	glVertexAttribPointer( posAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), 0 );
+	glVertexAttribPointer( posAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof( GLfloat ), 0 );
 
 	GLint colAttrib = glGetAttribLocation( shaderProgram, "color" );
 	glEnableVertexAttribArray( colAttrib );
-	glVertexAttribPointer( colAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), (void*)( 2 * sizeof( float ) ) );
+	glVertexAttribPointer( colAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof( GLfloat ), (void*)( 2 * sizeof( GLfloat ) ) );
 
 	GLint texAttrib = glGetAttribLocation( shaderProgram, "texcoord" );
 	glEnableVertexAttribArray( texAttrib );
-	glVertexAttribPointer( texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), (void*)( 5 * sizeof( float ) ) );
+	glVertexAttribPointer( texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof( GLfloat ), (void*)( 5 * sizeof( GLfloat ) ) );
 
 	// Load textures
 	GLuint textures[2];
@@ -155,7 +155,7 @@ int main()
 		glClear( GL_COLOR_BUFFER_BIT );
 
 		// Set the time uniform
-		glUniform1f( uniTime, (float)clock() / (float)CLOCKS_PER_SEC );
+		glUniform1f( uniTime, (GLfloat)clock() / (GLfloat)CLOCKS_PER_SEC );
 
 		// Draw a rectangle from the 2 triangles using 6 indices
 		glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );

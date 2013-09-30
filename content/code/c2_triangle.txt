@@ -7,14 +7,14 @@
 #include <iostream>
 
 // Shader sources
-const char* vertexSource =
-	"#version 150\n"
+const GLchar* vertexSource =
+	"#version 150 core\n"
 	"in vec2 position;"
 	"void main() {"
 	"	gl_Position = vec4( position, 0.0, 1.0 );"
 	"}";
-const char* fragmentSource =
-	"#version 150\n"
+const GLchar* fragmentSource =
+	"#version 150 core\n"
 	"out vec4 outColor;"
 	"void main() {"
 	"	outColor = vec4( 1.0, 1.0, 1.0, 1.0 );"
@@ -37,7 +37,7 @@ int main()
 	GLuint vbo;
 	glGenBuffers( 1, &vbo );
 
-	float vertices[] = {
+	GLfloat vertices[] = {
 		0.0f, 0.5f,
 		0.5f, -0.5f,
 		-0.5f, -0.5f
