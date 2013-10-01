@@ -59,7 +59,7 @@
 		</script>
 		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 		
-		<link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/zenburn.min.css" />
+		<link rel="stylesheet" href="includes/zenburn.min.css" />
 		<script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
 		<script type="text/javascript" src="includes/glmatrix.js"></script>
 		<script type="text/javascript">

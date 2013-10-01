@@ -35,8 +35,8 @@ screen.
         void main() {
             gl_Position = vec4(pos, 0.0, 1.0);
         }
-   );
-
+    );
+    
     // Fragment shader
     const char* fragmentShaderSrc = GLSL(
         out vec4 outColor;
@@ -44,7 +44,7 @@ screen.
         void main() {
             outColor = vec4(1.0, 0.0, 0.0, 1.0);
         };
-   );
+    );
 
 We'll start by declaring two very simple vertex and fragment shaders at the top
 of the file. The vertex shader simply forwards the position attribute of each
