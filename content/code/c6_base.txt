@@ -276,7 +276,7 @@ int main()
     GLint uniProj = glGetUniformLocation(sceneShaderProgram, "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
-    GLuint uniColor = glGetUniformLocation(sceneShaderProgram, "overrideColor");
+    GLint uniColor = glGetUniformLocation(sceneShaderProgram, "overrideColor");
 
     while (window.isOpen())
     {
