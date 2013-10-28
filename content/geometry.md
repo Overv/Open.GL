@@ -43,7 +43,7 @@ screen.
 
         void main() {
             outColor = vec4(1.0, 0.0, 0.0, 1.0);
-        };
+        }
     );
 
 We'll start by declaring two very simple vertex and fragment shaders at the top
@@ -372,7 +372,7 @@ shader:
 
     void main() {
         outColor = vec4(fColor, 1.0);
-    };
+    }
 
 So, when you specify an attribute for a vertex, it is first passed to the vertex
 shader as input. The vertex shader can then choose to output it to the geometry
