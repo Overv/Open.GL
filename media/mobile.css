@@ -1,0 +1,21 @@
+/* Use the whole screen; no less, no more */
+#page, #content, .livedemo_wrap, img {
+  max-width: 100%;
+}
+#page, #nav ul {
+  margin: auto;
+}
+#MathJax_Font_Test {
+  display: none;
+}
+
+/* It takes too much space and goes over the text */
+#ribbon {
+  display: none;
+}
+
+/* Scroll if it's larger than the screen */
+code, .MathJax_Display, .livedemo_wrap {
+  overflow-x: auto;
+  overflow-y: visible;
+}

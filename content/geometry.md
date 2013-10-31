@@ -52,9 +52,9 @@ point and the fragment shader always outputs red. Nothing special there.
 
 >I've made use here of a very convenient `GLSL` macro. It has the following
 >definition:
-><br /><br />
->`#define GLSL(src) "#version 150 core\n" #src`
-><br /><br />
+>
+>     #define GLSL(src) "#version 150 core\n" #src
+>
 >It is a lot more convenient to use than the multiline string syntax we've used
 >before. Beware that newlines are ignored, which is the reason the `#version`
 >preprocessor directive is separate.

@@ -35,9 +35,11 @@ Confirm that you've made all the required changes by running your program and ch
 
 We will not make use of element buffers for drawing this cube, so you can use `glDrawArrays` to draw it. If you were confused by this explanation, you can compare your program to [this reference code](content/code/c5_cube.txt).
 
-<div class="livedemo" id="demo_c5_cube" style="background: url('media/img/c5_window.png')">
-	<canvas width="640" height="480"></canvas>
-	<script type="text/javascript" src="content/demos/c5_cube.js"></script>
+<div class="livedemo_wrap">
+	<div class="livedemo" id="demo_c5_cube" style="background: url('media/img/c5_window.png')">
+		<canvas width="640" height="480"></canvas>
+		<script type="text/javascript" src="content/demos/c5_cube.js"></script>
+	</div>
 </div>
 
 It immediately becomes clear that the cube is not rendered as expected when seeing the output. The sides of the cube are being drawn, but they overlap each other in strange ways! The problem here is that when OpenGL draws your cube triangle-by-triangle, it will simply write over pixels even though something else may have been drawn there before. In this case OpenGL will happily draw triangles in the back over triangles at the front.
@@ -63,9 +65,11 @@ The depth buffer can be cleared along with the color buffer by extending the `gl
 
 The default clear value for the depth is `1.0f`, which is equal to the depth of your far clipping plane and thus the furthest depth that can be represented. All fragments will be closer than that, so they will no longer be discarded. 
 
-<div class="livedemo" id="demo_c5_depth" style="background: url('media/img/c5_window2.png')">
-	<canvas width="640" height="480"></canvas>
-	<script type="text/javascript" src="content/demos/c5_depth.js"></script>
+<div class="livedemo_wrap">
+	<div class="livedemo" id="demo_c5_depth" style="background: url('media/img/c5_window2.png')">
+		<canvas width="640" height="480"></canvas>
+		<script type="text/javascript" src="content/demos/c5_depth.js"></script>
+	</div>
 </div>
 
 With the depth test capability enabled, the cube is now rendered correctly. Just like the color buffer, the depth buffer has a certain amount of bits of precision which can be specified by you. Less bits of precision reduce the extra memory use, but can introduce rendering errors in more complex scenes.
@@ -180,9 +184,11 @@ To create the reflection of the cube itself, it is sufficient to draw it again b
 
 I've set the color of the floor vertices to black so that the floor does not display the texture image, so you'll want to change the clear color to white to be able to see it. I've also changed the camera parameters a bit to get a good view of the scene.
 
-<div class="livedemo" id="demo_c5_floor" style="background: url('media/img/c5_window3.png')">
-	<canvas width="640" height="480"></canvas>
-	<script type="text/javascript" src="content/demos/c5_floor.js"></script>
+<div class="livedemo_wrap">
+	<div class="livedemo" id="demo_c5_floor" style="background: url('media/img/c5_window3.png')">
+		<canvas width="640" height="480"></canvas>
+		<script type="text/javascript" src="content/demos/c5_floor.js"></script>
+	</div>
 </div>
 
 Two issues are noticeable in the rendered image:
@@ -250,9 +256,11 @@ And in the drawing code for the reflected cube
 
 where `uniColor` is the return value of a `glGetUniformLocation` call.
 
-<div class="livedemo" id="demo_c5_reflection" style="background: url('media/img/c5_window4.png')">
-	<canvas width="640" height="480"></canvas>
-	<script type="text/javascript" src="content/demos/c5_reflection.js"></script>
+<div class="livedemo_wrap">
+	<div class="livedemo" id="demo_c5_reflection" style="background: url('media/img/c5_window4.png')">
+		<canvas width="640" height="480"></canvas>
+		<script type="text/javascript" src="content/demos/c5_reflection.js"></script>
+	</div>
 </div>
 
 Awesome! I hope that, especially in chapters like these, you get the idea that working with an API as low-level as OpenGL can be a lot of fun and pose interesting challenges! As usual, the final code is available [here](content/code/c5_reflection.txt).

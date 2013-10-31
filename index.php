@@ -49,6 +49,9 @@
 		
 		<link rel="shortcut icon" type="image/png" href="media/tag.png" />
 		<link rel="stylesheet" type="text/css" href="media/stylesheet.css" />
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="media/mobile.css" media="screen and (max-width: 1024px)" />
 
 		<script type="text/x-mathjax-config">
 			// MathJax

@@ -183,7 +183,7 @@ As color values are floating point values ranging from `0.0` to `1.0`, inverting
 
 This will also affect the alpha channel, but that doesn't matter because alpha blending is disabled by default.
 
-<div style="width: 700px; margin: auto">
+<div style="width: 87.5%; margin: auto">
 	<img src="media/img/c6_grayscale.png" alt="" style="display: inline" />
 	<img src="media/img/c6_grayscale2.png" alt="" style="display: inline" />
 </div>
