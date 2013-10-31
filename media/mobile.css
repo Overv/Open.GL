@@ -30,3 +30,11 @@ code, .MathJax_Display, .livedemo_wrap {
 #nav {
   padding: 1em;
 }
+
+#disqus_container {
+    width: 100%;
+}
+
+#content hr {
+    display: block;
+}

@@ -123,9 +123,9 @@
 					
 					print(Markdown(file_get_contents($contentFile)));
 				?>
+
+				<hr />
 			</div>
-			
-			<hr />
 			
 			<!-- Navigation items -->
 			<div id="nav">
@@ -146,17 +146,20 @@
 				if (!$notfound)
 				{
 			?>
-			<hr />
 			
 			<!-- Disqus comments -->
-			<div id="disqus_thread"></div>
-			<script type="text/javascript">
-				var dsq = document.createElement("script");
-				dsq.type = "text/javascript";
-				dsq.async = true;
-				dsq.src = "http://opengl.disqus.com/embed.js";
-				document.getElementsByTagName("head")[0].appendChild( dsq );
-			</script>
+			<div id="disqus_container">
+				<hr /><br />
+
+				<div id="disqus_thread"></div>
+				<script type="text/javascript">
+					var dsq = document.createElement("script");
+					dsq.type = "text/javascript";
+					dsq.async = true;
+					dsq.src = "http://opengl.disqus.com/embed.js";
+					document.getElementsByTagName("head")[0].appendChild( dsq );
+				</script>
+			</div>
 			<?php
 				}
 			?>

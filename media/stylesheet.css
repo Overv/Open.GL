@@ -74,6 +74,15 @@ body {
 	border-bottom: 1px solid black;
 }
 
+#content hr {
+	display: none;
+}
+
+#disqus_container {
+	width: 800px;
+	float: right;
+}
+
 #disqus_thread a { border: 0; }
 #disqus_thread a:hover { border: 0; }
 
