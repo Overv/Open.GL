@@ -101,10 +101,10 @@ Remember that our vertex position is already specified as device coordinates and
 The `#version` preprocessor directive is used to indicate that the code that follows is GLSL 1.50 code. Next, we specify that there is only one attribute, the position. Apart from the regular C types, GLSL has built-in vector and matrix types indentified by `vec*` and `mat*` identifiers. The type of the values within these constructs is always a `float`. The number after `vec` specifies the amount of components (x, y, z, w) and the number after `mat` specifies the amount of rows /columns. Since the position attribute consists of only an X and Y coordinate, `vec2` is perfect.
 
 > You can be quite creative when working with these vertex types. In the example above a shortcut was used to set the first two components of the `vec4` to those of `vec2`. These two lines are equal:
-> <br /><br />
-> `gl_Position = vec4(position, 0.0, 1.0);`<br />
-> `gl_Position = vec4(position.x, position.y, 0.0, 1.0);`
-> <br /><br />
+>
+>     gl_Position = vec4(position, 0.0, 1.0);
+>     gl_Position = vec4(position.x, position.y, 0.0, 1.0);
+>
 > When you're working with colors, you can also access the first three components with `r`, `g` and `b` instead of `x`, `y` and `z`. This makes no difference and can help with clarity.
 
 The final position of the vertex is assigned to the special `gl_Position` variable, because the position is needed for primitive assembly and many other built-in processes. For these to function correctly, the last value `w` needs to have a value of `1.0f`. Other than that, you're free to do anything you want with the attributes and we'll see how to output those when we add color to the triangle later in this chapter.
@@ -144,17 +144,17 @@ All that's left is compiling the shader into code that can be executed by the gr
 Be aware that if the shader fails to compile, e.g. because of a syntax error, `glGetError` will **not** report an error! See the block below for info on how to debug shaders.
 
 > **Checking if a shader compiled successfully**
-><br /><br />
-> `GLint status;`<br />
-> `glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);`
-> <br /><br />
+>
+>     GLint status;
+>     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
+>
 > If `status` is equal to `GL_TRUE`, then your shader was compiled successfully.
 > <br /><br />
 > **Retrieving the compile log**
-> <br /><br />
-> `char buffer[512];`<br />
-> `glGetShaderInfoLog(vertexShader, 512, NULL, buffer);`
-> <br /><br />
+>
+>     char buffer[512];
+>     glGetShaderInfoLog(vertexShader, 512, NULL, buffer);
+>
 > This will store the first 511 bytes + null terminator of the compile log in the specified buffer. The log may also report useful warnings even when compiling was successful, so it's useful to check it out from time to time when you develop your shaders.
 
 The fragment shader is compiled in exactly the same way:
@@ -283,9 +283,11 @@ If you run your program now, you'll see that the triangle is red. To make things
 
 Although this example may not be very exciting, it does demonstrate that uniforms are essential for controlling the behaviour of shaders at runtime. Vertex attributes on the other hand are ideal for describing a single vertex.
 
-<div class="livedemo" id="demo_c2_uniforms" style="background: url('media/img/c2_window3.png')">
-	<canvas width="640" height="480"></canvas>
-	<script type="text/javascript" src="content/demos/c2_uniforms.js"></script>
+<div class="livedemo_wrap">
+	<div class="livedemo" id="demo_c2_uniforms" style="background: url('media/img/c2_window3.png')">
+		<canvas width="640" height="480"></canvas>
+		<script type="text/javascript" src="content/demos/c2_uniforms.js"></script>
+	</div>
 </div>
 
 See [the code](content/code/c2_triangle_uniform.txt) if you have any trouble getting this to work.

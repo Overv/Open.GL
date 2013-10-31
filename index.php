@@ -49,6 +49,9 @@
 		
 		<link rel="shortcut icon" type="image/png" href="media/tag.png" />
 		<link rel="stylesheet" type="text/css" href="media/stylesheet.css" />
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="media/mobile.css" media="screen and (max-width: 1024px)" />
 
 		<script type="text/x-mathjax-config">
 			// MathJax
@@ -112,7 +115,18 @@
 		<div id="page">
 			<!-- Work in progress ribbon -->
 			<a href="https://github.com/Overv/Open.GL"><img id="ribbon" src="media/ribbon_fork.png" alt="Fork me!" /></a>
-
+			
+			<!-- Content container -->
+			<div id="content">
+				<?php
+					include_once("includes/markdown.php");
+					
+					print(Markdown(file_get_contents($contentFile)));
+				?>
+			</div>
+			
+			<hr />
+			
 			<!-- Navigation items -->
 			<div id="nav">
 				<ul>
@@ -128,31 +142,24 @@
 				</ul>
 			</div>
 			
-			<!-- Content container -->
-			<div id="content">
-				<?php
-					include_once("includes/markdown.php");
-					
-					print(Markdown(file_get_contents($contentFile)));	
-					
-					if (!$notfound)
-					{
-				?>
-				<hr />
-				
-				<!-- Disqus comments -->
-				<div id="disqus_thread"></div>
-				<script type="text/javascript">
-					var dsq = document.createElement("script");
-					dsq.type = "text/javascript";
-					dsq.async = true;
-					dsq.src = "http://opengl.disqus.com/embed.js";
-					document.getElementsByTagName("head")[0].appendChild( dsq );
-				</script>
-				<?php
-					}
-				?>
-			</div>
+			<?php
+				if (!$notfound)
+				{
+			?>
+			<hr />
+			
+			<!-- Disqus comments -->
+			<div id="disqus_thread"></div>
+			<script type="text/javascript">
+				var dsq = document.createElement("script");
+				dsq.type = "text/javascript";
+				dsq.async = true;
+				dsq.src = "http://opengl.disqus.com/embed.js";
+				document.getElementsByTagName("head")[0].appendChild( dsq );
+			</script>
+			<?php
+				}
+			?>
 		</div>
 	</body>
 </html>
