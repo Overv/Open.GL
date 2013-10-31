@@ -19,3 +19,14 @@ code, .MathJax_Display, .livedemo_wrap {
   overflow-x: auto;
   overflow-y: visible;
 }
+
+/* Push #nav under #content */
+#nav, #content {
+  float: none;
+  clear: both;
+}
+
+/* Leave a little padding around #nav */
+#nav {
+  padding: 1em;
+}
