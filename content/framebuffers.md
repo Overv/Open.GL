@@ -194,7 +194,7 @@ Making colors grayscale can be naively done by calculating the average intensity
 	float avg = (outColor.r + outColor.g + outColor.b) / 3.0;
 	outColor = vec4(avg, avg, avg, 1.0);
 
-This works fine, but humans are the most sensitive to blue and the least to green, so a better conversion would work with weighed channels.
+This works fine, but humans are the most sensitive to green and the least to blue, so a better conversion would work with weighed channels.
 
 	outColor = texture(texFramebuffer, Texcoord);
 	float avg = 0.2126 * outColor.r + 0.7152 * outColor.g + 0.0722 * outColor.b;
