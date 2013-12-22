@@ -117,7 +117,7 @@ When running this, you'll notice that the application instantly closes after cre
 		}
 	}
 
-When something happens to your window, an event is posted to the event queue. There are is a wide variety of events, including window size changes, mouse movement and key presses. It's up to you to decide which events require additional action, but there is at least one that needs to be handled to make your application run well.
+When something happens to your window, an event is posted to the event queue. There is a wide variety of events, including window size changes, mouse movement and key presses. It's up to you to decide which events require additional action, but there is at least one that needs to be handled to make your application run well.
 
 	switch (windowEvent.type)
 	{
