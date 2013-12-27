@@ -115,20 +115,11 @@
 		<div id="page">
 			<!-- Work in progress ribbon -->
 			<a href="https://github.com/Overv/Open.GL"><img id="ribbon" src="media/ribbon_fork.png" alt="Fork me!" /></a>
-			
-			<!-- Content container -->
-			<div id="content">
-				<?php
-					include_once("includes/markdown.php");
-					
-					print(Markdown(file_get_contents($contentFile)));
-				?>
 
-				<hr />
-			</div>
-			
 			<!-- Navigation items -->
+			<input type="checkbox" id="nav_toggle" />
 			<div id="nav">
+				<label for="nav_toggle" data-open="&#x2261;" data-close="&#x2715;"></label>
 				<ul>
 					<?php
 						foreach ($navitems as $navitem)
@@ -142,15 +133,19 @@
 				</ul>
 			</div>
 			
-			<?php
-				if (!$notfound)
-				{
-			?>
-			
-			<!-- Disqus comments -->
-			<div id="disqus_container">
-				<hr /><br />
-
+			<!-- Content container -->
+			<div id="content">
+				<?php
+					include_once("includes/markdown.php");
+					
+					print(Markdown(file_get_contents($contentFile)));	
+					
+					if (!$notfound)
+					{
+				?>
+				
+				<!-- Disqus comments -->
+				<hr />
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
 					var dsq = document.createElement("script");
@@ -159,10 +154,10 @@
 					dsq.src = "http://opengl.disqus.com/embed.js";
 					document.getElementsByTagName("head")[0].appendChild( dsq );
 				</script>
+				<?php
+					}
+				?>
 			</div>
-			<?php
-				}
-			?>
 		</div>
 	</body>
 </html>
