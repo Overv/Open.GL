@@ -64,23 +64,29 @@ body {
 	float: right;
 }
 
-#content img {
+#article {
+	margin-bottom: 20px;
+}
+
+#article img {
 	display: block;
 	margin: auto;
 }
 
-#content a {
+#article a {
 	color: black;
 	text-decoration: none;
 	border-bottom: 1px dotted black;
 }
 
-#content a:hover {
+#article a:hover {
 	border-bottom: 1px solid black;
 }
 
-#disqus_thread a { border: 0; }
-#disqus_thread a:hover { border: 0; }
+#disqus_thread {
+	position: relative;
+	top: 15px;
+}
 
 h1 {
 	font-size: 28px;
@@ -153,4 +159,22 @@ code[class=cpp] {
 
 	left: 20px;
 	top: 36px;
+}
+
+#donate {
+	margin: 12px 12px 16px 12px;
+	height: 20px;
+
+	opacity: 0.7;
+}
+
+#donate_text {
+	float: left;
+
+	font-size: 12px;
+	line-height: 24px;
+}
+
+#donate_buttons {
+	float: right;
 }

@@ -20,10 +20,11 @@
 		$contentFile = "content/" . $content . ".md";
 		$contentTitle = $navitemTitles[$content];
 	}
+	$contentSource = file_get_contents($contentFile);
 
 	// Cache mechanism
-	$last_modified_time = gmdate("r", filemtime($contentFile)) . " GMT";
-	$etag = md5_file($contentFile);
+	$last_modified_time = gmdate("r", max(filemtime('index.php'), filemtime($contentFile))) . " GMT";
+	$etag = md5(file_get_contents('index.php') . $contentSource);
 	
 	if ((isset($_SERVER["HTTP_IF_MODIFIED_SINCE"]) && $_SERVER["HTTP_IF_MODIFIED_SINCE"] == $last_modified_time) ||
 		(isset($_SERVER["HTTP_IF_NONE_MATCH"]) && str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH'])) == $etag))
@@ -36,16 +37,16 @@
 	header("Last-Modified: " . $last_modified_time);
 	header("Cache-Control: public");
 ?>
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
 	<head>
+		<meta charset="UTF-8">
+
 		<title>OpenGL - <?php print($contentTitle); ?></title>
 		
 		<meta name="description" content="An extensive, yet beginner friendly guide to using modern OpenGL for game development on all major platforms." />
 		<meta name="author" content="Alexander Overvoorde" />
 		<meta name="keywords" content="opengl, opengl 3.2, deprecated, non-deprecated, tutorial, guide, cross-platform, game, games, graphics, sfml, sdl, glfw, glut, openglut, beginner, easy" />
-		<meta name="language" content="english" />
 		
 		<link rel="shortcut icon" type="image/png" href="media/tag.png" />
 		<link rel="stylesheet" type="text/css" href="media/stylesheet.css" />
@@ -135,14 +136,45 @@
 			
 			<!-- Content container -->
 			<div id="content">
+				<div id="article">
+					<?php
+						include_once("includes/markdown.php");
+						
+						print(Markdown($contentSource));
+					?>
+				</div>
+					
 				<?php
-					include_once("includes/markdown.php");
-					
-					print(Markdown(file_get_contents($contentFile)));	
-					
 					if (!$notfound)
 					{
 				?>
+
+				<!-- Donation buttons -->
+				<hr id="donate_hr" />
+				<script src="http://coinwidget.com/widget/coin.js"></script>
+				<div id="donate">
+					<div id="donate_text">
+						If this site helped you out, please consider making a small contribution towards hosting and development costs.
+					</div>
+
+					<div id="donate_buttons">
+						<!-- Use CoinWidget button style, default Paypal button is ugly -->
+						<span class="COINWIDGETCOM_CONTAINER">
+							<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=AYJ4ZQ7TLNGMN" class="COINWIDGETCOM_BUTTON_BITCOIN">
+								<img src="media/paypal.png" alt="Paypal"><span>Donate</span>
+							</a>
+						</span>
+
+						<script>
+							CoinWidgetCom.go({
+								wallet_address: "15cY6vEnZc4GSPrpqvS2WAJ8PoAqcL5kmH",
+								counter: "hide",
+								alignment: "bl",
+								lbl_button: "Donate",
+							});
+						</script>
+					</div>
+				</div>
 				
 				<!-- Disqus comments -->
 				<hr />

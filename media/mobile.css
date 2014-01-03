@@ -54,7 +54,7 @@ code, .MathJax_Display, .livedemo_wrap {
   padding: .5em;
   padding-left: 1em;
   margin-top: .5em;
-  border: 1px solid grey;
+  border: 1px solid gray;
   box-shadow: 5px 5px 5px #ccc;
   display: none;
   border-radius: .5em;
@@ -84,4 +84,9 @@ code, .MathJax_Display, .livedemo_wrap {
   border-top:    calc(.5em + 3px + 2px) solid transparent;
   border-bottom: calc(.5em + 3px + 2px) solid transparent;
   border-right: .8em solid black;
+}
+
+/* Donation buttons clutter view on mobile */
+#donate, #donate_hr {
+  display: none;
 }
