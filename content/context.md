@@ -34,12 +34,25 @@ When rendering a frame, the results will be stored in an offscreen buffer known 
 
 By default, libraries will create an OpenGL context that supports the legacy functions. This is unfortunate, because we're not interested in those and they may become unavailable at some point in the future. The good news is that it is possible to inform the drivers that our application is ready for the future and does not depend on the old functions. The bad news is that at this moment only the GLFW library allows us to specify this. This little shortcoming doesn't have any negative consequences right now, so don't let it influence your choice of library too much, but the advantage of a so-called core profile context is that accidentally calling any of the old functions results in an invalid operation error to set you straight.
 
-Supporting resizable windows with OpenGL introduces some complexities as resources need to be reloaded and buffers need to be recreated to fit the new window size. It's more convenient for the learning process to not bother with such details yet, so we'll only deal with fixed size and fullscreen windows for now.
+Supporting resizable windows with OpenGL introduces some complexities as resources need to be reloaded and buffers need to be recreated to fit the new window size. It's more convenient for the learning process to not bother with such details yet, so we'll only deal with fixed size (fullscreen) windows for now.
+
+Setup
+=====
+
+The first thing to do when starting a new OpenGL project is to dynamically link with OpenGL.
+
+- **Windows**: Add `opengl32.lib` to your linker input
+- **Linux**: Include `-lGL` in your compiler options
+- **OS X**: Add `-framework OpenGL` to your compiler options
+
+<blockquote class="important">Make sure that you do <strong>not</strong> include <code>opengl32.dll</code> with your application. This file is already included with Windows and may differ per version, which will cause problems on other computers.</blockquote>
+
+The rest of the steps depend on which library you choose to use for creating the window and context.
 
 Libraries
 ========
 
-There are many libraries around that can create a window and an accompanying OpenGL context for you. There is no best library out there, because everyone out there has different needs and ideals. I've chosen to discuss the process for the three most popular libraries here for completeness, but you can find more detailed guides on their respective websites. All code after this chapter will be independent of your choice of library here.
+There are many libraries around that can create a window and an accompanying OpenGL context for you. There is no best library out there, because everyone has different needs and ideals. I've chosen to discuss the process for the three most popular libraries here for completeness, but you can find more detailed guides on their respective websites. All code after this chapter will be independent of your choice of library here.
 
 [SFML](#SFML)
 --------

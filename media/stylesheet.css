@@ -68,6 +68,11 @@ body {
 	margin-bottom: 20px;
 }
 
+#article .important {
+	background: #FFAAAA;
+	border: 1px solid #BB4444;
+}
+
 #article img {
 	display: block;
 	margin: auto;
@@ -103,8 +108,8 @@ hr {
 }
 
 blockquote {
-	background: rgb( 226, 245, 167 );
-	border: 1px solid rgb( 189, 233, 56 );
+	background: rgb(226, 245, 167);
+	border: 1px solid rgb(189, 233, 56);
 	padding: 10px;
 }
 
