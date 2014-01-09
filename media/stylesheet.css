@@ -48,9 +48,22 @@ body {
 }
 
 #nav li.selected {
-	background: url( 'arrow.png' );
-	background-repeat: no-repeat;
-	color: #fff;
+  background: black;
+  color: white;
+  margin-right: .8em;
+}
+#nav li.selected:after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background: transparent;
+  /* half the box height = half the line of text + (padding + margin) top & bottom */
+  border-top:    calc(.5em + 3px + 2px) solid transparent;
+  border-bottom: calc(.5em + 3px + 2px) solid transparent;
+  border-left: .6em solid black;
 }
 
 #nav a {
