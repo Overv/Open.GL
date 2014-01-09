@@ -85,6 +85,9 @@ code, .MathJax_Display, .livedemo_wrap {
   border-bottom: calc(.5em + 3px + 2px) solid transparent;
   border-right: .8em solid black;
 }
+#nav li.selected:after {
+  content: none;
+}
 
 /* Donation buttons clutter view on mobile */
 #donate, #donate_hr {
