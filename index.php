@@ -25,7 +25,7 @@
 	// Cache mechanism
 	$last_modified_time = gmdate("r", max(filemtime('index.php'), filemtime($contentFile))) . " GMT";
 	$etag = md5(file_get_contents('index.php') . $contentSource);
-	
+
 	if ((isset($_SERVER["HTTP_IF_MODIFIED_SINCE"]) && $_SERVER["HTTP_IF_MODIFIED_SINCE"] == $last_modified_time) ||
 		(isset($_SERVER["HTTP_IF_NONE_MATCH"]) && str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH'])) == $etag))
 	{
@@ -43,14 +43,14 @@
 		<meta charset="UTF-8">
 
 		<title>OpenGL - <?php print($contentTitle); ?></title>
-		
+
 		<meta name="description" content="An extensive, yet beginner friendly guide to using modern OpenGL for game development on all major platforms." />
 		<meta name="author" content="Alexander Overvoorde" />
 		<meta name="keywords" content="opengl, opengl 3.2, deprecated, non-deprecated, tutorial, guide, cross-platform, game, games, graphics, sfml, sdl, glfw, glut, openglut, beginner, easy" />
-		
+
 		<link rel="shortcut icon" type="image/png" href="media/tag.png" />
 		<link rel="stylesheet" type="text/css" href="media/stylesheet.css" />
-		
+
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
 		<link rel="stylesheet" type="text/css" href="media/mobile.css" media="screen and (max-width: 1024px)" />
 
@@ -62,18 +62,18 @@
 			} );
 		</script>
 		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-		
+
 		<link rel="stylesheet" href="includes/zenburn.min.css" />
 		<script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
 		<script type="text/javascript" src="includes/glmatrix.js"></script>
 		<script type="text/javascript">
 			// Syntax highlighting
 			hljs.initHighlightingOnLoad();
-			
+
 			// Disqus
 			var disqus_url = "http://open.gl/?content=<?php print( $content ); ?>";
 			var disqus_identifier = "<?php print( $content ); ?>";
-			
+
 			// Google Analytics
 			var _gaq = _gaq || [];
 			_gaq.push(["_setAccount", "UA-25119105-1"]);
@@ -111,7 +111,7 @@
 			requestAnimationFrame(frame);
 		</script>
 	</head>
-	
+
 	<body>
 		<div id="page">
 			<!-- Work in progress ribbon -->
@@ -133,49 +133,22 @@
 					?>
 				</ul>
 			</div>
-			
+
 			<!-- Content container -->
 			<div id="content">
 				<div id="article">
 					<?php
 						include_once("includes/markdown.php");
-						
+
 						print(Markdown($contentSource));
 					?>
 				</div>
-					
+
 				<?php
 					if (!$notfound)
 					{
 				?>
 
-				<!-- Donation buttons -->
-				<hr id="donate_hr" />
-				<script src="http://coinwidget.com/widget/coin.js"></script>
-				<div id="donate">
-					<div id="donate_text">
-						If this site helped you out, please consider making a small contribution towards hosting and development costs.
-					</div>
-
-					<div id="donate_buttons">
-						<!-- Use CoinWidget button style, default Paypal button is ugly -->
-						<span class="COINWIDGETCOM_CONTAINER">
-							<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=AYJ4ZQ7TLNGMN" class="COINWIDGETCOM_BUTTON_BITCOIN">
-								<img src="media/paypal.png" alt="Paypal"><span>Donate</span>
-							</a>
-						</span>
-
-						<script>
-							CoinWidgetCom.go({
-								wallet_address: "15cY6vEnZc4GSPrpqvS2WAJ8PoAqcL5kmH",
-								counter: "hide",
-								alignment: "bl",
-								lbl_button: "Donate",
-							});
-						</script>
-					</div>
-				</div>
-				
 				<!-- Disqus comments -->
 				<hr />
 				<div id="disqus_thread"></div>
