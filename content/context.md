@@ -170,8 +170,6 @@ After you've downloaded the SDL binaries or compiled them yourself, you'll find 
 - SDL uses dynamic linking, so make sure that the shared library (`SDL2.dll`, `SDL2.so`) is with your executable.
 - Add the `include` folder to your include path.
 
-> SDL requires you to use the full prototype for `main`, you will get linker errors if you don't specify the prototype with command-line arguments.
-
 To verify that you're ready, try compiling and running the following snippet of code:
 
 	#include <SDL.h>
