@@ -170,8 +170,6 @@ After you've downloaded the SDL binaries or compiled them yourself, you'll find 
 - SDL uses dynamic linking, so make sure that the shared library (`SDL2.dll`, `SDL2.so`) is with your executable.
 - Add the `include` folder to your include path.
 
-> SDL requires you to use the full prototype for `main`, you will get linker errors if you don't specify the prototype with command-line arguments.
-
 To verify that you're ready, try compiling and running the following snippet of code:
 
 	#include <SDL.h>
@@ -212,7 +210,7 @@ The `SDL_Init` function takes a bitfield with the modules to load. The video mod
 
 	SDL_Window* window = SDL_CreateWindow("OpenGL", 100, 100, 800, 600, SDL_WINDOW_OPENGL);
 
-The first argument specifies the title of the window, the next two the X and Y position and the two after those the width and height. The final parameter specifies window properties like:
+The first argument specifies the title of the window, the next two are the X and Y position and the two after those are the width and height. If you don't care about position, you can specifiy `SDL_WINDOWPOS_UNEFINED` or `SDL_WINDOWPOS_CENTERED` for second and third argument. The final parameter specifies window properties like:
 
 - *SDL_WINDOW_OPENGL* - Create a window ready for OpenGL.
 - *SDL_WINDOW_RESIZABLE* - Create a resizable window.
