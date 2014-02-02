@@ -210,7 +210,7 @@ The `SDL_Init` function takes a bitfield with the modules to load. The video mod
 
 	SDL_Window* window = SDL_CreateWindow("OpenGL", 100, 100, 800, 600, SDL_WINDOW_OPENGL);
 
-The first argument specifies the title of the window, the next two the X and Y position and the two after those the width and height. If you don't care about position, you can specifiy `SDL_WINDOWPOS_UNEFINED` or `SDL_WINDOWPOS_CENTERED` for second or third argument. The final parameter specifies window properties like:
+The first argument specifies the title of the window, the next two the X and Y position and the two after those the width and height. If you don't care about position, you can specifiy `SDL_WINDOWPOS_UNEFINED` or `SDL_WINDOWPOS_CENTERED` for second and third argument. The final parameter specifies window properties like:
 
 - *SDL_WINDOW_OPENGL* - Create a window ready for OpenGL.
 - *SDL_WINDOW_RESIZABLE* - Create a resizable window.
