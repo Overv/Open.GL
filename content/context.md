@@ -177,7 +177,7 @@ To verify that you're ready, try compiling and running the following snippet of 
 	int main(int argc, char *argv[])
 	{
 		SDL_Init(SDL_INIT_EVERYTHING);
-		
+
 		SDL_Delay(1000);
 
 		SDL_Quit();
@@ -210,7 +210,7 @@ The `SDL_Init` function takes a bitfield with the modules to load. The video mod
 
 	SDL_Window* window = SDL_CreateWindow("OpenGL", 100, 100, 800, 600, SDL_WINDOW_OPENGL);
 
-The first argument specifies the title of the window, the next two are the X and Y position and the two after those are the width and height. If you don't care about position, you can specifiy `SDL_WINDOWPOS_UNEFINED` or `SDL_WINDOWPOS_CENTERED` for second and third argument. The final parameter specifies window properties like:
+The first argument specifies the title of the window, the next two are the X and Y position and the two after those are the width and height. If the position doesn't matter, you can specify `SDL_WINDOWPOS_UNDEFINED` or `SDL_WINDOWPOS_CENTERED` for the second and third argument. The final parameter specifies window properties like:
 
 - *SDL_WINDOW_OPENGL* - Create a window ready for OpenGL.
 - *SDL_WINDOW_RESIZABLE* - Create a resizable window.
