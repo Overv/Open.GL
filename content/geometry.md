@@ -248,7 +248,7 @@ our 4 point sample that doesn't do anything yet.
             EmitVertex();
             EndPrimitive();
         }
-   );
+    );
 
 This geometry shader should be fairly straightforward. For each input point, it
 generates one equivalent output point. This is the minimum amount of code
