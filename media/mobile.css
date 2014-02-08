@@ -26,6 +26,7 @@ code, .MathJax_Display, .livedemo_wrap {
   right: 0;
   width: auto;
   padding: 1em;
+  z-index: 10;
 }
 
 /* Menu button */
