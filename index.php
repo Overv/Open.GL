@@ -119,7 +119,7 @@
 
 			<!-- Navigation items -->
 			<input type="checkbox" id="nav_toggle" />
-			<div id="nav">
+			<nav>
 				<label for="nav_toggle" data-open="&#x2261;" data-close="&#x2715;"></label>
 				<ul>
 					<?php
@@ -132,17 +132,17 @@
 						}
 					?>
 				</ul>
-			</div>
+			</nav>
 
 			<!-- Content container -->
-			<div id="content">
-				<div id="article">
+			<main>
+				<article>
 					<?php
 						include_once("includes/markdown.php");
 
 						print(Markdown($contentSource));
 					?>
-				</div>
+				</article>
 
 				<?php
 					if (!$notfound)
@@ -151,7 +151,7 @@
 
 				<!-- Disqus comments -->
 				<hr />
-				<div id="disqus_thread"></div>
+				<aside id="disqus_thread"></aside>
 				<script type="text/javascript">
 					var dsq = document.createElement("script");
 					dsq.type = "text/javascript";
@@ -162,7 +162,7 @@
 				<?php
 					}
 				?>
-			</div>
+			</main>
 		</div>
 	</body>
 </html>
