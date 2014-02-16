@@ -268,7 +268,7 @@ Variable feedback
 
 As we've seen in the previous chapter, geometry shaders have the unique property
 to generate a variable amount of data. Luckily, there are ways to keep track of
-how much vertices were written by using *query objects*.
+how much primitives were written by using *query objects*.
 
 Just like with all the other objects in OpenGL, you'll have to create one first:
 
@@ -286,12 +286,12 @@ After `glEndTransformFeedback`, you can stop "recording":
 
 Retrieving the result is done as follows:
 
-    GLuint vertices;
-    glGetQueryObjectuiv(query, GL_QUERY_RESULT, &vertices);
+    GLuint primitives;
+    glGetQueryObjectuiv(query, GL_QUERY_RESULT, &primitives);
 
 You can then print that value along with the other data:
 
-    printf("%u vertices written!\n\n", vertices);
+    printf("%u primitives written!\n\n", primitives);
 
 <img src="media/img/c8_query.png" alt="Query result" />
 
