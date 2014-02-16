@@ -121,7 +121,8 @@ The constructor can also take an `sf::WindowSettings` structure that allows you 
 
 When running this, you'll notice that the application instantly closes after creating the window. Let's add the event loop to deal with that.
 
-	while (window.isOpen())
+	bool running = true;
+	while (running)
 	{
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
@@ -135,15 +136,15 @@ When something happens to your window, an event is posted to the event queue. Th
 	switch (windowEvent.type)
 	{
 	case sf::Event::Closed:
-		window.close();
+		running = false;
 		break;
 	}
 
-When the user attempts to close the window, the `Closed` event is fired and we act on that by closing the window. Try removing that line and you'll see that it's impossible to close the window by normal means. If you prefer a fullscreen window, you should add the escape key as a means to close the window:
+When the user attempts to close the window, the `Closed` event is fired and we act on that by exiting the application. Try removing that line and you'll see that it's impossible to close the window by normal means. If you prefer a fullscreen window, you should add the escape key as a means to close the window:
 
 	case sf::Event::KeyPressed:
 		if (windowEvent.key.code == sf::Keyboard::Escape)
-			window.close();
+			running = false;
 		break;
 
 You have your window and the important events are acted upon, so you're now ready to put something on the screen. After drawing something, you can swap the back buffer and the front buffer with `window.display()`.
