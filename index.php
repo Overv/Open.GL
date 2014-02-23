@@ -110,6 +110,9 @@
 			}
 			requestAnimationFrame(frame);
 		</script>
+		<!--[if lt IE 9]>
+		<script src="media/html5shiv.js"></script>
+		<![endif]-->
 	</head>
 
 	<body>
