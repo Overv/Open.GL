@@ -27,17 +27,17 @@ body {
 	display: none;
 }
 
-#nav {
+nav {
 	width: 200px;
 	position: fixed;
 }
 
-#nav ul {
+nav ul {
 	list-style-type: none;
 	margin-top: 70px;
 }
 
-#nav li {
+nav li {
 	position: relative;
 	left: -40px;
 	
@@ -47,12 +47,12 @@ body {
 	cursor: default;
 }
 
-#nav li.selected {
+nav li.selected {
   background: black;
   color: white;
   margin-right: .8em;
 }
-#nav li.selected:after {
+nav li.selected:after {
   content: "";
   width: 0;
   height: 0;
@@ -66,38 +66,38 @@ body {
   border-left: .6em solid black;
 }
 
-#nav a {
+nav a {
 	color: #111;
 	text-decoration: none;
 	display: block;
 }
 
-#content {
+main {
 	width: 800px;
 	float: right;
 }
 
-#article {
+article {
 	margin-bottom: 20px;
 }
 
-#article .important {
+article .important {
 	background: #FFAAAA;
 	border: 1px solid #BB4444;
 }
 
-#article img {
+article img {
 	display: block;
 	margin: auto;
 }
 
-#article a {
+article a {
 	color: black;
 	text-decoration: none;
 	border-bottom: 1px dotted black;
 }
 
-#article a:hover {
+article a:hover {
 	border-bottom: 1px solid black;
 }
 
@@ -134,7 +134,7 @@ pre {
 	font-size: 14px;
 }
 
-div > p > code {
+article > p > code {
 	padding: 2px;
 
 	font-size: 14px;

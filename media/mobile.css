@@ -1,8 +1,8 @@
 /* Use the whole screen; no less, no more */
-#page, #content, .livedemo_wrap, img {
+#page, main, .livedemo_wrap, img {
   max-width: 100%;
 }
-#page, #nav ul {
+#page, nav ul {
   margin: auto;
 }
 #MathJax_Font_Test {
@@ -21,7 +21,7 @@ code, .MathJax_Display, .livedemo_wrap {
 }
 
 /* Navigation menu */
-#nav {
+nav {
   top: 0;
   right: 0;
   width: auto;
@@ -30,7 +30,7 @@ code, .MathJax_Display, .livedemo_wrap {
 }
 
 /* Menu button */
-#nav label:after {
+nav label:after {
   display: block;
   opacity: .5;
   font-size: 2em;
@@ -43,14 +43,14 @@ code, .MathJax_Display, .livedemo_wrap {
   color: #fff;
   content: attr(data-open);
 }
-#nav_toggle:checked + #nav label:after{
+#nav_toggle:checked + nav label:after{
   opacity: 1;
   content: attr(data-close);
   box-shadow: 5px 5px 5px #ccc;
 }
 
 /* Actual menu */
-#nav ul {
+nav ul {
   background: white;
   padding: .5em;
   padding-left: 1em;
@@ -60,20 +60,20 @@ code, .MathJax_Display, .livedemo_wrap {
   display: none;
   border-radius: .5em;
 }
-#nav_toggle:checked + #nav ul {
+#nav_toggle:checked + nav ul {
   display: block;
 }
-#nav li {
+nav li {
   left: 0;
   padding-right: .5em;
 }
-#nav li.selected {
+nav li.selected {
   color: white;
   background: black;
   border-radius: 0 .5em .5em 0;
 }
 /* Black arrow to the left (http://codepen.io/chriscoyier/pen/lotjh) */
-#nav li.selected:before {
+nav li.selected:before {
   content: "";
   width: 0;
   height: 0;
@@ -86,7 +86,7 @@ code, .MathJax_Display, .livedemo_wrap {
   border-bottom: calc(.5em + 3px + 2px) solid transparent;
   border-right: .8em solid black;
 }
-#nav li.selected:after {
+nav li.selected:after {
   content: none;
 }
 
