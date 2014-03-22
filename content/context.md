@@ -207,7 +207,15 @@ To use SDL in an application, you need to tell SDL which modules you need and wh
 	SDL_Quit();
 	return 0;
 
-The `SDL_Init` function takes a bitfield with the modules to load. The video module includes everything you need to create a window and an OpenGL context. Create a window using the `SDL_CreateWindow` function.
+The `SDL_Init` function takes a bitfield with the modules to load. The video module includes everything you need to create a window and an OpenGL context.
+
+Before doing anything else, first tell SDL that you want a forward compatible OpenGL 3.2 context:
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+
+After that, create a window using the `SDL_CreateWindow` function.
 
 	SDL_Window* window = SDL_CreateWindow("OpenGL", 100, 100, 800, 600, SDL_WINDOW_OPENGL);
 
