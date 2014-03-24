@@ -55,7 +55,7 @@ This is done by creating a *Vertex Buffer Object* (VBO):
 	GLuint vbo;
 	glGenBuffers(1, &vbo); // Generate 1 buffer
 
-The memory is managed by OpenGL, so instead of a pointer you get a positive number as a reference to it. `GLuint` is simply a cross-platform substitute for `unsigned int`, just like GLint is one for `int`. You will need this number to make the VBO active and to destroy it when you're done with it.
+The memory is managed by OpenGL, so instead of a pointer you get a positive number as a reference to it. `GLuint` is simply a cross-platform substitute for `unsigned int`, just like `GLint` is one for `int`. You will need this number to make the VBO active and to destroy it when you're done with it.
 
 To upload the actual data to it you first have to make it the active object by calling `glBindBuffer`:
 
