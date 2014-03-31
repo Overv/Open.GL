@@ -357,12 +357,12 @@ Your program needs to check which functions are available at runtime and link wi
 	// Load address of function and assign it to a function pointer
 	GENBUFFERS glGenBuffers = (GENBUFFERS)wglGetProcAddress("glGenBuffers");
 	// or Linux:
-	GENBUFFERS glGenBuffers = (GENBUFFERS)glXGetProcAddress("glGenBuffers");
+	GENBUFFERS glGenBuffers = (GENBUFFERS)glXGetProcAddress((const GLubyte *) "glGenBuffers");
 	// or OSX:
 	GENBUFFERS glGenBuffers = (GENBUFFERS)NSGLGetProcAddress("glGenBuffers");
 
 	// Call function as normal
-	int buffer;
+	Gluint buffer;
 	glGenBuffers(1, &buffer);
 
 Let me begin by asserting that it is perfectly normal to be scared by this snippet of code. You may not be familiar with the concept of function pointers yet, but at least try to roughly understand what is happening here. You can imagine that going through this process of defining prototypes and finding addresses of functions is very tedious and in the end nothing more than a complete waste of time.
