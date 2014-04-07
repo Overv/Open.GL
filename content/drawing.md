@@ -11,7 +11,7 @@ It all begins with the *vertices*, these are the points that shapes like triangl
 
 The *vertex shader* is a small program running on your graphics card that processes every one of these input vertices individually. This is where the perspective transformation takes place, which projects vertices with a 3D world position onto your 2D screen! It also passes important attributes like color and texture coordinates further down the pipeline.
 
-After the input vertices have been transformed, the graphics card will form triangles, lines or points out of them. These shapes are called *primitives* because they form the basis of more complex shapes. There are some additional drawing modes to choose from, like triangle strips and line strips. These reduce the amount of vertices you need to pass if you want to create objects where each next primitive is connected to the last one, like a continuous line consisting of several segments.
+After the input vertices have been transformed, the graphics card will form triangles, lines or points out of them. These shapes are called *primitives* because they form the basis of more complex shapes. There are some additional drawing modes to choose from, like triangle strips and line strips. These reduce the number of vertices you need to pass if you want to create objects where each next primitive is connected to the last one, like a continuous line consisting of several segments.
 
 The following step, the *geometry shader*, is completely optional and was only recently introduced. Unlike the vertex shader, the geometry shader can output more data than comes in. It takes the primitives from the shape assembly stage as input and can either pass a primitive through down to the rest of the pipeline, modify it first, completely discard it or even replace it with other primitive(s). Since the communication between the GPU and the rest of the PC is relatively slow, this stage can help you reduce the amount of data that needs to be transfered. With a voxel game for example, you could pass vertices as point vertices, along with an attribute for their world position, color and material and the actual cubes can be produced in the geometry shader with a point as input!
 
@@ -98,7 +98,7 @@ Remember that our vertex position is already specified as device coordinates and
 		gl_Position = vec4(position, 0.0, 1.0);
 	}
 
-The `#version` preprocessor directive is used to indicate that the code that follows is GLSL 1.50 code. Next, we specify that there is only one attribute, the position. Apart from the regular C types, GLSL has built-in vector and matrix types indentified by `vec*` and `mat*` identifiers. The type of the values within these constructs is always a `float`. The number after `vec` specifies the amount of components (x, y, z, w) and the number after `mat` specifies the amount of rows /columns. Since the position attribute consists of only an X and Y coordinate, `vec2` is perfect.
+The `#version` preprocessor directive is used to indicate that the code that follows is GLSL 1.50 code. Next, we specify that there is only one attribute, the position. Apart from the regular C types, GLSL has built-in vector and matrix types indentified by `vec*` and `mat*` identifiers. The type of the values within these constructs is always a `float`. The number after `vec` specifies the number of components (x, y, z, w) and the number after `mat` specifies the number of rows /columns. Since the position attribute consists of only an X and Y coordinate, `vec2` is perfect.
 
 > You can be quite creative when working with these vertex types. In the example above a shortcut was used to set the first two components of the `vec4` to those of `vec2`. These two lines are equal:
 >
@@ -201,7 +201,7 @@ With the reference to the input, you can specify how the data for that input is 
 
 	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-The first parameter references the input. The second parameter specifies the amount of values for that input, which is the same as the number of components of the `vec`. The third parameter specifies the type of each component and the fourth parameter specifies whether the input values should be normalized between `-1.0` and `1.0` (or `0.0` and `1.0` depending on the format) if they aren't floating point numbers.
+The first parameter references the input. The second parameter specifies the number of values for that input, which is the same as the number of components of the `vec`. The third parameter specifies the type of each component and the fourth parameter specifies whether the input values should be normalized between `-1.0` and `1.0` (or `0.0` and `1.0` depending on the format) if they aren't floating point numbers.
 
 The last two parameters are arguebly the most important here and specify how the attribute is layed out in the vertex array. The first number specifies the *stride*, or how much bytes are between each position attribute in the array. The value 0 means that there is no data in between. This is currently the case as the position of each vertex is immediately followed by the position of the next vertex. The last parameter specifies the *offset*, or how much bytes from the start of the array the attribute occurs. Since there are no other attributes, this is 0 as well.
 
@@ -240,7 +240,7 @@ Now that you've loaded the vertex data, created the shader programs and linked t
 
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
-The first parameter specifies the kind of primitive (commonly point, line or triangle), the second parameter specifies how many vertices to skip at the beginning and the last parameter specifies the amount of **vertices** (not primitives!) to process.
+The first parameter specifies the kind of primitive (commonly point, line or triangle), the second parameter specifies how many vertices to skip at the beginning and the last parameter specifies the number of **vertices** (not primitives!) to process.
 
 When you run your program now, you should see the following:
 
@@ -383,7 +383,7 @@ To actually make use of this buffer, you'll have to change the draw command:
 
 	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
-The first parameter is the same as with `glDrawArrays`, but the other ones all refer to the element buffer. The second parameter specifies the amount of indices to draw, the third parameter specifies the type of the element data and the last parameter specifies the offset. The only real difference is that you're talking about indices instead of vertices now.
+The first parameter is the same as with `glDrawArrays`, but the other ones all refer to the element buffer. The second parameter specifies the number of indices to draw, the third parameter specifies the type of the element data and the last parameter specifies the offset. The only real difference is that you're talking about indices instead of vertices now.
 
 To see how an element buffer can be beneficial, let's try drawing a rectangle using two triangles. We'll start by doing it without an element buffer.
 
