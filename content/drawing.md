@@ -205,7 +205,7 @@ The first parameter references the input. The second parameter specifies the num
 
 The last two parameters are arguably the most important here as they specify how the attribute is laid out in the vertex array. The first number specifies the *stride*, or how many bytes are between each position attribute in the array. The value 0 means that there is no data in between. This is currently the case as the position of each vertex is immediately followed by the position of the next vertex. The last parameter specifies the *offset*, or how many bytes from the start of the array the attribute occurs. Since there are no other attributes, this is 0 as well.
 
-It is important to know that this function will not just store the stride and the offset, but also the VBO that is currently bound to `GL_ARRAY_BUFFER`. That means that you don't have to explicitly bind the correct VBO when the actual drawing functions are called. This also implies that you can use a different VBO for each attribute.
+It is important to know that this function will store not only the stride and the offset, but also the VBO that is currently bound to `GL_ARRAY_BUFFER`. That means that you don't have to explicitly bind the correct VBO when the actual drawing functions are called. This also implies that you can use a different VBO for each attribute.
 
 Don't worry if you don't fully understand this yet, as we'll see how to alter this to add more attributes soon enough.
 
