@@ -1,6 +1,13 @@
 <?php
+	// Requested language
+	$lang = 'en';
+	$languages = explode("\n", file_get_contents("content/languages"));
+	if (isset($_GET['lang']) && in_array($_GET['lang'], $languages)) {
+		$lang = $_GET['lang'];
+	}
+
 	// Load chapter list
-	$navitems = explode("\n", file_get_contents("content/index"));
+	$navitems = explode("\n", file_get_contents("content/articles-" . $lang . "/index"));
 	$navitemTitles = array();
 	for ($i = 0; $i < count($navitems); $i++) {
 		$navitems[$i] = explode("/", $navitems[$i]);
@@ -12,12 +19,12 @@
 	if (isset($_GET["content"])) $content = $_GET["content"];
 
 	// Determine how to load the requested content
-	$notfound = !preg_match("/^[a-z]+$/", $content) || !file_exists("content/" . $content . ".md");
+	$notfound = !preg_match("/^[a-z]+$/", $content) || !file_exists("content/articles-" . $lang . "/" . $content . ".md");
 	if ($notfound) {
-		$contentFile = "content/notfound.md";
+		$contentFile = "content/articles-" . $lang . "/notfound.md";
 		$contentTitle = "Segmentation fault";
 	} else {
-		$contentFile = "content/" . $content . ".md";
+		$contentFile = "content/articles-" . $lang . "/" . $content . ".md";
 		$contentTitle = $navitemTitles[$content];
 	}
 	$contentSource = file_get_contents($contentFile);
@@ -131,10 +138,21 @@
 							if ($navitem[0] == $content)
 								print( '<li class="selected">' . $navitem[1] . '</li>' . "\n" );
 							else
-								print( '<li><a href="/' . $navitem[0] . '">' . $navitem[1] . '</a></li>' . "\n" );
+								print( '<li><a href="/' . $navitem[0] . ($lang == 'en' ? '' : '/' . $lang) . '">' . $navitem[1] . '</a></li>' . "\n" );
 						}
 					?>
 				</ul>
+
+				<blockquote>
+					<div style="margin-bottom: 5px; float: left">Language:</div>
+					<div style="float: right">
+						<?php
+							foreach ($languages as $lang) {
+								print('<a href="/' . $content . ($lang == 'en' ? '' : '/' . $lang) . '"><img src="media/' . $lang . '.png" alt="' . $lang . '" /></a> ');
+							}
+						?>
+					</div>
+				</blockquote>
 			</nav>
 
 			<!-- Content container -->

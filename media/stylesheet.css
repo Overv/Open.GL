@@ -69,7 +69,21 @@ nav li.selected:after {
 nav a {
 	color: #111;
 	text-decoration: none;
+}
+
+nav li a {
 	display: block;
+}
+
+nav blockquote {
+	margin-left: 0;
+
+	padding: 5px 5px 2px 5px;
+
+	background: #eee;
+	border-color: #ccc;
+
+	overflow: hidden;
 }
 
 main {
