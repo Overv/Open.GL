@@ -29,16 +29,16 @@ Vertices are now 8 floats in size, so you'll have to update the vertex attribute
 		-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f
 	};
 
-Confirm that you've made all the required changes by running your program and checking if it still draws a flat spinning image of a kitten blended with a puppy. A single cube consists of 36 vertices (6 sides * 2 triangles * 3 vertices), so I will ease your life by providing the array [here](content/code/c5_vertices.txt).
+Confirm that you've made all the required changes by running your program and checking if it still draws a flat spinning image of a kitten blended with a puppy. A single cube consists of 36 vertices (6 sides * 2 triangles * 3 vertices), so I will ease your life by providing the array [here](/content/code/c5_vertices.txt).
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
-We will not make use of element buffers for drawing this cube, so you can use `glDrawArrays` to draw it. If you were confused by this explanation, you can compare your program to [this reference code](content/code/c5_cube.txt).
+We will not make use of element buffers for drawing this cube, so you can use `glDrawArrays` to draw it. If you were confused by this explanation, you can compare your program to [this reference code](/content/code/c5_cube.txt).
 
 <div class="livedemo_wrap">
-	<div class="livedemo" id="demo_c5_cube" style="background: url('media/img/c5_window.png')">
+	<div class="livedemo" id="demo_c5_cube" style="background: url('/media/img/c5_window.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="content/demos/c5_cube.js"></script>
+		<script type="text/javascript" src="/content/demos/c5_cube.js"></script>
 	</div>
 </div>
 
@@ -66,9 +66,9 @@ The depth buffer can be cleared along with the color buffer by extending the `gl
 The default clear value for the depth is `1.0f`, which is equal to the depth of your far clipping plane and thus the furthest depth that can be represented. All fragments will be closer than that, so they will no longer be discarded. 
 
 <div class="livedemo_wrap">
-	<div class="livedemo" id="demo_c5_depth" style="background: url('media/img/c5_window2.png')">
+	<div class="livedemo" id="demo_c5_depth" style="background: url('/media/img/c5_window2.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="content/demos/c5_depth.js"></script>
+		<script type="text/javascript" src="/content/demos/c5_depth.js"></script>
 	</div>
 </div>
 
@@ -81,7 +81,7 @@ The stencil buffer is an optional extension of the depth buffer that gives you m
 
 To get a bit more acquainted with the stencil buffer before using it, let's start by analyzing a simple example.
 
-<img src="media/img/c5_stencil.png" alt="" />
+<img src="/media/img/c5_stencil.png" alt="" />
 
 In this case the stencil buffer was first cleared with zeroes and then a rectangle of ones was drawn to it. The drawing operation of the cube use the values from the stencil buffer to only draw fragments with a stencil value of 1.
 
@@ -185,9 +185,9 @@ To create the reflection of the cube itself, it is sufficient to draw it again b
 I've set the color of the floor vertices to black so that the floor does not display the texture image, so you'll want to change the clear color to white to be able to see it. I've also changed the camera parameters a bit to get a good view of the scene.
 
 <div class="livedemo_wrap">
-	<div class="livedemo" id="demo_c5_floor" style="background: url('media/img/c5_window3.png')">
+	<div class="livedemo" id="demo_c5_floor" style="background: url('/media/img/c5_window3.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="content/demos/c5_floor.js"></script>
+		<script type="text/javascript" src="/content/demos/c5_floor.js"></script>
 	</div>
 </div>
 
@@ -257,13 +257,13 @@ And in the drawing code for the reflected cube
 where `uniColor` is the return value of a `glGetUniformLocation` call.
 
 <div class="livedemo_wrap">
-	<div class="livedemo" id="demo_c5_reflection" style="background: url('media/img/c5_window4.png')">
+	<div class="livedemo" id="demo_c5_reflection" style="background: url('/media/img/c5_window4.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="content/demos/c5_reflection.js"></script>
+		<script type="text/javascript" src="/content/demos/c5_reflection.js"></script>
 	</div>
 </div>
 
-Awesome! I hope that, especially in chapters like these, you get the idea that working with an API as low-level as OpenGL can be a lot of fun and pose interesting challenges! As usual, the final code is available [here](content/code/c5_reflection.txt).
+Awesome! I hope that, especially in chapters like these, you get the idea that working with an API as low-level as OpenGL can be a lot of fun and pose interesting challenges! As usual, the final code is available [here](/content/code/c5_reflection.txt).
 
 Exercises
 ========

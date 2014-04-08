@@ -5,7 +5,7 @@ By learning OpenGL, you've decided that you want to do all of the hard work your
 
 The *graphics pipeline* covers all of the steps that follow each other up on processing the input data to get to the final output image. I'll explain these steps with help of the following illustration.
 
-<img src="media/img/c2_pipeline.png" alt="" />
+<img src="/media/img/c2_pipeline.png" alt="" />
 
 It all begins with the *vertices*, these are the points that shapes like triangles will later be contructed from. Each of these points is stored with certain attributes and it's up to you to decide what kind of attributes you want to store. Commonly used attributes are 3D position in the world and texture coordinates.
 
@@ -32,7 +32,7 @@ The first thing you have to decide on is what data the graphics card is going to
 >
 > When your vertices have been processed by the pipeline outlined above, their coordinates will have been transformed into *device coordinates*. Device X and Y coordinates are mapped to the screen between -1 and 1.
 >
-> <br /><span style="text-align: center; display: block"><img src="media/img/c2_dc.png" alt="" style="display: inline" /> <img src="media/img/c2_dc2.png" alt="" style="display: inline" /></span><br />
+> <br /><span style="text-align: center; display: block"><img src="/media/img/c2_dc.png" alt="" style="display: inline" /> <img src="/media/img/c2_dc2.png" alt="" style="display: inline" /></span><br />
 >
 > Just like a graph, the center has coordinates `(0,0)` and the y axis is positive above the center. This seems unnatural because graphics applications usually have `(0,0)` in the top-left corner and `(width,height)` in the bottom-right corner, but it's an excellent way to simplify 3D calculations and to stay resolution independent.
 
@@ -244,9 +244,9 @@ The first parameter specifies the kind of primitive (commonly point, line or tri
 
 When you run your program now, you should see the following:
 
-<img src="media/img/c2_window.png" alt="" />
+<img src="/media/img/c2_window.png" alt="" />
 
-If you don't see anything, make sure that the shaders have compiled correctly, that the program has linked correctly, that the attribute array has been enabled, that the VAO has been bound before specifying the attributes, that your vertex data is correct and that `glGetError` returns `0`. If you can't find the problem, try comparing your code to [this sample](content/code/c2_triangle.txt).
+If you don't see anything, make sure that the shaders have compiled correctly, that the program has linked correctly, that the attribute array has been enabled, that the VAO has been bound before specifying the attributes, that your vertex data is correct and that `glGetError` returns `0`. If you can't find the problem, try comparing your code to [this sample](/content/code/c2_triangle.txt).
 
 Uniforms
 ========
@@ -284,13 +284,13 @@ If you run your program now, you'll see that the triangle is red. To make things
 Although this example may not be very exciting, it does demonstrate that uniforms are essential for controlling the behaviour of shaders at runtime. Vertex attributes on the other hand are ideal for describing a single vertex.
 
 <div class="livedemo_wrap">
-	<div class="livedemo" id="demo_c2_uniforms" style="background: url('media/img/c2_window3.png')">
+	<div class="livedemo" id="demo_c2_uniforms" style="background: url('/media/img/c2_window3.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="content/demos/c2_uniforms.js"></script>
+		<script type="text/javascript" src="/content/demos/c2_uniforms.js"></script>
 	</div>
 </div>
 
-See [the code](content/code/c2_triangle_uniform.txt) if you have any trouble getting this to work.
+See [the code](/content/code/c2_triangle_uniform.txt) if you have any trouble getting this to work.
 
 Adding some more colors
 ========
@@ -351,9 +351,9 @@ The fifth parameter is set to `5*sizeof(float)` now, because each vertex consist
 
 And we're done!
 
-<img src="media/img/c2_window2.png" alt="" />
+<img src="/media/img/c2_window2.png" alt="" />
 
-You should now have a reasonable understanding of vertex attributes and shaders. If you ran into problems, ask in the comments or have a look at the altered [source code](content/code/c2_color_triangle.txt).
+You should now have a reasonable understanding of vertex attributes and shaders. If you ran into problems, ask in the comments or have a look at the altered [source code](/content/code/c2_color_triangle.txt).
 
 Element buffers
 ========
@@ -423,15 +423,15 @@ The rectangle is rendered as it should, but the repetition of vertex data is a w
 
 The element buffer still specifies 6 vertices to form 2 triangles like before, but now we're able to reuse vertices! This may not seem like much of a big deal at this point, but when your graphics application loads many models into the relatively small graphics memory, element buffers will be an important area of optimization.
 
-<img src="media/img/c2_window4.png" alt="" />
+<img src="/media/img/c2_window4.png" alt="" />
 
-If you run into trouble, have a look at the full [source code](content/code/c2_triangle_elements.txt).
+If you run into trouble, have a look at the full [source code](/content/code/c2_triangle_elements.txt).
 
 This chapter has covered all of the core principles of drawing things with OpenGL and it's absolutely essential that you have a good understanding of them before continuing. Therefore I advice you to do the exercises below before diving into [textures](/textures).
 
 Exercises
 ========
 
-- Alter the vertex shader so that the triangle is upside down. ([Solution](content/code/c2_exercise_1.txt))
-- Invert the colors of the triangle by altering the fragment shader. ([Solution](content/code/c2_exercise_2.txt))
-- Change the program so that each vertex has only one color value, determining the shade of gray. ([Solution](content/code/c2_exercise_3.txt))
+- Alter the vertex shader so that the triangle is upside down. ([Solution](/content/code/c2_exercise_1.txt))
+- Invert the colors of the triangle by altering the fragment shader. ([Solution](/content/code/c2_exercise_2.txt))
+- Change the program so that each vertex has only one color value, determining the shade of gray. ([Solution](/content/code/c2_exercise_3.txt))

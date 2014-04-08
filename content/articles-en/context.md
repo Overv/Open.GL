@@ -151,7 +151,7 @@ You have your window and the important events are acted upon, so you're now read
 
 When you run your application, you should see something like this:
 
-<img src="media/img/c1_window.png" alt="" />
+<img src="/media/img/c1_window.png" alt="" />
 
 Note that SFML allows you to have multiple windows. If you want to make use of this feature, make sure to call `window.setActive()` to activate a certain window for drawing operations.
 
@@ -255,7 +255,7 @@ If you have a fullscreen window, it would be preferable to use escape as a means
 
 When you run your application now, you should see something like this:
 
-<img src="media/img/c1_window.png" alt="" />
+<img src="/media/img/c1_window.png" alt="" />
 
 Now that you have a window and a context, there's [one more thing](#Onemorething) that needs to be done.
 
@@ -340,7 +340,7 @@ The only required functions in the loop are `glfwSwapBuffers` to swap the back b
 
 If you want to learn more about handling input, you can refer to the [documentation](http://www.glfw.org/docs/3.0/group__input.html).
 
-<img src="media/img/c1_window.png" alt="" />
+<img src="/media/img/c1_window.png" alt="" />
 
 You should now have a window or a full screen surface with an OpenGL context. Before you can start drawing stuff however, there's [one more thing](#Onemorething) that needs to be done.
 

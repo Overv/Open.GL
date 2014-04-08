@@ -100,7 +100,7 @@
 		gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR );
 		gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR );
 	};
-	imageKitten.src = "content/code/sample.png";
+	imageKitten.src = "/content/code/sample.png";
 	gl.uniform1i( gl.getUniformLocation( shaderProgram, "texKitten" ), 0 );
 
 	var texPuppy = gl.createTexture();
@@ -116,7 +116,7 @@
 		gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR );
 		gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR );
 	};
-	imagePuppy.src = "content/code/sample2.png";
+	imagePuppy.src = "/content/code/sample2.png";
 	gl.uniform1i( gl.getUniformLocation( shaderProgram, "texPuppy" ), 1 );
 
 	// Set up view

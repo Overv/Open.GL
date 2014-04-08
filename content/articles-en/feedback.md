@@ -166,7 +166,7 @@ input in your terminal:
 
     printf("%f %f %f %f %f\n", feedback[0], feedback[1], feedback[2], feedback[3], feedback[4]);
 
-<img src="media/img/c8_basic.png" alt="Basic result" />
+<img src="/media/img/c8_basic.png" alt="Basic result" />
 
 Congratulations, you now know how to make your GPU perform general purpose
 tasks with vertex shaders! Of course a real GPGPU framework like [OpenCL](http://en.wikipedia.org/wiki/OpenCL)
@@ -179,7 +179,7 @@ If you have a graphics card and driver that supports it, you could also use
 [compute shaders](http://www.opengl.org/wiki/Compute_Shader) in OpenGL 4.3
 instead, which were actually designed for tasks that are less related to drawing.
 
-You can find the full code [here](content/code/c8_basic.txt).
+You can find the full code [here](/content/code/c8_basic.txt).
 
 Feedback transform and geometry shaders
 =======================================
@@ -255,13 +255,13 @@ Retrieving the output still works the same:
         printf("%f\n", feedback[i]);
     }
 
-<img src="media/img/c8_geometry.png" alt="Basic geometry shader result" />
+<img src="/media/img/c8_geometry.png" alt="Basic geometry shader result" />
 
 Although you have to pay attention to the feedback primitive type and the size
 of your buffers, adding a geometry shader to the equation doesn't change much
 other than the shader responsible for output.
 
-The full code can be found [here](content/code/c8_geometry.txt).
+The full code can be found [here](/content/code/c8_geometry.txt).
 
 Variable feedback
 =================
@@ -293,7 +293,7 @@ You can then print that value along with the other data:
 
     printf("%u primitives written!\n\n", primitives);
 
-<img src="media/img/c8_query.png" alt="Query result" />
+<img src="/media/img/c8_query.png" alt="Query result" />
 
 Notice that it returns the amount of primitives, not the amount of vertices.
 Since we have 15 vertices, with each triangle having 3, we have 5 primitives.
@@ -302,7 +302,7 @@ Query objects can also be used to record things such as `GL_PRIMITIVES_GENERATED
 when dealing with just geometry shaders and `GL_TIME_ELAPSED` to measure time
 spent on the server (graphics card) doing work.
 
-See [full code](content/code/c8_final.txt) if you got stuck somewhere on the way.
+See [full code](/content/code/c8_final.txt) if you got stuck somewhere on the way.
 
 Conclusion
 ==========

@@ -163,7 +163,7 @@ With this shader, the output of your program should be the same as before you ev
 
 The 3D and 2D drawing operations both have their own vertex array (cube versus quad), shader program (3D vs 2D post-processing) and textures. You can see that binding the color buffer texture is just as easy as binding regular textures. Do mind that calls like `glBindTexture` which change the OpenGL state are relatively expensive, so try keeping them to a minimum.
 
-I think that no matter how well I explain the general structure of the program here, some of you just like to look at some [new sample code](content/code/c6_base.txt) and perhaps run a `diff` on it and the code from the previous chapter.
+I think that no matter how well I explain the general structure of the program here, some of you just like to look at some [new sample code](/content/code/c6_base.txt) and perhaps run a `diff` on it and the code from the previous chapter.
 
 Post-processing effects
 ========
@@ -175,7 +175,7 @@ Color manipulation
 
 Inverting the colors is an option usually found in image manipulation programs, but you can also do it yourself using shaders!
 
-<img src="media/img/c6_invert.png" alt="" style="align: center" />
+<img src="/media/img/c6_invert.png" alt="" style="align: center" />
 
 As color values are floating point values ranging from `0.0` to `1.0`, inverting a channel is as simple as calculating `1.0 - channel`. If you do this for each channel (red, green, blue) you'll get an inverted color. In the fragment shader, that can be done like this.
 
@@ -184,8 +184,8 @@ As color values are floating point values ranging from `0.0` to `1.0`, inverting
 This will also affect the alpha channel, but that doesn't matter because alpha blending is disabled by default.
 
 <div style="width: 87.5%; margin: auto">
-	<img src="media/img/c6_grayscale.png" alt="" style="display: inline" />
-	<img src="media/img/c6_grayscale2.png" alt="" style="display: inline" />
+	<img src="/media/img/c6_grayscale.png" alt="" style="display: inline" />
+	<img src="/media/img/c6_grayscale2.png" alt="" style="display: inline" />
 </div>
 
 Making colors grayscale can be naively done by calculating the average intensity of each channel.
@@ -205,7 +205,7 @@ Blur
 
 There are two well known blur techniques: box blur and Gaussian blur. The latter results in a higher quality result, but the former is easier to implement and still approximates Gaussian blur fairly well.
 
-<img src="media/img/c6_blur.png" alt="" style="align: center" />
+<img src="/media/img/c6_blur.png" alt="" style="align: center" />
 
 Blurring is done by sampling pixels around a pixel and calculating the average color.
 
@@ -229,7 +229,7 @@ Sobel
 
 The Sobel operator is often used in edge detection algorithms, let's find out what it looks like.
 
-<img src="media/img/c6_sobel.png" alt="" style="align: center" />
+<img src="/media/img/c6_sobel.png" alt="" style="align: center" />
 
 The fragment shader looks like this:
 

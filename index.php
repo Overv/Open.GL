@@ -55,11 +55,11 @@
 		<meta name="author" content="Alexander Overvoorde" />
 		<meta name="keywords" content="opengl, opengl 3.2, deprecated, non-deprecated, tutorial, guide, cross-platform, game, games, graphics, sfml, sdl, glfw, glut, openglut, beginner, easy" />
 
-		<link rel="shortcut icon" type="image/png" href="media/tag.png" />
-		<link rel="stylesheet" type="text/css" href="media/stylesheet.css" />
+		<link rel="shortcut icon" type="image/png" href="/media/tag.png" />
+		<link rel="stylesheet" type="text/css" href="/media/stylesheet.css" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
-		<link rel="stylesheet" type="text/css" href="media/mobile.css" media="screen and (max-width: 1024px)" />
+		<link rel="stylesheet" type="text/css" href="/media/mobile.css" media="screen and (max-width: 1024px)" />
 
 		<script type="text/x-mathjax-config">
 			// MathJax
@@ -70,9 +70,9 @@
 		</script>
 		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-		<link rel="stylesheet" href="includes/zenburn.min.css" />
+		<link rel="stylesheet" href="/includes/zenburn.min.css" />
 		<script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
-		<script type="text/javascript" src="includes/glmatrix.js"></script>
+		<script type="text/javascript" src="/includes/glmatrix.js"></script>
 		<script type="text/javascript">
 			// Syntax highlighting
 			hljs.initHighlightingOnLoad();
@@ -125,7 +125,7 @@
 	<body>
 		<div id="page">
 			<!-- Work in progress ribbon -->
-			<a href="https://github.com/Overv/Open.GL"><img id="ribbon" src="media/ribbon_fork.png" alt="Fork me!" /></a>
+			<a href="https://github.com/Overv/Open.GL"><img id="ribbon" src="/media/ribbon_fork.png" alt="Fork me!" /></a>
 
 			<!-- Navigation items -->
 			<input type="checkbox" id="nav_toggle" />
@@ -148,7 +148,7 @@
 					<div style="float: right">
 						<?php
 							foreach ($languages as $lang) {
-								print('<a href="/' . $content . ($lang == 'en' ? '' : '/' . $lang) . '"><img src="media/' . $lang . '.png" alt="' . $lang . '" /></a> ');
+								print('<a href="/' . $content . ($lang == 'en' ? '' : '/' . $lang) . '"><img src="/media/' . $lang . '.png" alt="' . $lang . '" /></a> ');
 							}
 						?>
 					</div>
