@@ -14,7 +14,7 @@ body {
 #page {
 	width: 1000px;
 	margin: auto;
-	margin-top: 60px;
+	margin-top: 15px;
 }
 
 #ribbon {
@@ -34,16 +34,16 @@ nav {
 
 nav ul {
 	list-style-type: none;
-	margin-top: 70px;
+	margin-top: 28px;
 }
 
 nav li {
 	position: relative;
 	left: -40px;
-	
+
 	padding: 3px;
 	margin-top: 2px;
-	
+
 	cursor: default;
 }
 

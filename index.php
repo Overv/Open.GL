@@ -154,17 +154,21 @@
 					</div>
 				</blockquote>
 
-				<script type="text/javascript"><!--
-					google_ad_client = "ca-pub-4259747131061893";
-					/* Open.GL */
-					google_ad_slot = "6972020941";
-					google_ad_width = 160;
-					google_ad_height = 600;
-					//-->
-					</script>
-					<script type="text/javascript"
-					src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-				</script>
+                <?php
+                    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+                    if (strpos($userAgent, 'Android') === false && strpos($userAgent, 'Mobile') === false) {
+                ?>
+				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:160px;height:600px"
+                     data-ad-client="ca-pub-4259747131061893"
+                     data-ad-slot="6972020941"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+                <?php
+                    }
+                ?>
 			</nav>
 
 			<!-- Content container -->
