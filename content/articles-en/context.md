@@ -248,7 +248,7 @@ Then comes the most important part of the program, the event loop:
 
 The `SDL_PollEvent` function will check if there are any new events that have to be handled. An event can be anything from a mouse click to the user moving the window. Right now, the only event you need to respond to is the user pressing the little X button in the corner of the window. By breaking from the main loop, `SDL_Quit` is called and the window and graphics surface are destroyed. `SDL_GL_SwapWindow` here takes care of swapping the front and back buffer after new things have been drawn by your application.
 
-If you have a fullscreen window, it would be preferable to use escape as a means to close the window.
+If you have a fullscreen window, it would be preferable to use the escape key as a means to close the window.
 
 	if (windowEvent.type == SDL_KEYUP &&
 		windowEvent.key.keysym.sym == SDLK_ESCAPE) break;
@@ -333,7 +333,7 @@ Next comes the event loop, which in the case of GLFW works a little differently 
 		glfwPollEvents();
 	}
 
-The only required functions in the loop are `glfwSwapBuffers` to swap the back buffer and front buffer after you've finished drawing and `glfwPollEvents` to retrieve window events. If you are making a fullscreen application, you should  handle ESC to easily return to the desktop.
+The only required functions in the loop are `glfwSwapBuffers` to swap the back buffer and front buffer after you've finished drawing and `glfwPollEvents` to retrieve window events. If you are making a fullscreen application, you should handle the escape key to easily return to the desktop.
 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
