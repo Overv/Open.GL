@@ -105,7 +105,7 @@ The `#version` preprocessor directive is used to indicate that the code that fol
 >     gl_Position = vec4(position, 0.0, 1.0);
 >     gl_Position = vec4(position.x, position.y, 0.0, 1.0);
 >
-> When you're working with colors, you can also access the first three components with `r`, `g` and `b` instead of `x`, `y` and `z`. This makes no difference and can help with clarity.
+> When you're working with colors, you can also access the individual components with `r`, `g`, `b` and `a` instead of `x`, `y`, `z` and `w`. This makes no difference and can help with clarity.
 
 The final position of the vertex is assigned to the special `gl_Position` variable, because the position is needed for primitive assembly and many other built-in processes. For these to function correctly, the last value `w` needs to have a value of `1.0f`. Other than that, you're free to do anything you want with the attributes and we'll see how to output those when we add color to the triangle later in this chapter.
 
