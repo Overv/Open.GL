@@ -19,10 +19,10 @@ Wrapping
 
 The first thing you'll have to consider is how the texture should be sampled when a coordinate outside the range of `0` to `1` is given. OpenGL offers 4 ways of handling this:
 
-- `GL_CLAMP_TO_EDGE`: The coordinate will simply be clamped between `0` and `1`.
-- `GL_CLAMP_TO_BORDER`: The coordinates that fall outside the range will be given a specified border color.
 - `GL_REPEAT`: The integer part of the coordinate will be ignored and a repeating pattern is formed.
 - `GL_MIRRORED_REPEAT`: The texture will also be repeated, but it will be mirrored when the integer part of the coordinate is odd.
+- `GL_CLAMP_TO_EDGE`: The coordinate will simply be clamped between `0` and `1`.
+- `GL_CLAMP_TO_BORDER`: The coordinates that fall outside the range will be given a specified border color.
 
 These explanations may still be a bit cryptic and since OpenGL is all about graphics, let's see what all of these cases actually look like:
 
