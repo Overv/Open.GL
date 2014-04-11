@@ -153,6 +153,18 @@
 						?>
 					</div>
 				</blockquote>
+
+				<script type="text/javascript"><!--
+					google_ad_client = "ca-pub-4259747131061893";
+					/* Open.GL */
+					google_ad_slot = "6972020941";
+					google_ad_width = 160;
+					google_ad_height = 600;
+					//-->
+					</script>
+					<script type="text/javascript"
+					src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+				</script>
 			</nav>
 
 			<!-- Content container -->
