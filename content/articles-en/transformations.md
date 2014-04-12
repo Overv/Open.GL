@@ -324,17 +324,29 @@ In the same style as the previous section, this is how the product of two 4-by-4
     \color{purple}m & \color{purple}n & \color{purple}o & \color{purple}p
   \end{bmatrix}
   \begin{bmatrix}
-    \color{red}A & \color{red}B & \color{red}C & \color{red}D \\
-    \color{blue}E & \color{blue}F & \color{blue}G & \color{blue}H \\
-    \color{green}I & \color{green}J & \color{green}K & \color{green}L \\
-    \color{purple}M & \color{purple}N & \color{purple}O & \color{purple}P
+    \color{red}A & \color{blue}B & \color{green}C & \color{purple}D \\
+    \color{red}E & \color{blue}F & \color{green}G & \color{purple}H \\
+    \color{red}I & \color{blue}J & \color{green}K & \color{purple}L \\
+    \color{red}M & \color{blue}N & \color{green}O & \color{purple}P
   \end{bmatrix}
   = \\
   \begin{bmatrix}
-    \color{red}{aA+bE+cI+dM} & \color{red}{aB+bF+cJ+dN} & \color{red}{aC+bG+cK+dO} & \color{red}{aD+bH+cL+dP} \\
-    \color{blue}{eA+fE+Ig+hM} & \color{blue}{eB+fF+gJ+hN} & \color{blue}{eC+fG+gK+hO} & \color{blue}{eD+fH+gL+hP} \\
-    \color{green}{iA+jE+Ik+lM} & \color{green}{iB+jF+kJ+lN} & \color{green}{iC+jG+kK+lO} & \color{green}{iD+jH+kL+lP} \\
-    \color{purple}{mA+nE+Io+pM} & \color{purple}{mB+nF+oJ+pN} & \color{purple}{mC+nG+oK+pO} & \color{purple}{mD+nH+oL+pP}
+    \color{red}{aA} + \color{red}{bE} + \color{red}{cI} + \color{red}{dM} &
+      \color{red}a\color{blue}B + \color{red}b\color{blue}F + \color{red}c\color{blue}J + \color{red}d\color{blue}N &
+      \color{red}a\color{green}C + \color{red}b\color{green}G + \color{red}c\color{green}K + \color{red}d\color{green}O &
+      \color{red}a\color{purple}D + \color{red}b\color{purple}H + \color{red}c\color{purple}L + \color{red}d\color{purple}P \\
+    \color{blue}e\color{red}A + \color{blue}f\color{red}E + \color{blue}g\color{red}I + \color{blue}h\color{red}M &
+      \color{blue}{eB} + \color{blue}{fF} + \color{blue}{gJ} + \color{blue}{hN} &
+      \color{blue}e\color{green}C + \color{blue}f\color{green}G + \color{blue}g\color{green}K + \color{blue}h\color{green}O &
+      \color{blue}e\color{purple}D + \color{blue}f\color{purple}H + \color{blue}g\color{purple}L + \color{blue}h\color{purple}P \\
+    \color{green}i\color{red}A + \color{green}j\color{red}E + \color{green}k\color{red}I + \color{green}l\color{red}M &
+      \color{green}i\color{blue}B + \color{green}j\color{blue}F + \color{green}k\color{blue}J + \color{green}l\color{blue}N &
+      \color{green}{iC} + \color{green}{jG} + \color{green}{kK} + \color{green}{lO} &
+      \color{green}i\color{purple}D + \color{green}j\color{purple}H + \color{green}k\color{purple}L + \color{green}l\color{purple}P \\
+    \color{purple}m\color{red}A + \color{purple}n\color{red}E + \color{purple}o\color{red}I + \color{purple}p\color{red}M &
+      \color{purple}m\color{blue}B + \color{purple}n\color{blue}F + \color{purple}o\color{blue}J + \color{purple}p\color{blue}N &
+      \color{purple}m\color{green}C + \color{purple}n\color{green}G + \color{purple}o\color{green}K + \color{purple}p\color{green}O &
+      \color{purple}{mD} + \color{purple}{nH} + \color{purple}{oL} + \color{purple}{pP}
   \end{bmatrix}
 \]
 
@@ -346,13 +358,13 @@ The above is commonly recognized among mathematicians as an *indecipherable mess
     \color{blue}3 & \color{blue}4
   \end{bmatrix}
   \begin{bmatrix}
-    \color{green}a & \color{green}b \\
-    \color{purple}c & \color{purple}d
+    \color{green}a & \color{purple}b \\
+    \color{green}c & \color{purple}d
   \end{bmatrix}
   =
   \begin{bmatrix}
-    \color{red}1\cdot \color{green}a+\color{red}2\cdot \color{purple}c & \color{red}1\cdot \color{green}b + \color{red}2\cdot \color{purple}d \\
-    \color{blue}3\cdot \color{green}a+\color{blue}4\cdot \color{purple}c & \color{blue}3\cdot \color{green}b+\color{blue}4\cdot \color{purple}d
+    \color{red}1\cdot \color{green}a + \color{red}2 \cdot \color{green}c & \color{red}1 \cdot \color{purple}b + \color{red}2 \cdot \color{purple}d \\
+    \color{blue}3\cdot \color{green}a + \color{blue}4 \cdot \color{green}c & \color{blue}3 \cdot \color{purple}b + \color{blue}4 \cdot \color{purple}d
   \end{bmatrix}
 \]
 
