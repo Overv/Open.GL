@@ -1,8 +1,8 @@
 Transform feedback
 ==================
 
-Up until now we've always sent vertex data to the graphics processor and gotten
-only drawn pixels in framebuffers in return. What if we want to retrieve the
+Up until now we've always sent vertex data to the graphics processor and only
+produced drawn pixels in framebuffers in return. What if we want to retrieve the
 vertices after they've passed through the vertex or geometry shaders? In this
 chapter we'll look at a way to do this, known as *transform feedback*.
 
@@ -106,11 +106,11 @@ create a VBO to hold these, just like the input vertices:
 
 Notice that we now pass a `nullptr` to create a buffer big enough to hold all of
 the resulting floats, but without specifying any initial data. The appropriate
-usage type is now `GL_STATIC_READ`, which indicates that we intent OpenGL to
+usage type is now `GL_STATIC_READ`, which indicates that we intend OpenGL to
 write to this buffer and our application to read from it. (See [reference](http://www.opengl.org/sdk/docs/man/xhtml/glBufferData.xml) for usage types)
 
 We've now made all preparations for the <del>rendering</del> computation
-process. As we don't intent to draw anything, the rasterizer should be disabled:
+process. As we don't intend to draw anything, the rasterizer should be disabled:
 
     glEnable(GL_RASTERIZER_DISCARD);
 
@@ -119,10 +119,10 @@ we have to use a new function called `glBindBufferBase`.
 
     glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, tbo);
 
-The first parameter is currently simply required to be
-`GL_TRANSFORM_FEEDBACK_BUFFER` to allow for future extensions. The second
-parameter is the index of the output variable, which is simply `0` because we
-only have one. The final parameter specifies the buffer object to bind.
+The first parameter is currently required to be `GL_TRANSFORM_FEEDBACK_BUFFER`
+to allow for future extensions. The second parameter is the index of the output
+variable, which is simply `0` because we only have one. The final parameter
+specifies the buffer object to bind.
 
 Before doing the draw call, you have to enter transform feedback mode:
 
@@ -268,15 +268,15 @@ Variable feedback
 
 As we've seen in the previous chapter, geometry shaders have the unique property
 to generate a variable amount of data. Luckily, there are ways to keep track of
-how much primitives were written by using *query objects*.
+how many primitives were written by using *query objects*.
 
-Just like with all the other objects in OpenGL, you'll have to create one first:
+Just like all the other objects in OpenGL, you'll have to create one first:
 
     GLuint query;
     glGenQueries(1, &query);
 
 Then, right before calling `glBeginTransformFeedback`, you have to tell OpenGL
-to keep track of the amount of primitives written:
+to keep track of the number of primitives written:
 
     glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, query);
 
@@ -295,14 +295,14 @@ You can then print that value along with the other data:
 
 <img src="/media/img/c8_query.png" alt="Query result" />
 
-Notice that it returns the amount of primitives, not the amount of vertices.
+Notice that it returns the number of primitives, not the number of vertices.
 Since we have 15 vertices, with each triangle having 3, we have 5 primitives.
 
 Query objects can also be used to record things such as `GL_PRIMITIVES_GENERATED`
 when dealing with just geometry shaders and `GL_TIME_ELAPSED` to measure time
 spent on the server (graphics card) doing work.
 
-See [full code](/content/code/c8_final.txt) if you got stuck somewhere on the way.
+See [the full code](/content/code/c8_final.txt) if you got stuck somewhere on the way.
 
 Conclusion
 ==========

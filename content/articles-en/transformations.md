@@ -465,7 +465,7 @@ v_\text{normalized} =
   \end{pmatrix}
 \]
 
-The `x` and `y` coordinates will be in the familiar `-1` and `1` range now, from which OpenGL can transform them into window coordinates. The `z` is known as the depth and will play an important role in the next chapter.
+The `x` and `y` coordinates will be in the familiar `-1` and `1` range now, which OpenGL can transform into window coordinates. The `z` is known as the depth and will play an important role in the next chapter.
 
 The coordinates resulting from the projection transformation are called clipping coordinates because the value of `w` is used to determine whether an object is too close or behind the camera or too far away to be drawn. The projection matrix is created with those limits, so you'll be able to specify these yourself.
 
@@ -517,7 +517,7 @@ The next step is to perform this transformation in the vertex shader to rotate e
 	GLint uniTrans = glGetUniformLocation(shaderProgram, "trans");
 	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
 
-The second parameter of the `glUniformMatrix4fv` function specifies how many matrices are to be uploaded, because you can have arrays of matrices in GLSL. The third parameter specifies whether the specified matrix should be transposed before usage. This is related to the way matrices are stored as `float` arrays in memory, you don't have to worry about it. The last parameter specifies the matrix to upload, where the `glm::value_ptr` function converts the matrix class into an array of 16 (4x4) floats.
+The second parameter of the `glUniformMatrix4fv` function specifies how many matrices are to be uploaded, because you can have arrays of matrices in GLSL. The third parameter specifies whether the specified matrix should be transposed before usage. This is related to the way matrices are stored as `float` arrays in memory; you don't have to worry about it. The last parameter specifies the matrix to upload, where the `glm::value_ptr` function converts the matrix class into an array of 16 (4x4) floats.
 
 All that remains is updating the vertex shader to include this uniform and use it to transform each vertex:
 
@@ -560,7 +560,7 @@ To spice things up a bit, you could change the rotation with time:
 
 	...
 
-This will result into something like this:
+This will result in something like this:
 
 <div class="livedemo_wrap">
 	<div class="livedemo" id="demo_c4_rotation" style="background: url('/media/img/c4_window2.png')">
@@ -584,7 +584,7 @@ The rotation above can be considered the model transformation, because it transf
 	GLint uniView = glGetUniformLocation(shaderProgram, "view");
 	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
-To create the view transformation, GLM offers the useful `glm::lookAt` function that simulates a moving camera. The first parameter specifies the position of the camera, the second the point centered on-screen and the third the `up` axis. Up here is defined as the Z axis, which implies that the XY plane is the "ground".
+To create the view transformation, GLM offers the useful `glm::lookAt` function that simulates a moving camera. The first parameter specifies the position of the camera, the second the point to be centered on-screen and the third the `up` axis. Here `up` is defined as the Z axis, which implies that the XY plane is the "ground".
 
 	glm::mat4 proj = glm::perspective(45.0f, 800.0f / 600.0f, 1.0f, 10.0f);
 	GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
@@ -593,7 +593,7 @@ To create the view transformation, GLM offers the useful `glm::lookAt` function 
 Similarly, GLM comes with the `glm::perspective` function to create a perspective projection matrix. The first parameter is the vertical field-of-view, the second parameter the aspect ratio of the screen and the last two parameters are the *near* and *far* planes.
 
 > **Field-of-view** <br /><br />
-> The field-of-view defines the angle between the top and bottom of the 2D surface the world will be projected on. Zooming in games is often accomplished by decreasing this angle as opposed to moving the camera closer, because it more closely resembles real life.
+> The field-of-view defines the angle between the top and bottom of the 2D surface on which the world will be projected. Zooming in games is often accomplished by decreasing this angle as opposed to moving the camera closer, because it more closely resembles real life.
 >
 > <img src="/media/img/c4_fov.png" alt="" />
 >

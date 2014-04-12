@@ -77,15 +77,15 @@ With the depth test capability enabled, the cube is now rendered correctly. Just
 Stencil buffer
 ========
 
-The stencil buffer is an optional extension of the depth buffer that gives you more control over the question which fragments should be drawn and which shouldn't. Like the depth buffer, a value is stored for every pixel, but this time you get to control when and how this value changes and when a fragment should be drawn depending on this value. Note that if the depth test fails, the stencil test no longer determines whether a fragment is drawn or not, but can still affect values in the stencil buffer!
+The stencil buffer is an optional extension of the depth buffer that gives you more control over the question of which fragments should be drawn and which shouldn't. Like the depth buffer, a value is stored for every pixel, but this time you get to control when and how this value changes and when a fragment should be drawn depending on this value. Note that if the depth test fails, the stencil test no longer determines whether a fragment is drawn or not, but these fragments can still affect values in the stencil buffer!
 
 To get a bit more acquainted with the stencil buffer before using it, let's start by analyzing a simple example.
 
 <img src="/media/img/c5_stencil.png" alt="" />
 
-In this case the stencil buffer was first cleared with zeroes and then a rectangle of ones was drawn to it. The drawing operation of the cube use the values from the stencil buffer to only draw fragments with a stencil value of 1.
+In this case the stencil buffer was first cleared with zeroes and then a rectangle of ones was drawn to it. The drawing operation of the cube uses the values from the stencil buffer to only draw fragments with a stencil value of 1.
 
-Now that you have an understanding of what the stencil buffer is used for, we'll look at the relevant OpenGL calls.
+Now that you have an understanding of what the stencil buffer does, we'll look at the relevant OpenGL calls.
 
 	glEnable(GL_STENCIL_TEST);
 
@@ -125,7 +125,7 @@ Stencil values can be modified in the following ways:
 - `GL_DECR_WRAP`: Same as `GL_DECR`, with the exception that the value is set to the maximum value if the current value is 0 (the stencil buffer stores unsigned integers).
 - `GL_INVERT`: A bitwise invert is applied to the value.
 
-Finally, `glStencilMask` can be used to control the bits that are written to the stencil buffer when an operation is ran. The default value is all ones, which means that the outcome of any operation is unaffected.
+Finally, `glStencilMask` can be used to control the bits that are written to the stencil buffer when an operation is run. The default value is all ones, which means that the outcome of any operation is unaffected.
 
 If, like in the example, you want to set all stencil values in a rectangular area to 1, you would use the following calls:
 
@@ -138,7 +138,7 @@ In this case the rectangle shouldn't actually be drawn to the color buffer, sinc
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	glDepthMask(GL_FALSE);
 
-The `glColorMask` function allows you to specify which data is written to the color buffer during a drawing operation. In this case you would want to disable all color channels (red, green, blue, alpha). Writing to the depth buffer needs to be disabled seperately as well with `glDepthMask`, so that cube drawing operation won't be affected by leftover depth values of the rectangle. This is cleaner than simply clearing the depth buffer again later.
+The `glColorMask` function allows you to specify which data is written to the color buffer during a drawing operation. In this case you would want to disable all color channels (red, green, blue, alpha). Writing to the depth buffer needs to be disabled separately as well with `glDepthMask`, so that cube drawing operation won't be affected by leftover depth values of the rectangle. This is cleaner than simply clearing the depth buffer again later.
 
 Using values in drawing operations
 --------

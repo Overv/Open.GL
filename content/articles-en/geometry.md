@@ -168,7 +168,7 @@ Output types
 
 The next line describes the output of the shader. What's interesting about
 geometry shaders is that they can output an entirely different type of geometry
-and the amount of generated primitives can even vary!
+and the number of generated primitives can even vary!
 
     layout(line_strip, max_vertices = 2) out;
 
@@ -262,7 +262,7 @@ There's nothing special about attaching it to the shader program either:
 
     glAttachShader(shaderProgram, geometryShader);
 
-When you run the program now, it should still display the point as before. You
+When you run the program now, it should still display the points as before. You
 can verify that the geometry shader is now doing its work by removing the code
 from its `main` function. You'll see that no points are being drawn anymore,
 because none are being generated!
@@ -398,7 +398,7 @@ you're too far away, your graphics card is wasting performance on rendering
 complexity you can't even see.
 
 We can do better with geometry shaders! We can write a shader that generates
-the appropriate resolution circle based on runtime conditions. Let's first
+the appropriate resolution circle based on run-time conditions. Let's first
 modify the geometry shader to draw a 10-sided polygon at each point. If you
 remember your trigonometry, it should be a piece of cake:
 
