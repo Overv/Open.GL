@@ -1148,7 +1148,7 @@ class Markdown_Parser {
       \\\\          # followed by another backslash
       \]            # and closing bracket
       \s*$          # and maybe some whitespace before the end of the line
-      }mx',
+      }mxsU',
       array(&$this, '_doDisplayMath_callback'), $text);
       
     return $text;
