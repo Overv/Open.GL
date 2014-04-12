@@ -364,7 +364,7 @@ Combining transformations
 To demonstrate the multiplication of two matrices, let's try scaling a given vector by `(2,2,2)` and translating it by `(1,2,3)`. Given the translation and scaling matrices above, the following product is calculated:
 
 \[
-M_{translate}\cdot M_{scale} =
+M_\text{translate}\cdot M_\text{scale} =
   \begin{bmatrix}
     \color{red}1 & \color{red}0 & \color{red}0 & \color{red}1 \\
     \color{blue}0 & \color{blue}1 & \color{blue}0 & \color{blue}2 \\
@@ -445,11 +445,11 @@ After the world has been aligned with your camera using the view transformation,
 To transform the clipping coordinate into a normalized device coordinate, *perspective division* has to be performed. A clipping coordinate resulting from a perspective projection has a number different than 1 in the fourth row, also known as `w`. This number directly reflects the effect of objects further away being smaller than those up front.
 
 \[
-v_{normalized} =
+v_\text{normalized} =
   \begin{pmatrix}
-    x_{clip} / w_{clip} \\
-    y_{clip} / w_{clip} \\
-    z_{clip} / w_{clip}
+    x_\text{clip} / w_\text{clip} \\
+    y_\text{clip} / w_\text{clip} \\
+    z_\text{clip} / w_\text{clip}
   \end{pmatrix}
 \]
 
@@ -463,7 +463,7 @@ Putting it all together
 To sum it all up, the final transformation of a vertex is the product of the model, view and projection matrices.
 
 \[
-v' = M_{proj} \cdot M_{view} \cdot M_{model} \cdot v
+v' = M_\text{proj} \cdot M_\text{view} \cdot M_\text{model} \cdot v
 \]
 
 This operation is typically performed in the vertex shader and assigned to the `gl_Position` return value in clipping coordinates. OpenGL will perform the perspective division and transformation into window coordinates. It is important to be aware of these steps, because you'll have to do them yourself when working with techniques like shadow mapping.
