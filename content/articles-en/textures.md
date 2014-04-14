@@ -1,12 +1,12 @@
 Textures objects and parameters
 ========
 
-Just like VBOs and VAOs, textures are objects that need to be generated first by calling a function. It won't be a surprise at this point what this function is called.
+Just like VBOs and VAOs, textures are objects that need to be generated first by calling a function. It shouldn't be a surprise at this point what this function is called.
 
 	GLuint tex;
 	glGenTextures(1, &tex);
 
-Textures are typically used for images to decorate 3D models with, but in reality they can be used to store many different kinds of data. It's possible to have 1D, 2D and even 3D textures, which can be used to store bulk data on the GPU. An example of another use for textures is storing terrain information. This article will pay attention to the use of textures for images, but the principles generally apply to all kinds of textures.
+Textures are typically used for images to decorate 3D models, but in reality they can be used to store many different kinds of data. It's possible to have 1D, 2D and even 3D textures, which can be used to store bulk data on the GPU. An example of another use for textures is storing terrain information. This article will pay attention to the use of textures for images, but the principles generally apply to all kinds of textures.
 
 	glBindTexture(GL_TEXTURE_2D, tex);
 
@@ -19,10 +19,10 @@ Wrapping
 
 The first thing you'll have to consider is how the texture should be sampled when a coordinate outside the range of `0` to `1` is given. OpenGL offers 4 ways of handling this:
 
-- `GL_CLAMP_TO_EDGE`: The coordinate will simply be clamped between `0` and `1`.
-- `GL_CLAMP_TO_BORDER`: The coordinates that fall outside the range will be given a specified border color.
 - `GL_REPEAT`: The integer part of the coordinate will be ignored and a repeating pattern is formed.
 - `GL_MIRRORED_REPEAT`: The texture will also be repeated, but it will be mirrored when the integer part of the coordinate is odd.
+- `GL_CLAMP_TO_EDGE`: The coordinate will simply be clamped between `0` and `1`.
+- `GL_CLAMP_TO_BORDER`: The coordinates that fall outside the range will be given a specified border color.
 
 These explanations may still be a bit cryptic and since OpenGL is all about graphics, let's see what all of these cases actually look like:
 
@@ -216,7 +216,7 @@ To practice with sampling from multiple textures, let's try blending the images 
 	    outColor = mix(colKitten, colPuppy, 0.5);
 	}
 
-The `mix` function here is a special GLSL function that linearly interpolates between two variables based on the third parameter. A value of `0.0` will result in the first value, a value of `1.0` will result in the second value and a value inbetween will result in a mixture of both values. You'll have the chance to experiment with this in the exercises.
+The `mix` function here is a special GLSL function that linearly interpolates between two variables based on the third parameter. A value of `0.0` will result in the first value, a value of `1.0` will result in the second value and a value in between will result in a mixture of both values. You'll have the chance to experiment with this in the exercises.
 
 Now that the two samplers are ready, you'll have to assign the first two texture units to them and bind the two textures to those units. This is done by adding the proper `glActiveTexture` calls to the texture loading code.
 

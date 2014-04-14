@@ -7,13 +7,13 @@ The *graphics pipeline* covers all of the steps that follow each other up on pro
 
 <img src="/media/img/c2_pipeline.png" alt="" />
 
-It all begins with the *vertices*, these are the points that shapes like triangles will later be contructed from. Each of these points is stored with certain attributes and it's up to you to decide what kind of attributes you want to store. Commonly used attributes are 3D position in the world and texture coordinates.
+It all begins with the *vertices*, these are the points that from which shapes like triangles will later be constructed. Each of these points is stored with certain attributes and it's up to you to decide what kind of attributes you want to store. Commonly used attributes are 3D position in the world and texture coordinates.
 
 The *vertex shader* is a small program running on your graphics card that processes every one of these input vertices individually. This is where the perspective transformation takes place, which projects vertices with a 3D world position onto your 2D screen! It also passes important attributes like color and texture coordinates further down the pipeline.
 
 After the input vertices have been transformed, the graphics card will form triangles, lines or points out of them. These shapes are called *primitives* because they form the basis of more complex shapes. There are some additional drawing modes to choose from, like triangle strips and line strips. These reduce the number of vertices you need to pass if you want to create objects where each next primitive is connected to the last one, like a continuous line consisting of several segments.
 
-The following step, the *geometry shader*, is completely optional and was only recently introduced. Unlike the vertex shader, the geometry shader can output more data than comes in. It takes the primitives from the shape assembly stage as input and can either pass a primitive through down to the rest of the pipeline, modify it first, completely discard it or even replace it with other primitive(s). Since the communication between the GPU and the rest of the PC is relatively slow, this stage can help you reduce the amount of data that needs to be transfered. With a voxel game for example, you could pass vertices as point vertices, along with an attribute for their world position, color and material and the actual cubes can be produced in the geometry shader with a point as input!
+The following step, the *geometry shader*, is completely optional and was only recently introduced. Unlike the vertex shader, the geometry shader can output more data than comes in. It takes the primitives from the shape assembly stage as input and can either pass a primitive through down to the rest of the pipeline, modify it first, completely discard it or even replace it with other primitive(s). Since the communication between the GPU and the rest of the PC is relatively slow, this stage can help you reduce the amount of data that needs to be transferred. With a voxel game for example, you could pass vertices as point vertices, along with an attribute for their world position, color and material and the actual cubes can be produced in the geometry shader with a point as input!
 
 After the final list of shapes is composed and converted to screen coordinates, the rasterizer turns the visible parts of the shapes into pixel-sized *fragments*. The vertex attributes coming from the vertex shader or geometry shader are interpolated and passed as input to the fragment shader for each fragment. As you can see in the image, the colors are smoothly interpolated over the fragments that make up the triangle, even though only 3 points were specified.
 
@@ -71,7 +71,7 @@ Notice that this function doesn't refer to the id of our VBO, but instead to the
 - `GL_DYNAMIC_DRAW`: The vertex data will be changed from time to time, but drawn many times more than that.
 - `GL_STREAM_DRAW`: The vertex data will change almost every time it's drawn (e.g. user interface).
 
-This usage value will determine in what kind of memory the data is stored on your graphics card for the highest effiency. For example, VBOs with `GL_STREAM_DRAW` as type may store their data in memory that allows faster writing in favour of slightly slower drawing.
+This usage value will determine in what kind of memory the data is stored on your graphics card for the highest efficiency. For example, VBOs with `GL_STREAM_DRAW` as type may store their data in memory that allows faster writing in favour of slightly slower drawing.
 
 The vertices with their attributes have been copied to the graphics card now, but they're not quite ready to be used yet. Remember that we can make up any kind of attribute we want and in any order, so now comes the moment where you have to explain to the graphics card how to handle these attributes. This is where you'll see how flexible modern OpenGL really is.
 
@@ -98,14 +98,14 @@ Remember that our vertex position is already specified as device coordinates and
 		gl_Position = vec4(position, 0.0, 1.0);
 	}
 
-The `#version` preprocessor directive is used to indicate that the code that follows is GLSL 1.50 code. Next, we specify that there is only one attribute, the position. Apart from the regular C types, GLSL has built-in vector and matrix types indentified by `vec*` and `mat*` identifiers. The type of the values within these constructs is always a `float`. The number after `vec` specifies the number of components (x, y, z, w) and the number after `mat` specifies the number of rows /columns. Since the position attribute consists of only an X and Y coordinate, `vec2` is perfect.
+The `#version` preprocessor directive is used to indicate that the code that follows is GLSL 1.50 code. Next, we specify that there is only one attribute, the position. Apart from the regular C types, GLSL has built-in vector and matrix types identified by `vec*` and `mat*` identifiers. The type of the values within these constructs is always a `float`. The number after `vec` specifies the number of components (x, y, z, w) and the number after `mat` specifies the number of rows /columns. Since the position attribute consists of only an X and Y coordinate, `vec2` is perfect.
 
 > You can be quite creative when working with these vertex types. In the example above a shortcut was used to set the first two components of the `vec4` to those of `vec2`. These two lines are equal:
 >
 >     gl_Position = vec4(position, 0.0, 1.0);
 >     gl_Position = vec4(position.x, position.y, 0.0, 1.0);
 >
-> When you're working with colors, you can also access the first three components with `r`, `g` and `b` instead of `x`, `y` and `z`. This makes no difference and can help with clarity.
+> When you're working with colors, you can also access the individual components with `r`, `g`, `b` and `a` instead of `x`, `y`, `z` and `w`. This makes no difference and can help with clarity.
 
 The final position of the vertex is assigned to the special `gl_Position` variable, because the position is needed for primitive assembly and many other built-in processes. For these to function correctly, the last value `w` needs to have a value of `1.0f`. Other than that, you're free to do anything you want with the attributes and we'll see how to output those when we add color to the triangle later in this chapter.
 
@@ -130,7 +130,7 @@ You'll immediately notice that we're not using some built-in variable for output
 Compiling shaders
 --------
 
-Compiling shaders is easy once you have loaded the source code (either from file or as a hardcoded string). Just like vertex buffers, it starts with creating a shader object and loading data into it.
+Compiling shaders is easy once you have loaded the source code (either from file or as a hard-coded string). Just like vertex buffers, it starts with creating a shader object and loading data into it.
 
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexSource, NULL);
@@ -174,11 +174,11 @@ Up until now the vertex and fragment shaders have been two separate objects. Whi
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
 
-Since a fragment shader is allowed to write to multiple buffers, you need to explicitly specify which output is writing to which buffer. This needs to happen before linking the program. However, since this is 0 by default and there's only one output right now, the following line of code is not necessary:
+Since a fragment shader is allowed to write to multiple buffers, you need to explicitly specify which output is written to which buffer. This needs to happen before linking the program. However, since this is 0 by default and there's only one output right now, the following line of code is not necessary:
 
 	glBindFragDataLocation(shaderProgram, 0, "outColor");
 
-After attaching both the fragment and vertex shaders, the connection is made by *linking* the program. It is allowed to make changes to the shaders after they've been added to a program (or multiple programs!), but the actual result will not change until a program has been linked again. It is also possible to attach multiple shaders for the same stage (e.g. fragment) if they're parts forming the whole shader together. A shader object can be deleted with `glDeleteShader`, but it will not actualy be removed before it has been detached from all programs with `glDetachShader`.
+After attaching both the fragment and vertex shaders, the connection is made by *linking* the program. It is allowed to make changes to the shaders after they've been added to a program (or multiple programs!), but the actual result will not change until a program has been linked again. It is also possible to attach multiple shaders for the same stage (e.g. fragment) if they're parts forming the whole shader together. A shader object can be deleted with `glDeleteShader`, but it will not actually be removed before it has been detached from all programs with `glDetachShader`.
 
 	glLinkProgram(shaderProgram);
 
@@ -251,7 +251,7 @@ If you don't see anything, make sure that the shaders have compiled correctly, t
 Uniforms
 ========
 
-Right now the white color of the triangle has been hardcoded into the shader code, but what if you wanted to change it after compiling the shader? As it turns out, vertex attributes are not the only way to pass data to shader programs. There is another way to pass data to the shaders called *uniforms*. These are essentially global variables, having the same value for all vertices and/or fragments. To demonstrate how to use these, let's make it possible to change the color of the triangle from the program itself.
+Right now the white color of the triangle has been hard-coded into the shader code, but what if you wanted to change it after compiling the shader? As it turns out, vertex attributes are not the only way to pass data to shader programs. There is another way to pass data to the shaders called *uniforms*. These are essentially global variables, having the same value for all vertices and/or fragments. To demonstrate how to use these, let's make it possible to change the color of the triangle from the program itself.
 
 By making the color in the fragment shader a uniform, it will end up looking like this:
 
@@ -335,7 +335,7 @@ And `Color` is added as input to the fragment shader:
 
 Make sure that the output of the vertex shader and the input of the fragment shader have the same name, or the shaders will not be linked properly.
 
-Now, we just need to alter the attribute pointer code a bit to accomodate for the new `X, Y, R, G, B` attribute order.
+Now, we just need to alter the attribute pointer code a bit to accommodate for the new `X, Y, R, G, B` attribute order.
 
 	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
 	glEnableVertexAttribArray(posAttrib);
@@ -360,7 +360,7 @@ Element buffers
 
 Right now, the vertices are specified in the order in which they are drawn. If you wanted to add another triangle, you would have to add 3 additional vertices to the vertex array. There is a way to control the order, which also enables you to reuse existing vertices. This can save you a lot of memory when working with real 3D models later on, because each point is usually occupied by a corner of three triangles!
 
-An element array is filled with unsigned integers refering to vertices bound to `GL_ARRAY_BUFFER`. If we just want to draw them in the order they are in now, it'll look like this:
+An element array is filled with unsigned integers referring to vertices bound to `GL_ARRAY_BUFFER`. If we just want to draw them in the order they are in now, it'll look like this:
 
 	GLuint elements[] = {
 		0, 1, 2
@@ -427,7 +427,7 @@ The element buffer still specifies 6 vertices to form 2 triangles like before, b
 
 If you run into trouble, have a look at the full [source code](/content/code/c2_triangle_elements.txt).
 
-This chapter has covered all of the core principles of drawing things with OpenGL and it's absolutely essential that you have a good understanding of them before continuing. Therefore I advice you to do the exercises below before diving into [textures](/textures).
+This chapter has covered all of the core principles of drawing things with OpenGL and it's absolutely essential that you have a good understanding of them before continuing. Therefore I advise you to do the exercises below before diving into [textures](/textures).
 
 Exercises
 ========

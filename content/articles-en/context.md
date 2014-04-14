@@ -30,7 +30,7 @@ This program flow would look something like this in pseudocode:
 		return 0;
 	}
 
-When rendering a frame, the results will be stored in an offscreen buffer known as the *back buffer* to make sure the user only sees the final result. The `presentGraphics()` call will copy the result from the back buffer to the visible window buffer, the *front buffer*. Every application that makes use of realtime graphics will have a program flow that comes down to this, whether it uses a library or native code.
+When rendering a frame, the results will be stored in an offscreen buffer known as the *back buffer* to make sure the user only sees the final result. The `presentGraphics()` call will copy the result from the back buffer to the visible window buffer, the *front buffer*. Every application that makes use of real-time graphics will have a program flow that comes down to this, whether it uses a library or native code.
 
 By default, libraries will create an OpenGL context that supports the legacy functions. This is unfortunate, because we're not interested in those and they may become unavailable at some point in the future. The good news is that it is possible to inform the drivers that our application is ready for the future and does not depend on the old functions. The bad news is that at this moment only the GLFW library allows us to specify this. This little shortcoming doesn't have any negative consequences right now, so don't let it influence your choice of library too much, but the advantage of a so-called core profile context is that accidentally calling any of the old functions results in an invalid operation error to set you straight.
 
@@ -248,7 +248,7 @@ Then comes the most important part of the program, the event loop:
 
 The `SDL_PollEvent` function will check if there are any new events that have to be handled. An event can be anything from a mouse click to the user moving the window. Right now, the only event you need to respond to is the user pressing the little X button in the corner of the window. By breaking from the main loop, `SDL_Quit` is called and the window and graphics surface are destroyed. `SDL_GL_SwapWindow` here takes care of swapping the front and back buffer after new things have been drawn by your application.
 
-If you have a fullscreen window, it would be preferable to use escape as a means to close the window.
+If you have a fullscreen window, it would be preferable to use the escape key as a means to close the window.
 
 	if (windowEvent.type == SDL_KEYUP &&
 		windowEvent.key.keysym.sym == SDLK_ESCAPE) break;
@@ -333,7 +333,7 @@ Next comes the event loop, which in the case of GLFW works a little differently 
 		glfwPollEvents();
 	}
 
-The only required functions in the loop are `glfwSwapBuffers` to swap the back buffer and front buffer after you've finished drawing and `glfwPollEvents` to retrieve window events. If you are making a fullscreen application, you should  handle ESC to easily return to the desktop.
+The only required functions in the loop are `glfwSwapBuffers` to swap the back buffer and front buffer after you've finished drawing and `glfwPollEvents` to retrieve window events. If you are making a fullscreen application, you should handle the escape key to easily return to the desktop.
 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
@@ -379,7 +379,7 @@ Now just include the header in your program, but make sure that it is included b
 	#define GLEW_STATIC
 	#include <GL/glew.h>
 
-Don't forget to define `GLEW_STATIC` either using this preprocessor directive or by adding the `-DGLEW_STATIC` directive to your compiler commandline parameters or project settings.
+Don't forget to define `GLEW_STATIC` either using this preprocessor directive or by adding the `-DGLEW_STATIC` directive to your compiler command-line parameters or project settings.
 
 > If you prefer to dynamically link with GLEW, leave out the define and link with `glew32.lib` instead of `glew32s.lib` on Windows. Don't forget to include `glew32.dll` or `libGLEW.so` with your executable!
 
