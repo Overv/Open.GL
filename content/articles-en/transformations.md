@@ -1,7 +1,7 @@
 Matrices
 ========
 
-Since this is a guide on graphics programming, this chapter will not cover a lot of the extensive theory behind matrices. Only the theory that applies to their use in computer graphics will be considered here and they will be explained from a programmer's perspective. If you want to learn more about the topic, [these Khan Academy videos](http://www.khanacademy.org/math/algebra/algebra-matrices/v/introduction-to-matrices) are a really good general introduction to the subject.
+Since this is a guide on graphics programming, this chapter will not cover a lot of the extensive theory behind matrices. Only the theory that applies to their use in computer graphics will be considered here and they will be explained from a programmer's perspective. If you want to learn more about the topic, [these Khan Academy videos](https://www.khanacademy.org/math/algebra2/algebra-matrices/Basic_matrix_operations/v/introduction-to-the-matrix) are a really good general introduction to the subject.
 
 A matrix is a rectangular array of mathematical expressions, much like a two-dimensional array. Below is an example of a matrix displayed in the common square brackets form.
 
