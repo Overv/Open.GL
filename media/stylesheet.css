@@ -148,13 +148,17 @@ pre {
 	font-size: 14px;
 }
 
-article > p > code {
+article > p > code, a > code {
 	padding: 2px;
 
 	font-size: 14px;
 
 	border: 1px solid #ddd;
 	background: #f5f5f5;
+}
+
+a > code {
+    text-decoration: underline;
 }
 
 li > code {

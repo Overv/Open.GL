@@ -543,7 +543,7 @@ The primitives in your scene will now be upside down.
 <img src="/media/img/c4_window.png" alt="" />
 
 To spice things up a bit, you could change the rotation with time:
-	
+
 	...
 
 	// Calculate transformation
@@ -554,7 +554,7 @@ To spice things up a bit, you could change the rotation with time:
 		glm::vec3(0.0f, 0.0f, 1.0f)
 	);
 	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
-	
+
 	// Draw a rectangle from the 2 triangles using 6 indices
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

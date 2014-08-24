@@ -28,7 +28,7 @@ These explanations may still be a bit cryptic and since OpenGL is all about grap
 
 <img src="/media/img/c3_clamping.png" alt="" />
 
-The clamping can be set per coordinate, where the equivalent of `(x,y,z)` in texture coordinates is called `(s,t,r)`. Texture parameter are changed with the `glTexParameter*` functions as demonstrated here.
+The clamping can be set per coordinate, where the equivalent of `(x,y,z)` in texture coordinates is called `(s,t,r)`. Texture parameter are changed with the [`glTexParameter*`](http://docs.gl/gl3/glTexParameter) functions as demonstrated here.
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -66,14 +66,14 @@ As you've seen, there is another way to filter textures: mipmaps. Mipmaps are sm
 
 Generating them is as simple as calling the function above, so there's no excuse for not using them! Note that you *do* have to load the texture image itself before mipmaps can be generated from it.
 
-To use mipmaps, select one of the four mipmap filtering methods. 
+To use mipmaps, select one of the four mipmap filtering methods.
 
 - `GL_NEAREST_MIPMAP_NEAREST`: Uses the mipmap that most closely matches the size of the pixel being textured and samples with nearest neighbour interpolation.
 - `GL_LINEAR_MIPMAP_NEAREST`: Samples the closest mipmap with linear interpolation.
 - `GL_NEAREST_MIPMAP_LINEAR`: Uses the two mipmaps that most closely match the size of the pixel being textured and samples with nearest neighbour interpolation.
 - `GL_LINEAR_MIPMAP_LINEAR`: Samples closest two mipmaps with linear interpolation.
 
-There are some other texture parameters available, but they're suited for specialized operations. You can read about them in the [specification](http://www.opengl.org/sdk/docs/man3/xhtml/glTexParameter.xml).
+There are some other texture parameters available, but they're suited for specialized operations. You can read about them in the [specification](http://docs.gl/gl3/glTexParameter).
 
 Loading texture images
 ========
@@ -87,7 +87,7 @@ Now that the texture object has been configured it's time to load the texture im
 	};
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
 
-The first parameter after the texture target is the *level-of-detail*, where `0` is the base image. This parameter can be used to load your own mipmap images. The second parameter specifies the internal pixel format, the format in which pixels should be stored on the graphics card. Many different formats are available, including compressed formats, so it's certainly worth taking a look at all of the options. The third and fourth parameters specify the width and height of the image. The fifth parameter should always have a value of `0` per the [specification](http://www.opengl.org/sdk/docs/man3/xhtml/glTexImage2D.xml). The next two parameter describe the format of the pixels in the array that will be loaded and the final parameter specifies the array itself. The function begins loading the image at coordinate `(0,0)`, so pay attention to this.
+The first parameter after the texture target is the *level-of-detail*, where `0` is the base image. This parameter can be used to load your own mipmap images. The second parameter specifies the internal pixel format, the format in which pixels should be stored on the graphics card. Many different formats are available, including compressed formats, so it's certainly worth taking a look at all of the options. The third and fourth parameters specify the width and height of the image. The fifth parameter should always have a value of `0` per the [specification](http://docs.gl/gl3/glTexImage2D). The next two parameter describe the format of the pixels in the array that will be loaded and the final parameter specifies the array itself. The function begins loading the image at coordinate `(0,0)`, so pay attention to this.
 
 But how is the pixel array itself established? Textures in graphics applications will usually be a lot more sophisticated than simple patterns and will be loaded from files. Best practice is to have your files in a format that is natively supported by the hardware, but it may sometimes be more convenient to load textures from common image formats like JPG and PNG. Unfortunately OpenGL doesn't offer any helper functions to load pixels from these image files, but that's where third-party libraries come in handy again! The SOIL library will be discussed here along with some of the alternatives.
 
@@ -129,7 +129,7 @@ As you've seen, textures are sampled using texture coordinates and you'll have t
 	};
 
 The vertex shader needs to be modified so that the texture coordinates are interpolated over the fragments:
-	
+
 	...
 
 	in vec2 texcoord;
@@ -143,7 +143,7 @@ The vertex shader needs to be modified so that the texture coordinates are inter
 	{
 		Texcoord = texcoord;
 
-	
+
 Just like when the color attribute was added, the attribute pointers need to be adapted to the new format:
 
 	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
@@ -203,7 +203,7 @@ The function `glActiveTexture` specifies which texture unit a texture object is 
 The amount of texture units supported differs per graphics card, but it will be at least 48. It is safe to say that you will never hit this limit in even the most extreme graphics applications.
 
 To practice with sampling from multiple textures, let's try blending the images of the kitten and [one of a puppy](/content/code/sample2.png) to get the best of both worlds! Let's first modify the fragment shader to sample from two textures and blend the pixels:
-	
+
 	...
 
 	uniform sampler2D texKitten;
@@ -222,7 +222,7 @@ Now that the two samplers are ready, you'll have to assign the first two texture
 
 	GLuint textures[2];
 	glGenTextures(2, textures);
-	
+
 	int width, height;
 	unsigned char* image;
 

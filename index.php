@@ -143,15 +143,12 @@
 					?>
 				</ul>
 
-				<blockquote>
-					<div style="margin-bottom: 5px; float: left">Language:</div>
-					<div style="float: right">
-						<?php
-							foreach ($languages as $lang) {
-								print('<a href="/' . $content . ($lang == 'en' ? '' : '/' . $lang) . '"><img src="/media/' . $lang . '.png" alt="' . $lang . '" /></a> ');
-							}
-						?>
-					</div>
+				<blockquote style="padding-bottom: 8px; font-size: 14px">
+					<h2 style="margin: 0">Links</h2>
+
+                    <a href="https://github.com/zuck/opengl-examples" style="text-decoration: underline">Easy-to-build code</a><br>
+                    <a href="https://www.youtube.com/playlist?list=PLW3Zl3wyJwWNQjMz941uyOIq3Nw6bcDYC" style="text-decoration: underline">Matrix math tutorials</a><br>
+                    <a href="http://docs.gl" style="text-decoration: underline">OpenGL reference</a>
 				</blockquote>
 
                 <?php
