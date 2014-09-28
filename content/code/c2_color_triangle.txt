@@ -26,8 +26,12 @@ const GLchar* fragmentSource =
 
 int main()
 {
-    sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close);
-    
+    sf::ContextSettings context;
+    context.depthBits = 24;
+    context.stencilBits = 8;
+
+    sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close, settings);
+
     // Initialize GLEW
     glewExperimental = GL_TRUE;
     glewInit();
@@ -93,7 +97,7 @@ int main()
         // Clear the screen to black
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        
+
         // Draw a triangle from the 3 vertices
         glDrawArrays(GL_TRIANGLES, 0, 3);
 

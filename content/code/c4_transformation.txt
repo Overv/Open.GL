@@ -38,8 +38,12 @@ const GLchar* fragmentSource =
 
 int main()
 {
-    sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close);
-    
+    sf::ContextSettings context;
+    context.depthBits = 24;
+    context.stencilBits = 8;
+
+    sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close, settings);
+
     // Initialize GLEW
     glewExperimental = GL_TRUE;
     glewInit();
@@ -110,7 +114,7 @@ int main()
     // Load textures
     GLuint textures[2];
     glGenTextures(2, textures);
-    
+
     int width, height;
     unsigned char* image;
 
@@ -165,7 +169,7 @@ int main()
             glm::vec3(0.0f, 0.0f, 1.0f)
         );
         glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
-        
+
         // Draw a rectangle from the 2 triangles using 6 indices
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

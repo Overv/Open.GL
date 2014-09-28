@@ -36,8 +36,12 @@ const GLchar* fragmentSource =
 
 int main()
 {
-    sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close);
-    
+    sf::ContextSettings context;
+    context.depthBits = 24;
+    context.stencilBits = 8;
+
+    sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close, settings);
+
     // Initialize GLEW
     glewExperimental = GL_TRUE;
     glewInit();
@@ -111,7 +115,7 @@ int main()
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, tex);
-    
+
     int width, height;
     unsigned char* image = SOIL_load_image("sample.png", &width, &height, 0, SOIL_LOAD_RGB);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
@@ -145,7 +149,7 @@ int main()
 
         // Set the time uniform
         glUniform1f(uniTime, (GLfloat)clock() / (GLfloat)CLOCKS_PER_SEC);
-        
+
         // Draw a rectangle from the 2 triangles using 6 indices
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

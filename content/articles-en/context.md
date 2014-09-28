@@ -115,9 +115,14 @@ Start by including the window package and defining the entry point of your appli
 
 A window can be opened by creating a new instance of `sf::Window`. The basic constructor takes an `sf::VideoMode` structure, a title for the window and a window style. The `sf::VideoMode` structure specifies the width, height and optionally the pixel depth of the window. Finally, the requirement for a fixed size window is specified by overriding the default style of `Style::Resize|Style::Close`. It is also possible to create a fullscreen window by passing `Style::Fullscreen` as window style.
 
-	sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Close);
+    sf::ContextSettings settings;
+    settings.depthBits = 24;
+    settings.stencilBits = 8;
+    settings.antialiasingLevel = 2; // Optional
 
-The constructor can also take an `sf::WindowSettings` structure that allows you to specify the anti-aliasing level and the accuracy of the depth and stencil buffers. The latter two will be discussed later, so you don't have to worry about these yet.
+	sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Close, settings);
+
+The constructor can also take an `sf::WindowSettings` structure that allows you to specify the anti-aliasing level and the accuracy of the depth and stencil buffers. The latter two will be discussed later, so you don't have to worry about these yet. In the latest version of SFML, you do need to request these manually with the code above.
 
 When running this, you'll notice that the application instantly closes after creating the window. Let's add the event loop to deal with that.
 

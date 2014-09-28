@@ -35,7 +35,11 @@ const GLchar* fragmentSource =
 
 int main()
 {
-    sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close);
+    sf::ContextSettings context;
+    context.depthBits = 24;
+    context.stencilBits = 8;
+
+    sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close, settings);
 
     // Initialize GLEW
     glewExperimental = GL_TRUE;
@@ -107,7 +111,7 @@ int main()
     // Load textures
     GLuint textures[2];
     glGenTextures(2, textures);
-    
+
     int width, height;
     unsigned char* image;
 
@@ -122,7 +126,7 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, textures[1]);
         image = SOIL_load_image("sample2.png", &width, &height, 0, SOIL_LOAD_RGB);

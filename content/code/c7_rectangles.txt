@@ -56,11 +56,15 @@ GLuint createShader(GLenum type, const GLchar* src) {
 
 int main() {
     // Window
-    sf::Window window(sf::VideoMode(800, 600), "Circles", sf::Style::Close, sf::ContextSettings(0, 0, 0, 3, 2));
+    sf::ContextSettings context;
+    context.depthBits = 24;
+    context.stencilBits = 8;
+
+    sf::Window window(sf::VideoMode(800, 600), "Circles", sf::Style::Titlebar | sf::Style::Close, settings);
 
     // Initialize GLEW
     glewInit();
-    
+
     // Compile and activate shaders
     GLuint vertexShader = createShader(GL_VERTEX_SHADER, vertexShaderSrc);
     GLuint geometryShader = createShader(GL_GEOMETRY_SHADER, geometryShaderSrc);
@@ -116,6 +120,6 @@ int main() {
 
         window.display();
     }
-    
+
     return 0;
 }

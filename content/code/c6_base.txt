@@ -123,10 +123,10 @@ GLuint loadTexture(const GLchar* path)
 {
     GLuint texture;
     glGenTextures(1, &texture);
-    
+
     int width, height;
     unsigned char* image;
-    
+
     glBindTexture(GL_TEXTURE_2D, texture);
     image = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGB);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
@@ -188,8 +188,12 @@ void specifyScreenVertexAttributes(GLuint shaderProgram)
 
 int main()
 {
-    sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close);
-    
+    sf::ContextSettings context;
+    context.depthBits = 24;
+    context.stencilBits = 8;
+
+    sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close, settings);
+
     // Initialize GLEW
     glewExperimental = GL_TRUE;
     glewInit();
@@ -213,7 +217,7 @@ int main()
     // Create shader programs
     GLuint sceneVertexShader, sceneFragmentShader, sceneShaderProgram;
     createShaderProgram(sceneVertexSource, sceneFragmentSource, sceneVertexShader, sceneFragmentShader, sceneShaderProgram);
-    
+
     GLuint screenVertexShader, screenFragmentShader, screenShaderProgram;
     createShaderProgram(screenVertexSource, screenFragmentSource, screenVertexShader, screenFragmentShader, screenShaderProgram);
 
@@ -262,7 +266,7 @@ int main()
     glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil);
-    
+
     // Set up projection
     glm::mat4 view = glm::lookAt(
         glm::vec3(2.5f, 2.5f, 2.0f),
@@ -316,7 +320,7 @@ int main()
         glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
-        
+
         // Draw cube
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -328,7 +332,7 @@ int main()
             glStencilMask(0xFF);
             glDepthMask(GL_FALSE);
             glClear(GL_STENCIL_BUFFER_BIT);
-            
+
             glDrawArrays(GL_TRIANGLES, 36, 6);
 
             // Draw cube reflection
