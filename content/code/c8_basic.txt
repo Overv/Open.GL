@@ -16,7 +16,7 @@ const GLchar* vertexShaderSrc = GLSL(
 
 int main() {
     // Window
-    sf::ContextSettings context;
+    sf::ContextSettings settings;
     context.depthBits = 24;
     context.stencilBits = 8;
 

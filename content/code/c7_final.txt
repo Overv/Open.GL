@@ -71,7 +71,7 @@ GLuint createShader(GLenum type, const GLchar* src) {
 
 int main() {
     // Window
-    sf::ContextSettings context;
+    sf::ContextSettings settings;
     context.depthBits = 24;
     context.stencilBits = 8;
 

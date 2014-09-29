@@ -12,7 +12,7 @@ const GLchar* fragmentSource = "#version 150 core\nin vec3 Color; out vec4 outCo
 
 int main()
 {
-    sf::ContextSettings context;
+    sf::ContextSettings settings;
     context.depthBits = 24;
     context.stencilBits = 8;
 

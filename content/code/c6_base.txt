@@ -188,7 +188,7 @@ void specifyScreenVertexAttributes(GLuint shaderProgram)
 
 int main()
 {
-    sf::ContextSettings context;
+    sf::ContextSettings settings;
     context.depthBits = 24;
     context.stencilBits = 8;
 
