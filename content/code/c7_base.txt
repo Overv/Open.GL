@@ -32,8 +32,8 @@ GLuint createShader(GLenum type, const GLchar* src) {
 int main() {
     // Window
     sf::ContextSettings settings;
-    context.depthBits = 24;
-    context.stencilBits = 8;
+    settings.depthBits = 24;
+    settings.stencilBits = 8;
 
     sf::Window window(sf::VideoMode(800, 600), "Circles", sf::Style::Titlebar | sf::Style::Close, settings);
 

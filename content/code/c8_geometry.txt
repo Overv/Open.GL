@@ -35,8 +35,8 @@ const GLchar* geoShaderSrc = GLSL(
 int main() {
     // Window
     sf::ContextSettings settings;
-    context.depthBits = 24;
-    context.stencilBits = 8;
+    settings.depthBits = 24;
+    settings.stencilBits = 8;
 
     sf::Window window(sf::VideoMode(800, 600), "Transform Feedback", sf::Style::Titlebar | sf::Style::Close, settings);
 

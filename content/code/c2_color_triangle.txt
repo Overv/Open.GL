@@ -27,8 +27,8 @@ const GLchar* fragmentSource =
 int main()
 {
     sf::ContextSettings settings;
-    context.depthBits = 24;
-    context.stencilBits = 8;
+    settings.depthBits = 24;
+    settings.stencilBits = 8;
 
     sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close, settings);
 
