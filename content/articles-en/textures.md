@@ -110,6 +110,8 @@ You can start configuring the texture parameters and generating mipmaps after th
 
 You can clean up the image data right after you've loaded it into the texture.
 
+>As mentioned before, OpenGL expects the first pixel to be located in the bottom-left corner, which means that textures will be flipped when loaded with SOIL directly. To counteract that, the code in the tutorial will use flipped Y coordinates for texture coordinates from now on. That means that `0, 0` will be assumed to be the top-left corner instead of the bottom-left. This practice might make texture coordinates more intuitive as a side-effect.
+
 Alternative options
 --------
 
