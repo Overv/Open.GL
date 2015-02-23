@@ -501,7 +501,7 @@ A simple transformation
 Before diving straight into 3D, let's first try a simple 2D rotation.
 
 	glm::mat4 trans;
-	trans = glm::rotate(trans, 180.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	trans = glm::rotate(trans, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
 The first line creates a new 4-by-4 matrix, which is the identity matrix by default. The `glm::rotate` function multiplies this matrix by a rotation transformation of 180 degrees around the Z axis. Remember that since the screen lies in the XY plane, the Z axis is the axis you want to rotate points around.
 
@@ -550,7 +550,7 @@ To spice things up a bit, you could change the rotation with time:
 	glm::mat4 trans;
 	trans = glm::rotate(
 		trans,
-		(float)clock() / (float)CLOCKS_PER_SEC * 180.0f,
+		(float)clock() / (float)CLOCKS_PER_SEC * glm::radians(180.0f),
 		glm::vec3(0.0f, 0.0f, 1.0f)
 	);
 	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
@@ -586,7 +586,7 @@ The rotation above can be considered the model transformation, because it transf
 
 To create the view transformation, GLM offers the useful `glm::lookAt` function that simulates a moving camera. The first parameter specifies the position of the camera, the second the point to be centered on-screen and the third the `up` axis. Here `up` is defined as the Z axis, which implies that the XY plane is the "ground".
 
-	glm::mat4 proj = glm::perspective(45.0f, 800.0f / 600.0f, 1.0f, 10.0f);
+	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 1.0f, 10.0f);
 	GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
 	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
