@@ -544,13 +544,18 @@ The primitives in your scene will now be upside down.
 
 To spice things up a bit, you could change the rotation with time:
 
+  auto t_start = std::chrono::high_resolution_clock::now();
+
 	...
 
 	// Calculate transformation
+  auto t_now = std::chrono::high_resolution_clock::now();
+  float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
+
 	glm::mat4 trans;
 	trans = glm::rotate(
 		trans,
-		(float)clock() / (float)CLOCKS_PER_SEC * glm::radians(180.0f),
+		dur.count() * glm::radians(180.0f),
 		glm::vec3(0.0f, 0.0f, 1.0f)
 	);
 	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));

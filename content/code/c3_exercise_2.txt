@@ -2,6 +2,7 @@
 #define GLEW_STATIC
 
 // Headers
+#include <chrono>
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
 #include <iostream>
@@ -36,6 +37,8 @@ const GLchar* fragmentSource =
 
 int main()
 {
+    auto t_start = std::chrono::high_resolution_clock::now();
+
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
@@ -144,7 +147,10 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Set the time uniform
-        glUniform1f(uniTime, (GLfloat)clock() / (GLfloat)CLOCKS_PER_SEC);
+        auto t_now = std::chrono::high_resolution_clock::now();
+        float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
+
+        glUniform1f(uniTime, time);
 
         // Draw a rectangle from the 2 triangles using 6 indices
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

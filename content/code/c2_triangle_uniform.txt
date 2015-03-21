@@ -2,6 +2,7 @@
 #define GLEW_STATIC
 
 // Headers
+#include <chrono>
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
 #include <iostream>
@@ -23,6 +24,8 @@ const GLchar* fragmentSource =
 
 int main()
 {
+    auto t_start = std::chrono::high_resolution_clock::now();
+
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
@@ -91,7 +94,9 @@ int main()
         }
 
         // Set the color of the triangle
-        GLfloat time = (GLfloat)clock() / (GLfloat)CLOCKS_PER_SEC;
+        auto t_now = std::chrono::high_resolution_clock::now();
+        float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
+        
         glUniform3f(uniColor, (sin(time * 4.0f) + 1.0f) / 2.0f, 0.0f, 0.0f);
 
         // Clear the screen to black

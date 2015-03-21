@@ -278,7 +278,13 @@ The values of uniforms are changed with any of the `glUniformXY` functions, wher
 
 If you run your program now, you'll see that the triangle is red. To make things a little more exciting, try varying the color with the time by doing something like this in your main loop:
 
-	float time = (float)clock() / (float)CLOCKS_PER_SEC;
+	auto t_start = std::chrono::high_resolution_clock::now();
+
+	...
+
+	auto t_now = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
+
 	glUniform3f(uniColor, (sin(time * 4.0f) + 1.0f) / 2.0f, 0.0f, 0.0f);
 
 Although this example may not be very exciting, it does demonstrate that uniforms are essential for controlling the behaviour of shaders at runtime. Vertex attributes on the other hand are ideal for describing a single vertex.
