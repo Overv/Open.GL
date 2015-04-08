@@ -178,6 +178,8 @@ Since a fragment shader is allowed to write to multiple buffers, you need to exp
 
 	glBindFragDataLocation(shaderProgram, 0, "outColor");
 
+>Use `glDrawBuffers` when rendering to multiple buffers, because only the first output will be enabled by default.
+
 After attaching both the fragment and vertex shaders, the connection is made by *linking* the program. It is allowed to make changes to the shaders after they've been added to a program (or multiple programs!), but the actual result will not change until a program has been linked again. It is also possible to attach multiple shaders for the same stage (e.g. fragment) if they're parts forming the whole shader together. A shader object can be deleted with `glDeleteShader`, but it will not actually be removed before it has been detached from all programs with `glDetachShader`.
 
 	glLinkProgram(shaderProgram);
