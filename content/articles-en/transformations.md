@@ -555,7 +555,7 @@ To spice things up a bit, you could change the rotation with time:
 	glm::mat4 trans;
 	trans = glm::rotate(
 		trans,
-		dur.count() * glm::radians(180.0f),
+		time * glm::radians(180.0f),
 		glm::vec3(0.0f, 0.0f, 1.0f)
 	);
 	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
