@@ -16,6 +16,7 @@ Before we can take off, you need to make sure you have all the things you need.
 * Graphics card [compatible](http://en.wikipedia.org/wiki/OpenGL#OpenGL_3.2) with OpenGL 3.2
 * [SFML](http://www.sfml-dev.org/), [GLFW](http://www.glfw.org/) or [SDL](http://www.libsdl.org/) for creating the context and handling input
 * [GLEW](http://glew.sourceforge.net/) to use newer OpenGL functions
+* [SOIL](http://www.lonesock.net/soil.html) for textures
 * [GLM](http://glm.g-truc.net/) for vectors and matrices
 
 Context creation will be explained for *SFML*, *GLFW* and *SDL*, so use whatever library suites you best. See the next chapter for the differences between the three if you're not sure which one to use.
