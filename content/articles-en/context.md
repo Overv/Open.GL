@@ -357,6 +357,8 @@ Unfortunately, we can't just call the functions we need yet. This is because it'
 
 Your program needs to check which functions are available at runtime and link with them dynamically. This is done by finding the addresses of the functions, assigning them to function pointers and calling them. That looks something like this:
 
+<blockquote class="important">Don't try to run this code, it's just for demonstration purposes.</blockquote>
+
 	// Specify prototype of function
 	typedef void (*GENBUFFERS) (GLsizei, GLuint*);
 
