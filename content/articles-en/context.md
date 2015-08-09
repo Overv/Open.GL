@@ -39,6 +39,8 @@ Supporting resizable windows with OpenGL introduces some complexities as resourc
 Setup
 =====
 
+>Instead of reading this chapter, you can make use of the [OpenGL quickstart boilerplate](https://github.com/Polytonic/Glitter), which makes setting up an OpenGL project with all of the required libraries very easy. You'll just have to install SOIL separately.
+
 The first thing to do when starting a new OpenGL project is to dynamically link with OpenGL.
 
 - **Windows**: Add `opengl32.lib` to your linker input
