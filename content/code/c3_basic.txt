@@ -108,6 +108,7 @@ int main()
     // Load texture
     GLuint tex;
     glGenTextures(1, &tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
 
     int width, height;
     unsigned char* image = SOIL_load_image("sample.png", &width, &height, 0, SOIL_LOAD_RGB);
