@@ -13,4 +13,4 @@ The code examples (`content/code`) are licensed as
 equivalent to public domain in most jurisdictions.
 
 The source code of the site is licensed as MIT and content of the articles as
-[CC BY-NC 4.0](http://creativecommons.org/licenses/by-nc/4.0/).
+[Creative Commons Attribution 4.0 International](http://creativecommons.org/licenses/by/4.0/).
