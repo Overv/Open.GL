@@ -329,7 +329,7 @@ In the same style as the previous section, this is how the product of two 4-by-4
     \color{blue}e & \color{blue}f & \color{blue}g & \color{blue}h \\
     \color{green}i & \color{green}j & \color{green}k & \color{green}l \\
     \color{purple}m & \color{purple}n & \color{purple}o & \color{purple}p
-  \end{bmatrix
+  \end{bmatrix}
   \cdot
   \begin{bmatrix}
     \color{red}A & \color{blue}B & \color{green}C & \color{purple}D \\
