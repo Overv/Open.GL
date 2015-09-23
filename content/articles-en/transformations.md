@@ -103,6 +103,7 @@ The product of a matrix with another matrix is quite a bit more involved and is 
     \color{green}i & \color{green}j & \color{green}k & \color{green}l \\
     \color{purple}m & \color{purple}n & \color{purple}o & \color{purple}p
   \end{bmatrix}
+  \cdot
   \begin{pmatrix}
     x \\
     y \\
@@ -129,6 +130,7 @@ I will mention each of the common vector transformations in this section and how
     \color{green}0 & \color{green}0 & \color{green}1 & \color{green}0 \\
     \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
   \end{bmatrix}
+  \cdot
   \begin{pmatrix}
     x \\
     y \\
@@ -171,6 +173,7 @@ Can you guess from the multiplication overview what the matrix should look like 
     \color{green}0 & \color{green}0 & \color{green}1 & \color{green}Z \\
     \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
   \end{bmatrix}
+  \cdot
   \begin{pmatrix}
     x \\
     y \\
@@ -204,6 +207,7 @@ If you understand how the previous matrix was formed, it should not be difficult
     \color{green}0 & \color{green}0 & \color{green}{SZ} & \color{green}0 \\
     \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
   \end{bmatrix}
+  \cdot
   \begin{pmatrix}
     x \\
     y \\
@@ -244,6 +248,7 @@ Rotation around X-axis:
     \color{green}0 & \color{green}{\sin\theta} & \color{green}{\cos\theta} & \color{green}0 \\
     \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
   \end{bmatrix}
+  \cdot
   \begin{pmatrix}
     x \\
     y \\
@@ -267,6 +272,7 @@ Rotation around Y-axis:
     \color{green}{-\sin\theta} & \color{green}0 & \color{green}{\cos\theta} & \color{green}0 \\
     \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
   \end{bmatrix}
+  \cdot
   \begin{pmatrix}
     x \\
     y \\
@@ -290,6 +296,7 @@ Rotation around Z-axis:
     \color{green}0 & \color{green}0 & \color{green}1 & \color{green}0 \\
     \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
   \end{bmatrix}
+  \cdot
   \begin{pmatrix}
     x \\
     y \\
@@ -322,7 +329,8 @@ In the same style as the previous section, this is how the product of two 4-by-4
     \color{blue}e & \color{blue}f & \color{blue}g & \color{blue}h \\
     \color{green}i & \color{green}j & \color{green}k & \color{green}l \\
     \color{purple}m & \color{purple}n & \color{purple}o & \color{purple}p
-  \end{bmatrix}
+  \end{bmatrix
+  \cdot
   \begin{bmatrix}
     \color{red}A & \color{blue}B & \color{green}C & \color{purple}D \\
     \color{red}E & \color{blue}F & \color{green}G & \color{purple}H \\
@@ -357,6 +365,7 @@ The above is commonly recognized among mathematicians as an *indecipherable mess
     \color{red}1 & \color{red}2 \\
     \color{blue}3 & \color{blue}4
   \end{bmatrix}
+  \cdot
   \begin{bmatrix}
     \color{green}a & \color{purple}b \\
     \color{green}c & \color{purple}d
@@ -383,6 +392,7 @@ M_\text{translate}\cdot M_\text{scale} =
     \color{green}0 & \color{green}0 & \color{green}1 & \color{green}3 \\
     \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
   \end{bmatrix}
+  \cdot
   \begin{bmatrix}
     \color{red}{2} & \color{red}0 & \color{red}0 & \color{red}0 \\
     \color{blue}0 & \color{blue}{2} & \color{blue}0 & \color{blue}0 \\
@@ -409,6 +419,7 @@ Now, let's try to transform a vector and see if it worked:
     \color{green}0 & \color{green}0 & \color{green}{2} & \color{green}3 \\
     \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
   \end{bmatrix}
+  \cdot
   \begin{pmatrix}
     x \\
     y \\
