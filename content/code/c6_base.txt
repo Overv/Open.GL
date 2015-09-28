@@ -276,6 +276,9 @@ int main()
         glm::vec3(0.0f, 0.0f, 0.0f),
         glm::vec3(0.0f, 0.0f, 1.0f)
     );
+
+    glUseProgram(sceneShaderProgram);
+
     GLint uniView = glGetUniformLocation(sceneShaderProgram, "view");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
@@ -324,8 +327,6 @@ int main()
             glm::vec3(0.0f, 0.0f, 1.0f)
         );
         glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
         // Draw cube
         glDrawArrays(GL_TRIANGLES, 0, 36);
