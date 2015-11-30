@@ -214,3 +214,12 @@ code[class=cpp] {
 #donate_buttons {
 	float: right;
 }
+
+#adbox {
+    width: 160px;
+    height: 600px;
+}
+
+#adbox-article {
+    display: none;
+}

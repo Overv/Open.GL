@@ -93,3 +93,13 @@ nav li.selected:after {
 nav blockquote {
     display: none;
 }
+
+#adbox {
+    display: none;
+}
+
+#adbox-article {
+    display: block;
+    width: 100%;
+    height: 100px;
+}

@@ -153,21 +153,14 @@
                     <a href="http://docs.gl" style="text-decoration: underline">OpenGL reference</a>
 				</blockquote>
 
-                <?php
-                    $userAgent = $_SERVER['HTTP_USER_AGENT'];
-                    if (strpos($userAgent, 'Android') === false && strpos($userAgent, 'Mobile') === false) {
-                ?>
-				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <ins class="adsbygoogle"
-                     style="display:inline-block;width:160px;height:600px"
-                     data-ad-client="ca-pub-4259747131061893"
-                     data-ad-slot="6972020941"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-                <?php
-                    }
-                ?>
+                <div id="adbox">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- Open.GL Responsive -->
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4259747131061893" data-ad-slot="6609097747" data-ad-format="auto"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
 			</nav>
 
 			<!-- Content container -->
@@ -179,6 +172,17 @@
 						print(Markdown($contentSource));
 					?>
 				</article>
+
+                <div id="adbox-article">
+                    <hr />
+
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- Open.GL Responsive -->
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4259747131061893" data-ad-slot="6609097747" data-ad-format="auto"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
 
 				<?php
 					if (!$notfound)
