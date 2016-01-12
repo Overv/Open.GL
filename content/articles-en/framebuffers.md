@@ -233,12 +233,16 @@ The Sobel operator is often used in edge detection algorithms, let's find out wh
 
 The fragment shader looks like this:
 
-	vec4 s1 = texture(texFramebuffer, Texcoord - 1.0 / 300.0 - 1.0 / 200.0);
-	vec4 s2 = texture(texFramebuffer, Texcoord + 1.0 / 300.0 - 1.0 / 200.0);
-	vec4 s3 = texture(texFramebuffer, Texcoord - 1.0 / 300.0 + 1.0 / 200.0);
-	vec4 s4 = texture(texFramebuffer, Texcoord + 1.0 / 300.0 + 1.0 / 200.0);
-	vec4 sx = 4.0 * ((s4 + s3) - (s2 + s1));
-	vec4 sy = 4.0 * ((s2 + s4) - (s1 + s3));
+	vec4 topLeft     = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y + 1.0 / 200.0));
+	vec4 topRight    = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y + 1.0 / 200.0));
+	vec4 bottomLeft  = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y - 1.0 / 200.0));
+	vec4 bottomRight = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y - 1.0 / 200.0));
+	vec4 top         = texture(texFramebuffer, vec2(Texcoord.x, Texcoord.y + 1.0 / 200.0));
+	vec4 bottom      = texture(texFramebuffer, vec2(Texcoord.x, Texcoord.y - 1.0 / 200.0));
+	vec4 left        = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y));
+	vec4 right       = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y));
+	vec4 sx = -topLeft - 2 * left - bottomLeft + topRight     + 2 * right  + bottomRight;
+	vec4 sy = -topLeft - 2 * top  - topRight   + bottomLeft   + 2 * bottom + bottomRight;
 	vec4 sobel = sqrt(sx * sx + sy * sy);
 	outColor = sobel;
 
