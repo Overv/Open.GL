@@ -83,5 +83,13 @@ int main()
 
     printf("%f %f %f %f %f\n", feedback[0], feedback[1], feedback[2], feedback[3], feedback[4]);
 
+    glDeleteProgram(program);
+    glDeleteShader(shader);
+
+    glDeleteBuffers(1, &tbo);
+    glDeleteBuffers(1, &vbo);
+
+    glDeleteVertexArrays(1, &vao);
+
     return 0;
 }

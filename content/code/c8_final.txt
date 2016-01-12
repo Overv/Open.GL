@@ -119,5 +119,16 @@ int main()
         printf("%f\n", feedback[i]);
     }
 
+    glDeleteQueries(1, &query);
+
+    glDeleteProgram(program);
+    glDeleteShader(geoShader);
+    glDeleteShader(vertexShader);
+
+    glDeleteBuffers(1, &tbo);
+    glDeleteBuffers(1, &vbo);
+
+    glDeleteVertexArrays(1, &vao);
+
     return 0;
 }

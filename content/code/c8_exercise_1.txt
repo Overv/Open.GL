@@ -182,5 +182,14 @@ int main()
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(data), data);
     }
 
+    glDeleteProgram(program);
+    glDeleteShader(fragmentShader);
+    glDeleteShader(vertexShader);
+
+    glDeleteBuffers(1, &tbo);
+    glDeleteBuffers(1, &vbo);
+
+    glDeleteVertexArrays(1, &vao);
+
     return 0;
 }

@@ -134,6 +134,7 @@ int main()
     sf::Window window(sf::VideoMode(800, 600, 32), "Cubes", sf::Style::Titlebar | sf::Style::Close, settings);
 
     // Initialize GLEW
+    glewExperimental = GL_TRUE;
     glewInit();
 
     // Compile and activate shaders
@@ -231,6 +232,15 @@ int main()
         // Swap buffers
         window.display();
     }
+
+    glDeleteProgram(shaderProgram);
+    glDeleteShader(fragmentShader);
+    glDeleteShader(geometryShader);
+    glDeleteShader(vertexShader);
+
+    glDeleteBuffers(1, &vbo);
+
+    glDeleteVertexArrays(1, &vao);
 
     return 0;
 }
