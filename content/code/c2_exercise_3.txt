@@ -13,15 +13,15 @@ const GLchar* vertexSource =
     "in float color;"
     "out float Color;"
     "void main() {"
-    "   Color = color;"
-    "   gl_Position = vec4(position, 0.0, 1.0);"
+    "    Color = color;"
+    "    gl_Position = vec4(position, 0.0, 1.0);"
     "}";
 const GLchar* fragmentSource =
     "#version 150 core\n"
     "in float Color;"
     "out vec4 outColor;"
     "void main() {"
-    "   outColor = vec4(Color, Color, Color, 1.0);"
+    "    outColor = vec4(Color, Color, Color, 1.0);"
     "}";
 
 int main()
@@ -112,4 +112,6 @@ int main()
     glDeleteBuffers(1, &vbo);
 
     glDeleteVertexArrays(1, &vao);
+        
+    return 0;
 }

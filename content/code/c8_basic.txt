@@ -14,15 +14,16 @@ const GLchar* vertexShaderSrc = GLSL(
     }
 );
 
-int main() {
-    // Window
+int main()
+{
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
 
-    sf::Window window(sf::VideoMode(800, 600), "Transform Feedback", sf::Style::Titlebar | sf::Style::Close, settings);
+    sf::Window window(sf::VideoMode(800, 600, 32), "Transform Feedback", sf::Style::Titlebar | sf::Style::Close, settings);
 
     // Initialize GLEW
+    glewExperimental = GL_TRUE;
     glewInit();
 
     // Compile shader

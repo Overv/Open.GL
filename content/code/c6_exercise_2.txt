@@ -23,9 +23,9 @@ const GLchar* sceneVertexSource =
     "uniform mat4 proj;"
     "uniform vec3 overrideColor;"
     "void main() {"
-    "   Color = overrideColor * color;"
-    "   Texcoord = texcoord;"
-    "   gl_Position = proj * view * model * vec4(position, 1.0);"
+    "    Color = overrideColor * color;"
+    "    Texcoord = texcoord;"
+    "    gl_Position = proj * view * model * vec4(position, 1.0);"
     "}";
 const GLchar* sceneFragmentSource =
     "#version 150 core\n"
@@ -35,7 +35,7 @@ const GLchar* sceneFragmentSource =
     "uniform sampler2D texKitten;"
     "uniform sampler2D texPuppy;"
     "void main() {"
-    "   outColor = vec4(Color, 1.0) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
+    "    outColor = vec4(Color, 1.0) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
     "}";
 
 const GLchar* panelVertexSource =
@@ -47,8 +47,8 @@ const GLchar* panelVertexSource =
     "uniform mat4 view;"
     "uniform mat4 proj;"
     "void main() {"
-    "   Texcoord = texcoord;"
-    "   gl_Position = proj * view * model * vec4(position, 0.0, 1.0);"
+    "    Texcoord = texcoord;"
+    "    gl_Position = proj * view * model * vec4(position, 0.0, 1.0);"
     "}";
 const GLchar* panelFragmentSource =
     "#version 150 core\n"
@@ -56,7 +56,7 @@ const GLchar* panelFragmentSource =
     "out vec4 outColor;"
     "uniform sampler2D texFramebuffer;"
     "void main() {"
-    "   outColor = texture(texFramebuffer, Texcoord);"
+    "    outColor = texture(texFramebuffer, Texcoord);"
     "}";
 
 // Cube vertices
@@ -444,4 +444,6 @@ end:
 
     glDeleteVertexArrays(1, &vaoCube);
     glDeleteVertexArrays(1, &vaoPanel);
+        
+    return 0;
 }

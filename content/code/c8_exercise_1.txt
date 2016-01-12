@@ -46,17 +46,18 @@ const GLchar* fragmentShaderSrc = GLSL(
     }
 );
 
-int main() {
+int main()
+{
     auto t_prev = std::chrono::high_resolution_clock::now();
 
-    // Window
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
 
-    sf::Window window(sf::VideoMode(800, 800), "Transform Feedback", sf::Style::Titlebar | sf::Style::Close, settings);
+    sf::Window window(sf::VideoMode(800, 800, 32), "Transform Feedback", sf::Style::Titlebar | sf::Style::Close, settings);
 
     // Initialize GLEW
+    glewExperimental = GL_TRUE;
     glewInit();
 
     // Compile shaders
@@ -132,12 +133,14 @@ int main() {
 
     glPointSize(5.0f);
 
-    // Render loop
-    while (window.isOpen()) {
-        // Handle events
-        sf::Event ev;
-        while (window.pollEvent(ev)) {
-            if (ev.type == sf::Event::Closed) {
+    while (window.isOpen())
+    {
+        sf::Event windowEvent;
+        while (window.pollEvent(windowEvent))
+        {
+            switch (windowEvent.type)
+            {
+            case sf::Event::Closed:
                 window.close();
                 break;
             }
@@ -175,7 +178,7 @@ int main() {
         }
 
         // glBufferData() would reallocate the whole vertex data buffer, which is unnecessary here.
-        // glBufferSubData() is more appropriate - it updates an existing buffer.
+        // glBufferSubData() is used instead - it updates an existing buffer.
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(data), data);
     }
 

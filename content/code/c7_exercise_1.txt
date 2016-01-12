@@ -123,15 +123,15 @@ GLuint createShader(GLenum type, const GLchar* src) {
     return shader;
 }
 
-int main() {
+int main()
+{
     auto t_start = std::chrono::high_resolution_clock::now();
 
-    // Window
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
 
-    sf::Window window(sf::VideoMode(800, 600), "Cubes", sf::Style::Titlebar | sf::Style::Close, settings);
+    sf::Window window(sf::VideoMode(800, 600, 32), "Cubes", sf::Style::Titlebar | sf::Style::Close, settings);
 
     // Initialize GLEW
     glewInit();
@@ -196,17 +196,23 @@ int main() {
     GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
-    // Render loop
-    while (window.isOpen()) {
-        // Handle events
-        sf::Event ev;
-        while (window.pollEvent(ev)) {
-            if (ev.type == sf::Event::Closed) {
+    while (window.isOpen())
+    {
+        sf::Event windowEvent;
+        while (window.pollEvent(windowEvent))
+        {
+            switch (windowEvent.type)
+            {
+            case sf::Event::Closed:
                 window.close();
                 break;
             }
         }
 
+        // Clear the screen to black
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        
         // Calculate transformation
         auto t_now = std::chrono::high_resolution_clock::now();
         float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
@@ -220,11 +226,9 @@ int main() {
         glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
 
         // Render frame
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
         glDrawArrays(GL_POINTS, 0, 8);
 
+        // Swap buffers
         window.display();
     }
 

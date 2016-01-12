@@ -17,9 +17,9 @@ const GLchar* vertexSource =
     "out vec3 Color;"
     "out vec2 Texcoord;"
     "void main() {"
-    "   Color = color;"
-    "   Texcoord = texcoord;"
-    "   gl_Position = vec4(position, 0.0, 1.0);"
+    "    Color = color;"
+    "    Texcoord = texcoord;"
+    "    gl_Position = vec4(position, 0.0, 1.0);"
     "}";
 const GLchar* fragmentSource =
     "#version 150 core\n"
@@ -30,8 +30,8 @@ const GLchar* fragmentSource =
     "uniform sampler2D texPuppy;"
     "uniform float time;"
     "void main() {"
-    "   float factor = (sin(time * 3.0) + 1.0) / 2.0;"
-    "   outColor = mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), factor);"
+    "    float factor = (sin(time * 3.0) + 1.0) / 2.0;"
+    "    outColor = mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), factor);"
     "}";
 
 int main()
@@ -58,7 +58,7 @@ int main()
     glGenBuffers(1, &vbo);
 
     GLfloat vertices[] = {
-    //  Position   Color             Texcoords
+    //  Position      Color             Texcoords
         -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Top-left
          0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Top-right
          0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
@@ -184,4 +184,6 @@ int main()
     glDeleteBuffers(1, &vbo);
 
     glDeleteVertexArrays(1, &vao);
+        
+    return 0;
 }

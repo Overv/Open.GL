@@ -54,15 +54,16 @@ GLuint createShader(GLenum type, const GLchar* src) {
     return shader;
 }
 
-int main() {
-    // Window
+int main()
+{
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
 
-    sf::Window window(sf::VideoMode(800, 600), "Circles", sf::Style::Titlebar | sf::Style::Close, settings);
+    sf::Window window(sf::VideoMode(800, 600, 32), "Circles", sf::Style::Titlebar | sf::Style::Close, settings);
 
     // Initialize GLEW
+    glewExperimental = GL_TRUE;
     glewInit();
 
     // Compile and activate shaders
@@ -96,28 +97,32 @@ int main() {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
-    // Specify layout of point data
+    // Specify the layout of the vertex data
     GLint posAttrib = glGetAttribLocation(shaderProgram, "pos");
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-    // Render loop
-    while (window.isOpen()) {
-        // Handle events
-        sf::Event ev;
-        while (window.pollEvent(ev)) {
-            if (ev.type == sf::Event::Closed) {
+    while (window.isOpen())
+    {
+        sf::Event windowEvent;
+        while (window.pollEvent(windowEvent))
+        {
+            switch (windowEvent.type)
+            {
+            case sf::Event::Closed:
                 window.close();
                 break;
             }
         }
 
-        // Render frame
+        // Clear the screen to black
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // Render frame
         glDrawArrays(GL_POINTS, 0, 4);
 
+        // Swap buffers
         window.display();
     }
 
