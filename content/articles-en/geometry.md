@@ -525,4 +525,4 @@ Exercises
 =========
 
 - Try using a geometry shader in a 3D scenario to create more complex meshes
-like cubes from points
+like cubes from points. ([Solution](/content/code/c7_exercise_1.txt))

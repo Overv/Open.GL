@@ -252,5 +252,5 @@ The cool thing about shaders is that you can manipulate images on a per-pixel ba
 Exercises
 ========
 
-- Try implementing the two-pass Gaussian blur effect by adding another framebuffer
-- Try adding a panel in the 3D scene displaying that very scene from a different angle
+- Try implementing the two-pass Gaussian blur effect by adding another framebuffer. ([Solution](/content/code/c6_exercise_1.txt))
+- Try adding a panel in the 3D scene displaying that very scene from a different angle. ([Solution](/content/code/c6_exercise_2.txt))
