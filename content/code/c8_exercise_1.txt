@@ -48,8 +48,6 @@ const GLchar* fragmentShaderSrc = GLSL(
 
 int main()
 {
-    auto t_prev = std::chrono::high_resolution_clock::now();
-
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
@@ -132,6 +130,8 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     glPointSize(5.0f);
+
+    auto t_prev = std::chrono::high_resolution_clock::now();
 
     bool running = true;
     while (running)
