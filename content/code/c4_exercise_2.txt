@@ -3,13 +3,11 @@
 
 // Headers
 #include <GL/glew.h>
-#include <SFML/Window.hpp>
-#include <iostream>
-#include <ctime>
-#include <SOIL.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <SOIL.h>
+#include <SFML/Window.hpp>
 #include <chrono>
 
 // Shader sources

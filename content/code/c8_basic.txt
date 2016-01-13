@@ -2,8 +2,8 @@
 #define GLEW_STATIC
 
 // Headers
-#include <SFML/Window.hpp>
 #include <GL/glew.h>
+#include <SFML/Window.hpp>
 
 // Shader macro
 #define GLSL(src) "#version 150 core\n" #src
