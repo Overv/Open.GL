@@ -40,17 +40,20 @@ const GLchar* sceneFragmentSource =
     "    outColor = vec4(Color, 1.0) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
     "}";
 
-const GLchar* screenVertexSource =
+const GLchar* panelVertexSource =
     "#version 150 core\n"
     "in vec2 position;"
     "in vec2 texcoord;"
     "out vec2 Texcoord;"
+    "uniform mat4 model;"
+    "uniform mat4 view;"
+    "uniform mat4 proj;"
     "void main()"
     "{"
     "    Texcoord = texcoord;"
-    "    gl_Position = vec4(position, 0.0, 1.0);"
+    "    gl_Position = proj * view * model * vec4(position, 0.0, 1.0);"
     "}";
-const GLchar* screenFragmentSource =
+const GLchar* panelFragmentSource =
     "#version 150 core\n"
     "in vec2 Texcoord;"
     "out vec4 outColor;"
@@ -112,8 +115,8 @@ GLfloat cubeVertices[] = {
     -1.0f, -1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f
 };
 
-// Quad vertices
-GLfloat quadVertices[] = {
+// Panel vertices
+GLfloat panelVertices[] = {
     -1.0f,  1.0f,  0.0f, 1.0f,
      1.0f,  1.0f,  1.0f, 1.0f,
      1.0f, -1.0f,  1.0f, 0.0f,
@@ -180,7 +183,7 @@ void specifySceneVertexAttributes(GLuint shaderProgram)
     glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 }
 
-void specifyScreenVertexAttributes(GLuint shaderProgram)
+void specifyPanelVertexAttributes(GLuint shaderProgram)
 {
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
     glEnableVertexAttribArray(posAttrib);
@@ -189,6 +192,51 @@ void specifyScreenVertexAttributes(GLuint shaderProgram)
     GLint texAttrib = glGetAttribLocation(shaderProgram, "texcoord");
     glEnableVertexAttribArray(texAttrib);
     glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+}
+
+// These are now global variables so drawCubeScene() can access them
+GLuint vaoCube, sceneShaderProgram, texKitten, texPuppy;
+GLint uniSceneModel, uniSceneView, uniColor;
+
+// Draw 3D scene (spinning cube)
+void drawCubeScene(const glm::mat4& view, float time)
+{
+    glm::mat4 model;
+    model = glm::rotate(
+        model,
+        time * glm::radians(180.0f),
+        glm::vec3(0.0f, 0.0f, 1.0f)
+    );
+    glUniformMatrix4fv(uniSceneModel, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(uniSceneView, 1, GL_FALSE, glm::value_ptr(view));
+
+    // Draw cube
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    glEnable(GL_STENCIL_TEST);
+
+        // Draw floor
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+        glStencilMask(0xFF);
+        glDepthMask(GL_FALSE);
+        glClear(GL_STENCIL_BUFFER_BIT);
+
+        glDrawArrays(GL_TRIANGLES, 36, 6);
+
+        // Draw cube reflection
+        glStencilFunc(GL_EQUAL, 1, 0xFF);
+        glStencilMask(0x00);
+        glDepthMask(GL_TRUE);
+
+        model = glm::scale(glm::translate(model, glm::vec3(0, 0, -1)), glm::vec3(1, 1, -1));
+        glUniformMatrix4fv(uniSceneModel, 1, GL_FALSE, glm::value_ptr(model));
+
+        glUniform3f(uniColor, 0.3f, 0.3f, 0.3f);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        glUniform3f(uniColor, 1.0f, 1.0f, 1.0f);
+
+    glDisable(GL_STENCIL_TEST);
 }
 
 int main()
@@ -206,49 +254,47 @@ int main()
     glewInit();
 
     // Create VAOs
-    GLuint vaoCube, vaoQuad;
+    GLuint vaoPanel;
     glGenVertexArrays(1, &vaoCube);
-    glGenVertexArrays(1, &vaoQuad);
+    glGenVertexArrays(1, &vaoPanel);
 
     // Load vertex data
-    GLuint vboCube, vboQuad;
+    GLuint vboCube, vboPanel;
     glGenBuffers(1, &vboCube);
-    glGenBuffers(1, &vboQuad);
+    glGenBuffers(1, &vboPanel);
 
     glBindBuffer(GL_ARRAY_BUFFER, vboCube);
     glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vboQuad);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, vboPanel);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(panelVertices), panelVertices, GL_STATIC_DRAW);
 
     // Create shader programs
-    GLuint sceneVertexShader, sceneFragmentShader, sceneShaderProgram;
+    GLuint sceneVertexShader, sceneFragmentShader;
     createShaderProgram(sceneVertexSource, sceneFragmentSource, sceneVertexShader, sceneFragmentShader, sceneShaderProgram);
 
-    GLuint screenVertexShader, screenFragmentShader, screenShaderProgram;
-    createShaderProgram(screenVertexSource, screenFragmentSource, screenVertexShader, screenFragmentShader, screenShaderProgram);
+    GLuint panelVertexShader, panelFragmentShader, panelShaderProgram;
+    createShaderProgram(panelVertexSource, panelFragmentSource, panelVertexShader, panelFragmentShader, panelShaderProgram);
 
     // Specify the layout of the vertex data
     glBindVertexArray(vaoCube);
     glBindBuffer(GL_ARRAY_BUFFER, vboCube);
     specifySceneVertexAttributes(sceneShaderProgram);
 
-    glBindVertexArray(vaoQuad);
-    glBindBuffer(GL_ARRAY_BUFFER, vboQuad);
-    specifyScreenVertexAttributes(screenShaderProgram);
+    glBindVertexArray(vaoPanel);
+    glBindBuffer(GL_ARRAY_BUFFER, vboPanel);
+    specifyPanelVertexAttributes(panelShaderProgram);
 
     // Load textures
-    GLuint texKitten = loadTexture("sample.png");
-    GLuint texPuppy = loadTexture("sample2.png");
+    texKitten = loadTexture("sample.png");
+    texPuppy = loadTexture("sample2.png");
 
     glUseProgram(sceneShaderProgram);
     glUniform1i(glGetUniformLocation(sceneShaderProgram, "texKitten"), 0);
     glUniform1i(glGetUniformLocation(sceneShaderProgram, "texPuppy"), 1);
 
-    glUseProgram(screenShaderProgram);
-    glUniform1i(glGetUniformLocation(screenShaderProgram, "texFramebuffer"), 0);
-
-    GLint uniModel = glGetUniformLocation(sceneShaderProgram, "model");
+    glUseProgram(panelShaderProgram);
+    glUniform1i(glGetUniformLocation(panelShaderProgram, "texFramebuffer"), 0);
 
     // Create framebuffer
     GLuint frameBuffer;
@@ -274,23 +320,50 @@ int main()
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil);
 
-    // Set up projection
-    glm::mat4 view = glm::lookAt(
+    // Set up model, view and projection
+    glm::mat4 panelModel;
+    panelModel = glm::rotate(
+        panelModel,
+        glm::radians(90.0f),
+        glm::vec3(1.0f, 0.0f, 0.0f)
+    );
+    panelModel = glm::translate(
+        panelModel,
+        glm::vec3(0.0f, 0.0f, 2.0f)
+    );
+    glm::mat4 normalAngleView = glm::lookAt(
         glm::vec3(2.5f, 2.5f, 2.0f),
         glm::vec3(0.0f, 0.0f, 0.0f),
         glm::vec3(0.0f, 0.0f, 1.0f)
     );
+    glm::mat4 alternateAngleView = glm::lookAt(
+        glm::vec3(2.65f, 0.465f,  0.25f),
+        glm::vec3(-0.5f,   0.0f, -0.45f),
+        glm::vec3( 0.0f,   0.0f,   1.0f)
+    );
+    glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 1.0f, 10.0f);
 
+    // Set up panel transformation matrices
+    GLint uniPanelModel = glGetUniformLocation(panelShaderProgram, "model");
+    glUniformMatrix4fv(uniPanelModel, 1, GL_FALSE, glm::value_ptr(panelModel));
+
+    GLint uniPanelView = glGetUniformLocation(panelShaderProgram, "view");
+    glUniformMatrix4fv(uniPanelView, 1, GL_FALSE, glm::value_ptr(normalAngleView));
+
+    GLint uniPanelProj = glGetUniformLocation(panelShaderProgram, "proj");
+    glUniformMatrix4fv(uniPanelProj, 1, GL_FALSE, glm::value_ptr(proj));
+
+    // Set up 3D scene transformation matrices
     glUseProgram(sceneShaderProgram);
 
-    GLint uniView = glGetUniformLocation(sceneShaderProgram, "view");
-    glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
+    uniSceneModel = glGetUniformLocation(sceneShaderProgram, "model");
+    uniSceneView = glGetUniformLocation(sceneShaderProgram, "view");
+    GLint uniSceneProj = glGetUniformLocation(sceneShaderProgram, "proj");
+    glUniformMatrix4fv(uniSceneProj, 1, GL_FALSE, glm::value_ptr(proj));
 
-    glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 1.0f, 10.0f);
-    GLint uniProj = glGetUniformLocation(sceneShaderProgram, "proj");
-    glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+    uniColor = glGetUniformLocation(sceneShaderProgram, "overrideColor");
 
-    GLint uniColor = glGetUniformLocation(sceneShaderProgram, "overrideColor");
+    glEnable(GL_DEPTH_TEST);
 
     bool running = true;
     while (running)
@@ -305,11 +378,18 @@ int main()
                 break;
             }
         }
+        
+        // Calculate transformation
+        auto t_now = std::chrono::high_resolution_clock::now();
+        float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
 
-        // Bind our framebuffer and draw 3D scene (spinning cube)
+        // Bind our framebuffer and clear the screen to white
         glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // Draw 3D scene (spinning cube) from alternate angle
         glBindVertexArray(vaoCube);
-        glEnable(GL_DEPTH_TEST);
         glUseProgram(sceneShaderProgram);
 
         glActiveTexture(GL_TEXTURE0);
@@ -317,60 +397,32 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texPuppy);
 
-        // Clear the screen to white
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        drawCubeScene(alternateAngleView, time);
+
+        // Bind default framebuffer and clear the screen to cornflower blue
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glClearColor(0.392f, 0.584f, 0.929f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // Calculate transformation
-        auto t_now = std::chrono::high_resolution_clock::now();
-        float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
-
-        glm::mat4 model;
-        model = glm::rotate(
-            model,
-            time * glm::radians(180.0f),
-            glm::vec3(0.0f, 0.0f, 1.0f)
-        );
-        glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
-
-        // Draw cube
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        glEnable(GL_STENCIL_TEST);
-
-            // Draw floor
-            glStencilFunc(GL_ALWAYS, 1, 0xFF);
-            glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-            glStencilMask(0xFF);
-            glDepthMask(GL_FALSE);
-            glClear(GL_STENCIL_BUFFER_BIT);
-
-            glDrawArrays(GL_TRIANGLES, 36, 6);
-
-            // Draw cube reflection
-            glStencilFunc(GL_EQUAL, 1, 0xFF);
-            glStencilMask(0x00);
-            glDepthMask(GL_TRUE);
-
-            model = glm::scale(glm::translate(model, glm::vec3(0, 0, -1)), glm::vec3(1, 1, -1));
-            glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
-
-            glUniform3f(uniColor, 0.3f, 0.3f, 0.3f);
-                glDrawArrays(GL_TRIANGLES, 0, 36);
-            glUniform3f(uniColor, 1.0f, 1.0f, 1.0f);
-
-        glDisable(GL_STENCIL_TEST);
-
-        // Bind default framebuffer and draw contents of our framebuffer
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glBindVertexArray(vaoQuad);
-        glDisable(GL_DEPTH_TEST);
-        glUseProgram(screenShaderProgram);
+        // Draw the panel, textured with the contents of our framebuffer 
+        glBindVertexArray(vaoPanel);
+        glUseProgram(panelShaderProgram);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        // Draw 3D scene again from normal angle
+        glBindVertexArray(vaoCube);
+        glUseProgram(sceneShaderProgram);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texKitten);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texPuppy);
+
+        drawCubeScene(normalAngleView, time);
 
         // Swap buffers
         window.display();
@@ -383,19 +435,19 @@ int main()
     glDeleteTextures(1, &texKitten);
     glDeleteTextures(1, &texPuppy);
 
-    glDeleteProgram(screenShaderProgram);
-    glDeleteShader(screenFragmentShader);
-    glDeleteShader(screenVertexShader);
+    glDeleteProgram(panelShaderProgram);
+    glDeleteShader(panelFragmentShader);
+    glDeleteShader(panelVertexShader);
 
     glDeleteProgram(sceneShaderProgram);
     glDeleteShader(sceneFragmentShader);
     glDeleteShader(sceneVertexShader);
 
     glDeleteBuffers(1, &vboCube);
-    glDeleteBuffers(1, &vboQuad);
+    glDeleteBuffers(1, &vboPanel);
 
     glDeleteVertexArrays(1, &vaoCube);
-    glDeleteVertexArrays(1, &vaoQuad);
+    glDeleteVertexArrays(1, &vaoPanel);
 
     window.close();
 

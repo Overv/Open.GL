@@ -3,9 +3,8 @@
 
 // Headers
 #include <GL/glew.h>
-#include <SFML/Window.hpp>
-#include <iostream>
 #include <SOIL.h>
+#include <SFML/Window.hpp>
 
 // Shader sources
 const GLchar* vertexSource =
@@ -15,10 +14,11 @@ const GLchar* vertexSource =
     "in vec2 texcoord;"
     "out vec3 Color;"
     "out vec2 Texcoord;"
-    "void main() {"
-    "   Color = color;"
-    "   Texcoord = texcoord;"
-    "   gl_Position = vec4(position, 0.0, 1.0);"
+    "void main()"
+    "{"
+    "    Color = color;"
+    "    Texcoord = texcoord;"
+    "    gl_Position = vec4(position, 0.0, 1.0);"
     "}";
 const GLchar* fragmentSource =
     "#version 150 core\n"
@@ -27,8 +27,9 @@ const GLchar* fragmentSource =
     "out vec4 outColor;"
     "uniform sampler2D texKitten;"
     "uniform sampler2D texPuppy;"
-    "void main() {"
-    "   outColor = mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
+    "void main()"
+    "{"
+    "    outColor = mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
     "}";
 
 int main()
@@ -53,7 +54,7 @@ int main()
     glGenBuffers(1, &vbo);
 
     GLfloat vertices[] = {
-    //  Position   Color             Texcoords
+    //  Position      Color             Texcoords
         -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Top-left
          0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Top-right
          0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
@@ -137,7 +138,8 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    while (window.isOpen())
+    bool running = true;
+    while (running)
     {
         sf::Event windowEvent;
         while (window.pollEvent(windowEvent))
@@ -145,7 +147,7 @@ int main()
             switch (windowEvent.type)
             {
             case sf::Event::Closed:
-                window.close();
+                running = false;
                 break;
             }
         }
@@ -171,4 +173,8 @@ int main()
     glDeleteBuffers(1, &vbo);
 
     glDeleteVertexArrays(1, &vao);
+
+    window.close();
+
+    return 0;
 }

@@ -3,14 +3,12 @@
 
 // Headers
 #include <GL/glew.h>
-#include <SFML/Window.hpp>
-#include <iostream>
-#include <ctime>
-#include <chrono>
-#include <SOIL.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <SOIL.h>
+#include <SFML/Window.hpp>
+#include <chrono>
 
 // Shader sources
 const GLchar* vertexSource =
@@ -24,10 +22,11 @@ const GLchar* vertexSource =
     "uniform mat4 view;"
     "uniform mat4 proj;"
     "uniform vec3 overrideColor;"
-    "void main() {"
-    "   Color = overrideColor * color;"
-    "   Texcoord = texcoord;"
-    "   gl_Position = proj * view * model * vec4(position, 1.0);"
+    "void main()"
+    "{"
+    "    Color = overrideColor * color;"
+    "    Texcoord = texcoord;"
+    "    gl_Position = proj * view * model * vec4(position, 1.0);"
     "}";
 const GLchar* fragmentSource =
     "#version 150 core\n"
@@ -36,8 +35,9 @@ const GLchar* fragmentSource =
     "out vec4 outColor;"
     "uniform sampler2D texKitten;"
     "uniform sampler2D texPuppy;"
-    "void main() {"
-    "   outColor = vec4(Color, 1.0) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
+    "void main()"
+    "{"
+    "    outColor = vec4(Color, 1.0) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
     "}";
 
 int main()
@@ -199,7 +199,8 @@ int main()
 
     GLint uniColor = glGetUniformLocation(shaderProgram, "overrideColor");
 
-    while (window.isOpen())
+    bool running = true;
+    while (running)
     {
         sf::Event windowEvent;
         while (window.pollEvent(windowEvent))
@@ -207,7 +208,7 @@ int main()
             switch (windowEvent.type)
             {
             case sf::Event::Closed:
-                window.close();
+                running = false;
                 break;
             }
         }
@@ -247,7 +248,10 @@ int main()
             glStencilMask(0x00);
             glDepthMask(GL_TRUE);
 
-            model = glm::scale(glm::translate(model, glm::vec3(0, 0, -1)), glm::vec3(1, 1, -1));
+            model = glm::scale(
+                glm::translate(model, glm::vec3(0, 0, -1)),
+                glm::vec3(1, 1, -1)
+            );
             glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
 
             glUniform3f(uniColor, 0.3f, 0.3f, 0.3f);
@@ -269,4 +273,8 @@ int main()
     glDeleteBuffers(1, &vbo);
 
     glDeleteVertexArrays(1, &vao);
+
+    window.close();
+
+    return 0;
 }

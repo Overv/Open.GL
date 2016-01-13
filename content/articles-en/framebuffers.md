@@ -78,7 +78,7 @@ As we're using a depth and stencil buffer to render the spinning cube of cutenes
 Creating a renderbuffer object is very similar to creating a texture, the difference being is that this object is designed to be used as image instead of a general purpose data buffer like a texture. I've chosen the `GL_DEPTH24_STENCIL8` internal format here, which is suited for holding both the depth and stencil buffer with 24 and 8 bits of precision respectively.
 
 	glFramebufferRenderbuffer(
-	  GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil
+	    GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil
 	);
 
 Attaching it is easy as well. You can delete this object like any other object at a later time with a call to `glDeleteRenderbuffers`.
@@ -120,7 +120,8 @@ I've chosen to have only 2 position coordinates and 2 texture coordinates for my
 	in vec2 position;
 	in vec2 texcoord;
 	out vec2 Texcoord;
-	void main() {
+	void main()
+	{
 		Texcoord = texcoord;
 		gl_Position = vec4(position, 0.0, 1.0);
 	}
@@ -131,7 +132,8 @@ I've chosen to have only 2 position coordinates and 2 texture coordinates for my
 	in vec2 Texcoord;
 	out vec4 outColor;
 	uniform sampler2D texFramebuffer;
-	void main() {
+	void main()
+	{
 		outColor = texture(texFramebuffer, Texcoord);
 	}
 
@@ -211,7 +213,8 @@ Blurring is done by sampling pixels around a pixel and calculating the average c
 
 	const float blurSizeH = 1.0 / 300.0;
 	const float blurSizeV = 1.0 / 200.0;
-	void main() {
+	void main()
+	{
 		vec4 sum = vec4(0.0);
 		for (int x = -4; x <= 4; x++)
 			for (int y = -4; y <= 4; y++)
@@ -233,12 +236,16 @@ The Sobel operator is often used in edge detection algorithms, let's find out wh
 
 The fragment shader looks like this:
 
-	vec4 s1 = texture(texFramebuffer, Texcoord - 1.0 / 300.0 - 1.0 / 200.0);
-	vec4 s2 = texture(texFramebuffer, Texcoord + 1.0 / 300.0 - 1.0 / 200.0);
-	vec4 s3 = texture(texFramebuffer, Texcoord - 1.0 / 300.0 + 1.0 / 200.0);
-	vec4 s4 = texture(texFramebuffer, Texcoord + 1.0 / 300.0 + 1.0 / 200.0);
-	vec4 sx = 4.0 * ((s4 + s3) - (s2 + s1));
-	vec4 sy = 4.0 * ((s2 + s4) - (s1 + s3));
+	vec4 top         = texture(texFramebuffer, vec2(Texcoord.x, Texcoord.y + 1.0 / 200.0));
+	vec4 bottom      = texture(texFramebuffer, vec2(Texcoord.x, Texcoord.y - 1.0 / 200.0));
+	vec4 left        = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y));
+	vec4 right       = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y));
+	vec4 topLeft     = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y + 1.0 / 200.0));
+	vec4 topRight    = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y + 1.0 / 200.0));
+	vec4 bottomLeft  = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y - 1.0 / 200.0));
+	vec4 bottomRight = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y - 1.0 / 200.0));
+	vec4 sx = -topLeft - 2 * left - bottomLeft + topRight     + 2 * right  + bottomRight;
+	vec4 sy = -topLeft - 2 * top  - topRight   + bottomLeft   + 2 * bottom + bottomRight;
 	vec4 sobel = sqrt(sx * sx + sy * sy);
 	outColor = sobel;
 
@@ -252,5 +259,5 @@ The cool thing about shaders is that you can manipulate images on a per-pixel ba
 Exercises
 ========
 
-- Try implementing the two-pass Gaussian blur effect by adding another framebuffer
-- Try adding a panel in the 3D scene displaying that very scene from a different angle
+- Try implementing the two-pass Gaussian blur effect by adding another framebuffer. ([Solution](/content/code/c6_exercise_1.txt))
+- Try adding a panel in the 3D scene displaying that very scene from a different angle. ([Solution](/content/code/c6_exercise_2.txt))

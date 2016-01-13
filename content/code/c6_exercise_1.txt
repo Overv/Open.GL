@@ -55,9 +55,27 @@ const GLchar* screenFragmentSource =
     "in vec2 Texcoord;"
     "out vec4 outColor;"
     "uniform sampler2D texFramebuffer;"
+    "uniform vec2 texOffset;"
+    "const float kernel[9] = float[]("
+    "    0.00481007202f,"
+    "    0.0286864862f,"
+    "    0.102712765f,"
+    "    0.220796734f,"
+    "    0.284958780f,"
+    "    0.220796734f,"
+    "    0.102712765f,"
+    "    0.0286864862f,"
+    "    0.00481007202f"
+    ");"
     "void main()"
     "{"
-    "    outColor = texture(texFramebuffer, Texcoord);"
+    "    vec4 sum = vec4(0.0);"
+    "    for (int i = -4; i <= 4; i++)"
+    "        sum += texture("
+    "            texFramebuffer,"
+    "            Texcoord + i * texOffset"
+    "        ) * kernel[i + 4];"
+    "    outColor = sum;"
     "}";
 
 // Cube vertices
@@ -247,27 +265,40 @@ int main()
 
     glUseProgram(screenShaderProgram);
     glUniform1i(glGetUniformLocation(screenShaderProgram, "texFramebuffer"), 0);
+    GLint uniTexOffset = glGetUniformLocation(screenShaderProgram, "texOffset");
 
     GLint uniModel = glGetUniformLocation(sceneShaderProgram, "model");
 
-    // Create framebuffer
-    GLuint frameBuffer;
-    glGenFramebuffers(1, &frameBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    // Create two framebuffers
+    GLuint frameBuffers[2];
+    glGenFramebuffers(2, frameBuffers);
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffers[1]);
 
-    // Create texture to hold color buffer
-    GLuint texColorBuffer;
-    glGenTextures(1, &texColorBuffer);
-    glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+    // Create two textures to hold color buffers
+    GLuint texColorBuffers[2];
+    glGenTextures(2, texColorBuffers);
+    glBindTexture(GL_TEXTURE_2D, texColorBuffers[1]);
+
+    // Set up the second framebuffer's color buffer
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffers[1], 0);
+
+    // Set up the first framebuffer's color buffer
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffers[0]);
+    glBindTexture(GL_TEXTURE_2D, texColorBuffers[0]);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffers[0], 0);
 
-    // Create Renderbuffer Object to hold depth and stencil buffers
+    // Create first framebuffer's Renderbuffer Object to hold depth and stencil buffers
     GLuint rboDepthStencil;
     glGenRenderbuffers(1, &rboDepthStencil);
     glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);
@@ -306,8 +337,8 @@ int main()
             }
         }
 
-        // Bind our framebuffer and draw 3D scene (spinning cube)
-        glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+        // Bind first framebuffer and draw 3D scene (spinning cube)
+        glBindFramebuffer(GL_FRAMEBUFFER, frameBuffers[0]);
         glBindVertexArray(vaoCube);
         glEnable(GL_DEPTH_TEST);
         glUseProgram(sceneShaderProgram);
@@ -361,14 +392,22 @@ int main()
 
         glDisable(GL_STENCIL_TEST);
 
-        // Bind default framebuffer and draw contents of our framebuffer
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        // Bind second framebuffer and draw contents of first framebuffer, blurring horizontally
+        glBindFramebuffer(GL_FRAMEBUFFER, frameBuffers[1]);
         glBindVertexArray(vaoQuad);
         glDisable(GL_DEPTH_TEST);
         glUseProgram(screenShaderProgram);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+        glBindTexture(GL_TEXTURE_2D, texColorBuffers[0]);
+        glUniform2f(uniTexOffset, 1.0f / 300.0f, 0.0f);
+
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        // Bind default framebuffer and draw contents of second framebuffer, blurring vertically
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindTexture(GL_TEXTURE_2D, texColorBuffers[1]);
+        glUniform2f(uniTexOffset, 0.0f, 1.0f / 200.0f);
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -377,8 +416,8 @@ int main()
     }
 
     glDeleteRenderbuffers(1, &rboDepthStencil);
-    glDeleteTextures(1, &texColorBuffer);
-    glDeleteFramebuffers(1, &frameBuffer);
+    glDeleteTextures(2, texColorBuffers);
+    glDeleteFramebuffers(2, frameBuffers);
 
     glDeleteTextures(1, &texKitten);
     glDeleteTextures(1, &texPuppy);

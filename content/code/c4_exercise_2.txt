@@ -3,13 +3,12 @@
 
 // Headers
 #include <GL/glew.h>
-#include <SFML/Window.hpp>
-#include <iostream>
-#include <ctime>
-#include <SOIL.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <SOIL.h>
+#include <SFML/Window.hpp>
+#include <chrono>
 
 // Shader sources
 const GLchar* vertexSource =
@@ -22,10 +21,11 @@ const GLchar* vertexSource =
     "uniform mat4 model;"
     "uniform mat4 view;"
     "uniform mat4 proj;"
-    "void main() {"
-    "   Color = color;"
-    "   Texcoord = texcoord;"
-    "   gl_Position = proj * view * model * vec4(position, 0.0, 1.0);"
+    "void main()"
+    "{"
+    "    Color = color;"
+    "    Texcoord = texcoord;"
+    "    gl_Position = proj * view * model * vec4(position, 0.0, 1.0);"
     "}";
 const GLchar* fragmentSource =
     "#version 150 core\n"
@@ -34,8 +34,9 @@ const GLchar* fragmentSource =
     "out vec4 outColor;"
     "uniform sampler2D texKitten;"
     "uniform sampler2D texPuppy;"
-    "void main() {"
-    "   outColor = mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
+    "void main()"
+    "{"
+    "    outColor = mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
     "}";
 
 int main()
@@ -60,7 +61,7 @@ int main()
     glGenBuffers(1, &vbo);
 
     GLfloat vertices[] = {
-    //  Position   Color             Texcoords
+    //  Position      Color             Texcoords
         -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Top-left
          0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Top-right
          0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
@@ -159,10 +160,13 @@ int main()
     GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
+    auto t_prev = std::chrono::high_resolution_clock::now();
+
     GLfloat angle = -45.0f;
     GLfloat speed = 0.0f;
 
-    while (window.isOpen())
+    bool running = true;
+    while (running)
     {
         sf::Event windowEvent;
         while (window.pollEvent(windowEvent))
@@ -170,7 +174,7 @@ int main()
             switch (windowEvent.type)
             {
             case sf::Event::Closed:
-                window.close();
+                running = false;
                 break;
             case sf::Event::KeyPressed:
                 if (windowEvent.key.code == sf::Keyboard::Space) {
@@ -185,18 +189,20 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Calculate transformation
-        glm::mat4 model;
+        auto t_now = std::chrono::high_resolution_clock::now();
+        float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_prev).count();
+        t_prev = t_now;
 
+        glm::mat4 model;
         model = glm::rotate(
             model,
             glm::radians(angle),
             glm::vec3(1.0f, 0.0f, 0.0f)
         );
-
-        angle += speed / (GLfloat)CLOCKS_PER_SEC;
-        speed /= 1.0f + 0.2f / (GLfloat)CLOCKS_PER_SEC;
-
         glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
+
+        speed /= 1.0f + time;
+        angle += 5 * speed * time;
 
         // Draw a rectangle from the 2 triangles using 6 indices
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -215,4 +221,8 @@ int main()
     glDeleteBuffers(1, &vbo);
 
     glDeleteVertexArrays(1, &vao);
+
+    window.close();
+
+    return 0;
 }

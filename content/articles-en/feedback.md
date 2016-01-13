@@ -31,7 +31,8 @@ Let's start with a simple vertex shader.
         in float inValue;
         out float outValue;
 
-        void main() {
+        void main()
+        {
             outValue = sqrt(inValue);
         }
     );
@@ -193,7 +194,8 @@ example:
         in float inValue;
         out float geoValue;
 
-        void main() {
+        void main()
+        {
             geoValue = sqrt(inValue);
         }
     );
@@ -206,7 +208,8 @@ example:
         in float[] geoValue;
         out float outValue;
 
-        void main() {
+        void main()
+        {
             for (int i = 0; i < 3; i++) {
                 outValue = geoValue[0] + i;
                 EmitVertex();
@@ -316,4 +319,4 @@ Exercises
 =========
 
 - Try writing a vertex shader that simulates gravity to make points hover around
-the mouse cursor using transform feedback to update the vertices
+the mouse cursor using transform feedback to update the vertices. ([Solution](/content/code/c8_exercise_1.txt))

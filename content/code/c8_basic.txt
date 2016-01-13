@@ -1,5 +1,9 @@
-#include <SFML/Window.hpp>
+// Link statically with GLEW
+#define GLEW_STATIC
+
+// Headers
 #include <GL/glew.h>
+#include <SFML/Window.hpp>
 
 // Shader macro
 #define GLSL(src) "#version 150 core\n" #src
@@ -9,20 +13,22 @@ const GLchar* vertexShaderSrc = GLSL(
     in float inValue;
     out float outValue;
 
-    void main() {
+    void main()
+    {
         outValue = sqrt(inValue);
     }
 );
 
-int main() {
-    // Window
+int main()
+{
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
 
-    sf::Window window(sf::VideoMode(800, 600), "Transform Feedback", sf::Style::Titlebar | sf::Style::Close, settings);
+    sf::Window window(sf::VideoMode(800, 600, 32), "Transform Feedback", sf::Style::Titlebar | sf::Style::Close, settings);
 
     // Initialize GLEW
+    glewExperimental = GL_TRUE;
     glewInit();
 
     // Compile shader
@@ -81,6 +87,16 @@ int main() {
     glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, sizeof(feedback), feedback);
 
     printf("%f %f %f %f %f\n", feedback[0], feedback[1], feedback[2], feedback[3], feedback[4]);
+
+    glDeleteProgram(program);
+    glDeleteShader(shader);
+
+    glDeleteBuffers(1, &tbo);
+    glDeleteBuffers(1, &vbo);
+
+    glDeleteVertexArrays(1, &vao);
+
+    window.close();
 
     return 0;
 }

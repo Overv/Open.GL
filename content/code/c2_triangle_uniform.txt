@@ -2,24 +2,25 @@
 #define GLEW_STATIC
 
 // Headers
-#include <chrono>
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
-#include <iostream>
+#include <chrono>
 
 // Shader sources
 const GLchar* vertexSource =
     "#version 150 core\n"
     "in vec2 position;"
-    "void main() {"
-    "   gl_Position = vec4(position, 0.0, 1.0);"
+    "void main()"
+    "{"
+    "    gl_Position = vec4(position, 0.0, 1.0);"
     "}";
 const GLchar* fragmentSource =
     "#version 150 core\n"
     "out vec4 outColor;"
     "uniform vec3 triangleColor;"
-    "void main() {"
-    "   outColor = vec4(triangleColor, 1.0);"
+    "void main()"
+    "{"
+    "    outColor = vec4(triangleColor, 1.0);"
     "}";
 
 int main()
@@ -46,8 +47,8 @@ int main()
     glGenBuffers(1, &vbo);
 
     GLfloat vertices[] = {
-        0.0f, 0.5f,
-        0.5f, -0.5f,
+         0.0f,  0.5f,
+         0.5f, -0.5f,
         -0.5f, -0.5f
     };
 
@@ -80,7 +81,8 @@ int main()
     // Get the location of the color uniform
     GLint uniColor = glGetUniformLocation(shaderProgram, "triangleColor");
 
-    while (window.isOpen())
+    bool running = true;
+    while (running)
     {
         sf::Event windowEvent;
         while (window.pollEvent(windowEvent))
@@ -88,7 +90,7 @@ int main()
             switch (windowEvent.type)
             {
             case sf::Event::Closed:
-                window.close();
+                running = false;
                 break;
             }
         }
@@ -117,4 +119,8 @@ int main()
     glDeleteBuffers(1, &vbo);
 
     glDeleteVertexArrays(1, &vao);
+
+    window.close();
+
+    return 0;
 }
