@@ -292,7 +292,7 @@ int main()
     glUseProgram(panelShaderProgram);
     glUniform1i(glGetUniformLocation(panelShaderProgram, "texFramebuffer"), 0);
 
-    // Create frame buffer
+    // Create framebuffer
     GLuint frameBuffer;
     glGenFramebuffers(1, &frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);

@@ -246,7 +246,7 @@ int main()
 
     GLint uniModel = glGetUniformLocation(sceneShaderProgram, "model");
 
-    // Create frame buffer
+    // Create framebuffer
     GLuint frameBuffer;
     glGenFramebuffers(1, &frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);

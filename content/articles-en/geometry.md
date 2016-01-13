@@ -509,7 +509,7 @@ Conclusion
 ==========
 
 Granted, geometry shaders may not have as many real world use cases as things
-like frame buffers and textures have, but they can definitely help with creating
+like framebuffers and textures have, but they can definitely help with creating
 content on the GPU as shown here.
 
 If you need to repeat a single mesh many times, like a cube in a voxel game,

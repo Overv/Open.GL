@@ -265,7 +265,7 @@ int main()
 
     GLint uniModel = glGetUniformLocation(sceneShaderProgram, "model");
 
-    // Create two frame buffers
+    // Create two framebuffers
     GLuint frameBuffers[2];
     glGenFramebuffers(2, frameBuffers);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffers[1]);
@@ -275,7 +275,7 @@ int main()
     glGenTextures(2, texColorBuffers);
     glBindTexture(GL_TEXTURE_2D, texColorBuffers[1]);
 
-    // Set up the second frame buffer's color buffer
+    // Set up the second framebuffer's color buffer
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -283,7 +283,7 @@ int main()
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffers[1], 0);
 
-    // Set up the first frame buffer's color buffer
+    // Set up the first framebuffer's color buffer
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffers[0]);
     glBindTexture(GL_TEXTURE_2D, texColorBuffers[0]);
 
@@ -294,7 +294,7 @@ int main()
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffers[0], 0);
 
-    // Create first frame buffer's Renderbuffer Object to hold depth and stencil buffers
+    // Create first framebuffer's Renderbuffer Object to hold depth and stencil buffers
     GLuint rboDepthStencil;
     glGenRenderbuffers(1, &rboDepthStencil);
     glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);

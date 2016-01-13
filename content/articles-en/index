@@ -4,6 +4,6 @@ drawing/Drawing polygons
 textures/Textures
 transformations/Transformations
 depthstencils/Depth and stencils
-framebuffers/Frame buffers
+framebuffers/Framebuffers
 geometry/Geometry shaders
 feedback/Transform Feedback
