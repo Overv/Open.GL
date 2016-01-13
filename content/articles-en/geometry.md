@@ -32,7 +32,8 @@ screen.
     const char* vertexShaderSrc = GLSL(
         in vec2 pos;
 
-        void main() {
+        void main()
+        {
             gl_Position = vec4(pos, 0.0, 1.0);
         }
     );
@@ -41,7 +42,8 @@ screen.
     const char* fragmentShaderSrc = GLSL(
         out vec4 outColor;
 
-        void main() {
+        void main()
+        {
             outColor = vec4(1.0, 0.0, 0.0, 1.0);
         }
     );
@@ -133,7 +135,8 @@ To understand how a geometry shader works, let's look at an example:
     layout(points) in;
     layout(line_strip, max_vertices = 2) out;
 
-    void main() {
+    void main()
+    {
         gl_Position = gl_in[0].gl_Position + vec4(-0.1, 0.0, 0.0, 0.0);
         EmitVertex();
 
@@ -211,7 +214,8 @@ primitives, `EmitVertex` and `EndPrimitive`. Each time the program calls
 `EmitVertex`, a vertex is added to the current primitive. When all vertices have
 been added, the program calls `EndPrimitive` to generate the primitive.
 
-    void main() {
+    void main()
+    {
         gl_Position = gl_in[0].gl_Position + vec4(-0.1, 0.0, 0.0, 0.0);
         EmitVertex();
 
@@ -243,7 +247,8 @@ our 4 point sample that doesn't do anything yet.
         layout(points) in;
         layout(points, max_vertices = 1) out;
 
-        void main() {
+        void main()
+        {
             gl_Position = gl_in[0].gl_Position;
             EmitVertex();
             EndPrimitive();
@@ -273,7 +278,8 @@ from the previous section:
     layout(points) in;
     layout(line_strip, max_vertices = 2) out;
 
-    void main() {
+    void main()
+    {
         gl_Position = gl_in[0].gl_Position + vec4(-0.1, 0.0, 0.0, 0.0);
         EmitVertex();
 
@@ -303,7 +309,8 @@ shader, we can specify a color per vertex and thus per generated line.
 
     out vec3 vColor; // Output to geometry (or fragment) shader
 
-    void main() {
+    void main()
+    {
         gl_Position = vec4(pos, 0.0, 1.0);
         vColor = color;
     }
@@ -338,7 +345,8 @@ geometry shader, we have to handle the `vColor` variable as input there.
 
     out vec3 fColor; // Output to fragment shader
 
-    void main() {
+    void main()
+    {
         ...
 
 You can see that it is very similar to how inputs are handled in the fragment
@@ -350,7 +358,8 @@ Because the color needs to be passed further down to the fragment shader, we add
 it as output of the geometry shader. We can now assign values to it, just like
 we did earlier with `gl_Position`.
 
-    void main() {
+    void main()
+    {
         fColor = vColor[0]; // Point has only one vertex
 
         gl_Position = gl_in[0].gl_Position + vec4(-0.1, 0.1, 0.0, 0.0);
@@ -370,7 +379,8 @@ shader:
 
     out vec4 outColor;
 
-    void main() {
+    void main()
+    {
         outColor = vec4(fColor, 1.0);
     }
 
@@ -410,7 +420,8 @@ remember your trigonometry, it should be a piece of cake:
 
     const float PI = 3.1415926;
 
-    void main() {
+    void main()
+    {
         fColor = vColor[0];
 
         for (int i = 0; i <= 10; i++) {
@@ -470,7 +481,8 @@ Alter the vertex shader to pass the value to the geometry shader:
     out vec3 vColor;
     out float vSides;
 
-    void main() {
+    void main()
+    {
         gl_Position = vec4(pos, 0.0, 1.0);
         vColor = color;
         vSides = sides;

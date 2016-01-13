@@ -13,7 +13,8 @@ const GLchar* vertexShaderSrc = GLSL(
     in float inValue;
     out float geoValue;
 
-    void main() {
+    void main()
+    {
         geoValue = sqrt(inValue);
     }
 );
@@ -26,7 +27,8 @@ const GLchar* geoShaderSrc = GLSL(
     in float[] geoValue;
     out float outValue;
 
-    void main() {
+    void main()
+    {
         for (int i = 0; i < 3; i++) {
             outValue = geoValue[0] + i;
             EmitVertex();

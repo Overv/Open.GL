@@ -13,7 +13,8 @@ const GLchar* vertexShaderSrc = GLSL(
     in float inValue;
     out float outValue;
 
-    void main() {
+    void main()
+    {
         outValue = sqrt(inValue);
     }
 );

@@ -543,7 +543,8 @@ All that remains is updating the vertex shader to include this uniform and use i
 
 	uniform mat4 trans;
 
-	void main() {
+	void main()
+	{
 		Color = color;
 		Texcoord = texcoord;
 		gl_Position = trans * vec4(position, 0.0, 1.0);
@@ -632,7 +633,8 @@ Now piecing it all together, the vertex shader looks something like this:
 	uniform mat4 view;
 	uniform mat4 proj;
 
-	void main() {
+	void main()
+	{
 	    Color = color;
 	    Texcoord = texcoord;
 	    gl_Position = proj * view * model * vec4(position, 0.0, 1.0);

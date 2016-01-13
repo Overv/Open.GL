@@ -19,7 +19,8 @@ const GLchar* vertexShaderSrc = GLSL(
 
     out vec3 vColor;
 
-    void main() {
+    void main()
+    {
         gl_Position = vec4(pos, 1.0);
         vColor = color;
     }
@@ -37,7 +38,8 @@ const GLchar* geometryShaderSrc = GLSL(
     uniform mat4 view;
     uniform mat4 proj;
 
-    void main() {
+    void main()
+    {
         fColor = vColor[0];
 
         gl_in[0].gl_Position = proj * view * model * gl_in[0].gl_Position;
@@ -114,7 +116,8 @@ const GLchar* fragmentShaderSrc = GLSL(
 
     out vec4 outColor;
 
-    void main() {
+    void main()
+    {
         outColor = vec4(fColor, 1.0);
     }
 );

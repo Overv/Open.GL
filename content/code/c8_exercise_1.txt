@@ -21,7 +21,8 @@ const GLchar* vertexShaderSrc = GLSL(
     uniform float time;
     uniform vec2 mousePos;
 
-    void main() {
+    void main()
+    {
         // Points move towards their original position...
         vec2 newVelocity = originalPos - position;
 
@@ -45,7 +46,8 @@ const GLchar* vertexShaderSrc = GLSL(
 const GLchar* fragmentShaderSrc = GLSL(
     out vec4 outColor;
 
-    void main() {
+    void main()
+    {
         outColor = vec4(1.0, 0.0, 0.0, 1.0);
     }
 );

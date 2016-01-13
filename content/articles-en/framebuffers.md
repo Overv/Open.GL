@@ -120,7 +120,8 @@ I've chosen to have only 2 position coordinates and 2 texture coordinates for my
 	in vec2 position;
 	in vec2 texcoord;
 	out vec2 Texcoord;
-	void main() {
+	void main()
+	{
 		Texcoord = texcoord;
 		gl_Position = vec4(position, 0.0, 1.0);
 	}
@@ -131,7 +132,8 @@ I've chosen to have only 2 position coordinates and 2 texture coordinates for my
 	in vec2 Texcoord;
 	out vec4 outColor;
 	uniform sampler2D texFramebuffer;
-	void main() {
+	void main()
+	{
 		outColor = texture(texFramebuffer, Texcoord);
 	}
 
@@ -211,7 +213,8 @@ Blurring is done by sampling pixels around a pixel and calculating the average c
 
 	const float blurSizeH = 1.0 / 300.0;
 	const float blurSizeV = 1.0 / 200.0;
-	void main() {
+	void main()
+	{
 		vec4 sum = vec4(0.0);
 		for (int x = -4; x <= 4; x++)
 			for (int y = -4; y <= 4; y++)
@@ -233,14 +236,14 @@ The Sobel operator is often used in edge detection algorithms, let's find out wh
 
 The fragment shader looks like this:
 
-	vec4 topLeft     = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y + 1.0 / 200.0));
-	vec4 topRight    = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y + 1.0 / 200.0));
-	vec4 bottomLeft  = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y - 1.0 / 200.0));
-	vec4 bottomRight = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y - 1.0 / 200.0));
 	vec4 top         = texture(texFramebuffer, vec2(Texcoord.x, Texcoord.y + 1.0 / 200.0));
 	vec4 bottom      = texture(texFramebuffer, vec2(Texcoord.x, Texcoord.y - 1.0 / 200.0));
 	vec4 left        = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y));
 	vec4 right       = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y));
+	vec4 topLeft     = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y + 1.0 / 200.0));
+	vec4 topRight    = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y + 1.0 / 200.0));
+	vec4 bottomLeft  = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y - 1.0 / 200.0));
+	vec4 bottomRight = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y - 1.0 / 200.0));
 	vec4 sx = -topLeft - 2 * left - bottomLeft + topRight     + 2 * right  + bottomRight;
 	vec4 sy = -topLeft - 2 * top  - topRight   + bottomLeft   + 2 * bottom + bottomRight;
 	vec4 sobel = sqrt(sx * sx + sy * sy);

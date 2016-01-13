@@ -19,7 +19,8 @@ const GLchar* vertexSource =
     "out vec3 Color;"
     "out vec2 Texcoord;"
     "uniform mat4 trans;"
-    "void main() {"
+    "void main()"
+    "{"
     "    Color = color;"
     "    Texcoord = texcoord;"
     "    gl_Position = trans * vec4(position, 0.0, 1.0);"
@@ -31,7 +32,8 @@ const GLchar* fragmentSource =
     "out vec4 outColor;"
     "uniform sampler2D texKitten;"
     "uniform sampler2D texPuppy;"
-    "void main() {"
+    "void main()"
+    "{"
     "    outColor = mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
     "}";
 

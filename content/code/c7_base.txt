@@ -12,7 +12,8 @@
 const GLchar* vertexShaderSrc = GLSL(
     in vec2 pos;
 
-    void main() {
+    void main()
+    {
         gl_Position = vec4(pos, 0.0, 1.0);
     }
 );
@@ -20,7 +21,8 @@ const GLchar* vertexShaderSrc = GLSL(
 // Fragment shader
 const GLchar* fragmentShaderSrc = GLSL(
     out vec4 outColor;
-    void main() {
+    void main()
+    {
         outColor = vec4(1.0, 0.0, 0.0, 1.0);
     }
 );

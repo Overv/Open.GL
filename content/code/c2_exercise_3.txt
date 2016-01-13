@@ -11,7 +11,8 @@ const GLchar* vertexSource =
     "in vec2 position;"
     "in float color;"
     "out float Color;"
-    "void main() {"
+    "void main()"
+    "{"
     "    Color = color;"
     "    gl_Position = vec4(position, 0.0, 1.0);"
     "}";
@@ -19,7 +20,8 @@ const GLchar* fragmentSource =
     "#version 150 core\n"
     "in float Color;"
     "out vec4 outColor;"
-    "void main() {"
+    "void main()"
+    "{"
     "    outColor = vec4(Color, Color, Color, 1.0);"
     "}";
 
