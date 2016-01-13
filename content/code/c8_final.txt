@@ -130,5 +130,7 @@ int main()
 
     glDeleteVertexArrays(1, &vao);
 
+    window.close();
+
     return 0;
 }

@@ -162,7 +162,8 @@ int main()
     GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
-    while (window.isOpen())
+    bool running = true;
+    while (running)
     {
         auto t_now = std::chrono::high_resolution_clock::now();
         float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
@@ -173,7 +174,7 @@ int main()
             switch (windowEvent.type)
             {
             case sf::Event::Closed:
-                window.close();
+                running = false;
                 break;
             }
         }
@@ -213,6 +214,8 @@ int main()
     glDeleteBuffers(1, &vbo);
 
     glDeleteVertexArrays(1, &vao);
-        
+
+    window.close();
+
     return 0;
 }

@@ -361,7 +361,8 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
-    while (window.isOpen())
+    bool running = true;
+    while (running)
     {
         sf::Event windowEvent;
         while (window.pollEvent(windowEvent))
@@ -369,7 +370,7 @@ int main()
             switch (windowEvent.type)
             {
             case sf::Event::Closed:
-                window.close();
+                running = false;
                 break;
             }
         }
@@ -422,7 +423,6 @@ int main()
         // Swap buffers
         window.display();
     }
-end:
 
     glDeleteRenderbuffers(1, &rboDepthStencil);
     glDeleteTextures(1, &texColorBuffer);
@@ -444,6 +444,8 @@ end:
 
     glDeleteVertexArrays(1, &vaoCube);
     glDeleteVertexArrays(1, &vaoPanel);
-        
+
+    window.close();
+
     return 0;
 }

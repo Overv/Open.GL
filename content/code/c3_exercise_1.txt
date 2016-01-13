@@ -144,7 +144,8 @@ int main()
 
     GLint uniTime = glGetUniformLocation(shaderProgram, "time");
 
-    while (window.isOpen())
+    bool running = true;
+    while (running)
     {
         sf::Event windowEvent;
         while (window.pollEvent(windowEvent))
@@ -152,7 +153,7 @@ int main()
             switch (windowEvent.type)
             {
             case sf::Event::Closed:
-                window.close();
+                running = false;
                 break;
             }
         }
@@ -184,6 +185,8 @@ int main()
     glDeleteBuffers(1, &vbo);
 
     glDeleteVertexArrays(1, &vao);
-        
+    
+    window.close();
+
     return 0;
 }
