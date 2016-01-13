@@ -317,7 +317,7 @@ Update the vertex specification in the program code:
     GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
     glEnableVertexAttribArray(colAttrib);
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
-                          5 * sizeof(float), (void*) (2 * sizeof(float)));
+                           5 * sizeof(float), (void*) (2 * sizeof(float)));
 
 And update the point data to include an RGB color per point:
 
@@ -449,17 +449,17 @@ the new attribute to the data and to the specification:
     GLint posAttrib = glGetAttribLocation(shaderProgram, "pos");
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
-                          6 * sizeof(float), 0);
+                           6 * sizeof(float), 0);
 
     GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
     glEnableVertexAttribArray(colAttrib);
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
-                          6 * sizeof(float), (void*) (2 * sizeof(float)));
+                           6 * sizeof(float), (void*) (2 * sizeof(float)));
 
     GLint sidesAttrib = glGetAttribLocation(shaderProgram, "sides");
     glEnableVertexAttribArray(sidesAttrib);
     glVertexAttribPointer(sidesAttrib, 1, GL_FLOAT, GL_FALSE,
-                          6 * sizeof(float), (void*) (5 * sizeof(float)));
+                           6 * sizeof(float), (void*) (5 * sizeof(float)));
 
 Alter the vertex shader to pass the value to the geometry shader:
 
@@ -490,10 +490,10 @@ input, otherwise the circles with more vertices will be cut off.
 
     // Safe, floats can represent small integers exactly
     for (int i = 0; i <= vSides[0]; i++) {
-            // Angle between each side in radians
-            float ang = PI * 2.0 / vSides[0] * i;
+        // Angle between each side in radians
+        float ang = PI * 2.0 / vSides[0] * i;
 
-            ...
+        ...
 
 You can now create a circles with any amount of sides you desire by simply
 adding more points!

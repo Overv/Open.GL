@@ -78,7 +78,7 @@ As we're using a depth and stencil buffer to render the spinning cube of cutenes
 Creating a renderbuffer object is very similar to creating a texture, the difference being is that this object is designed to be used as image instead of a general purpose data buffer like a texture. I've chosen the `GL_DEPTH24_STENCIL8` internal format here, which is suited for holding both the depth and stencil buffer with 24 and 8 bits of precision respectively.
 
 	glFramebufferRenderbuffer(
-	  GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil
+	    GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil
 	);
 
 Attaching it is easy as well. You can delete this object like any other object at a later time with a call to `glDeleteRenderbuffers`.
