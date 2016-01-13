@@ -1,3 +1,7 @@
+// Link statically with GLEW
+#define GLEW_STATIC
+
+// Headers
 #include <SFML/Window.hpp>
 #include <GL/glew.h>
 
