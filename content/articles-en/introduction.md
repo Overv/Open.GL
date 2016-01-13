@@ -1,14 +1,40 @@
 Introduction
-========
+============
 
-This guide will teach you the basics of using OpenGL to develop modern graphics applications. There are a lot of other guides on this topic, but there are some major points where this guide differs from those. We will not be discussing any of the old parts of the OpenGL specification. That means you'll be taught how to implement things yourself, instead of using deprecated functions like `glBegin` and `glLight`. Anything that is not directly related to OpenGL itself, like creating a window and loading textures from files, will be done using a few small libraries.
+This guide will teach you the basics of using OpenGL to develop modern graphics
+applications. There are a lot of other guides on this topic, but there are some
+major points where this guide differs from those. We will not be discussing any
+of the old parts of the OpenGL specification. That means you'll be taught how to
+implement things yourself, instead of using deprecated functions like `glBegin`
+and `glLight`. Anything that is not directly related to OpenGL itself, like
+creating a window and loading textures from files, will be done using a few
+small libraries.
 
-To show you how much it pays off to do things yourself, this guide also contains a lot of interactive examples to make it both fun and easy to learn all the different aspects of using a low-level graphics library like OpenGL!
+To show you how much it pays off to do things yourself, this guide also contains
+a lot of interactive examples to make it both fun and easy to learn all the
+different aspects of using a low-level graphics library like OpenGL!
 
-As an added bonus, you always have the opportunity to ask questions at the end of each chapter in the comments section. I'll try to answer as many questions as possible, but always remember that there are plenty of people out there who are willing to help you with your issues. Make sure to help us help you by specifying your platform, compiler, the relevant code section, the result you expect and what is actually happening.
+As an added bonus, you always have the opportunity to ask questions at the end
+of each chapter in the comments section. I'll try to answer as many questions as
+possible, but always remember that there are plenty of people out there who are
+willing to help you with your issues. Make sure to help us help you by
+specifying your platform, compiler, the relevant code section, the result you
+expect and what is actually happening.
+
+Credits
+=======
+
+Thanks to all of the [contributors](https://github.com/Overv/Open.GL/graphs/contributors)
+for their help with improving the quality of this tutorial! Special thanks to
+the following people for their essential contributions to the site:
+
+* [Toby Rufinus](https://github.com/NightPixel) (code fixes, improved images, sample solutions for last chapters)
+* [Eric Engeström](https://github.com/1ace) (making the site mobile friendly)
+* [Elliott Sales de Andrade](https://github.com/QuLogic) (improving article text)
+* [Aaron Hamilton](https://github.com/xorgy) (improving article text)
 
 Prerequisites
-========
+=============
 
 Before we can take off, you need to make sure you have all the things you need.
 
