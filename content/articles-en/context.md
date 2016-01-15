@@ -124,7 +124,7 @@ A window can be opened by creating a new instance of `sf::Window`. The basic con
 
 	sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Close, settings);
 
-The constructor can also take an `sf::WindowSettings` structure that allows you to specify the anti-aliasing level and the accuracy of the depth and stencil buffers. The latter two will be discussed later, so you don't have to worry about these yet. In the latest version of SFML, you do need to request these manually with the code above.
+The constructor can also take an `sf::ContextSettings` structure that allows you to specify the anti-aliasing level and the accuracy of the depth and stencil buffers. The latter two will be discussed later, so you don't have to worry about these yet. In the latest version of SFML, you do need to request these manually with the code above.
 
 When running this, you'll notice that the application instantly closes after creating the window. Let's add the event loop to deal with that.
 
