@@ -244,8 +244,8 @@ The fragment shader looks like this:
 	vec4 topRight    = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y + 1.0 / 200.0));
 	vec4 bottomLeft  = texture(texFramebuffer, vec2(Texcoord.x - 1.0 / 300.0, Texcoord.y - 1.0 / 200.0));
 	vec4 bottomRight = texture(texFramebuffer, vec2(Texcoord.x + 1.0 / 300.0, Texcoord.y - 1.0 / 200.0));
-	vec4 sx = -topLeft - 2 * left - bottomLeft + topRight     + 2 * right  + bottomRight;
-	vec4 sy = -topLeft - 2 * top  - topRight   + bottomLeft   + 2 * bottom + bottomRight;
+	vec4 sx = -topLeft - 2 * left - bottomLeft + topRight   + 2 * right  + bottomRight;
+	vec4 sy = -topLeft - 2 * top  - topRight   + bottomLeft + 2 * bottom + bottomRight;
 	vec4 sobel = sqrt(sx * sx + sy * sy);
 	outColor = sobel;
 
