@@ -30,6 +30,9 @@ nav {
 }
 
 /* Menu button */
+nav label {
+  display: block;
+}
 nav label:after {
   display: block;
   opacity: .5;
