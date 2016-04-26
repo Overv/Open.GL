@@ -233,7 +233,7 @@ To start using it, simply bind it:
 
 As soon as you've bound a certain VAO, every time you call `glVertexAttribPointer`, that information will be stored in that VAO. This makes switching between different vertex data and vertex formats as easy as binding a different VAO! Just remember that a VAO doesn't store any vertex data by itself, it just references the VBOs you've created and how to retrieve the attribute values from them.
 
-Since only calls after binding a VAO stick to it, make sure that you've created and bound the VAO at the start of your program.
+<blockquote class="important">Since only calls after binding a VAO stick to it, make sure that you've created and bound the VAO at the start of your program. Any vertex buffers and element buffers bound before it will be ignored.</blockquote>
 
 Drawing
 ========
