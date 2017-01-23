@@ -68,8 +68,8 @@ As hinted by the `GL_ARRAY_BUFFER` enum value there are other types of buffers, 
 Notice that this function doesn't refer to the id of our VBO, but instead to the active array buffer. The second parameter specifies the size in bytes. The final parameter is very important and its value depends on the `usage` of the vertex data. I'll outline the ones related to drawing here:
 
 - `GL_STATIC_DRAW`: The vertex data will be uploaded once and drawn many times (e.g. the world).
-- `GL_DYNAMIC_DRAW`: The vertex data will be changed from time to time, but drawn many times more than that.
-- `GL_STREAM_DRAW`: The vertex data will change almost every time it's drawn (e.g. user interface).
+- `GL_DYNAMIC_DRAW`: The vertex data will be created once, changed from time to time, but drawn many times more than that.
+- `GL_STREAM_DRAW`: The vertex data will be uploaded once and drawn once.
 
 This usage value will determine in what kind of memory the data is stored on your graphics card for the highest efficiency. For example, VBOs with `GL_STREAM_DRAW` as type may store their data in memory that allows faster writing in favour of slightly slower drawing.
 
