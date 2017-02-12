@@ -27,7 +27,7 @@ around the web on these topics.
 
 Let's start with a simple vertex shader.
 
-    const GLchar* vertexShaderSrc = GLSL(
+    const GLchar* vertexShaderSrc = R"glsl(
         in float inValue;
         out float outValue;
 
@@ -35,7 +35,7 @@ Let's start with a simple vertex shader.
         {
             outValue = sqrt(inValue);
         }
-    );
+    )glsl";
 
 This vertex shader does not appear to make much sense. It doesn't set a
 `gl_Position` and it only takes a single arbitrary float as input. Luckily, we
@@ -190,7 +190,7 @@ capture the outputs of the geometry shader instead of the vertex shader. For
 example:
 
     // Vertex shader
-    const GLchar* vertexShaderSrc = GLSL(
+    const GLchar* vertexShaderSrc = R"glsl(
         in float inValue;
         out float geoValue;
 
@@ -198,10 +198,10 @@ example:
         {
             geoValue = sqrt(inValue);
         }
-    );
+    )glsl";
 
     // Geometry shader
-    const GLchar* geoShaderSrc = GLSL(
+    const GLchar* geoShaderSrc = R"glsl(
         layout(points) in;
         layout(triangle_strip, max_vertices = 3) out;
 
@@ -217,7 +217,7 @@ example:
 
             EndPrimitive();
         }
-    );
+    )glsl";
 
 The geometry shader takes a point processed by the vertex shader and generates
 2 more to form a triangle with each point having a 1 higher value.

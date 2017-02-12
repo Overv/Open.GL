@@ -11,72 +11,76 @@
 #include <chrono>
 
 // Shader sources
-const GLchar* sceneVertexSource =
-    "#version 150 core\n"
-    "in vec3 position;"
-    "in vec3 color;"
-    "in vec2 texcoord;"
-    "out vec3 Color;"
-    "out vec2 Texcoord;"
-    "uniform mat4 model;"
-    "uniform mat4 view;"
-    "uniform mat4 proj;"
-    "uniform vec3 overrideColor;"
-    "void main()"
-    "{"
-    "    Color = overrideColor * color;"
-    "    Texcoord = texcoord;"
-    "    gl_Position = proj * view * model * vec4(position, 1.0);"
-    "}";
-const GLchar* sceneFragmentSource =
-    "#version 150 core\n"
-    "in vec3 Color;"
-    "in vec2 Texcoord;"
-    "out vec4 outColor;"
-    "uniform sampler2D texKitten;"
-    "uniform sampler2D texPuppy;"
-    "void main()"
-    "{"
-    "    outColor = vec4(Color, 1.0) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
-    "}";
+const GLchar* sceneVertexSource = R"glsl(
+    #version 150 core
+    in vec3 position;
+    in vec3 color;
+    in vec2 texcoord;
+    out vec3 Color;
+    out vec2 Texcoord;
+    uniform mat4 model;
+    uniform mat4 view;
+    uniform mat4 proj;
+    uniform vec3 overrideColor;
+    void main()
+    {
+        Color = overrideColor * color;
+        Texcoord = texcoord;
+        gl_Position = proj * view * model * vec4(position, 1.0);
+    }
+)glsl";
+const GLchar* sceneFragmentSource = R"glsl(
+    #version 150 core
+    in vec3 Color;
+    in vec2 Texcoord;
+    out vec4 outColor;
+    uniform sampler2D texKitten;
+    uniform sampler2D texPuppy;
+    void main()
+    {
+        outColor = vec4(Color, 1.0) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);
+    }
+)glsl";
 
-const GLchar* screenVertexSource =
-    "#version 150 core\n"
-    "in vec2 position;"
-    "in vec2 texcoord;"
-    "out vec2 Texcoord;"
-    "void main()"
-    "{"
-    "    Texcoord = texcoord;"
-    "    gl_Position = vec4(position, 0.0, 1.0);"
-    "}";
-const GLchar* screenFragmentSource =
-    "#version 150 core\n"
-    "in vec2 Texcoord;"
-    "out vec4 outColor;"
-    "uniform sampler2D texFramebuffer;"
-    "uniform vec2 texOffset;"
-    "const float kernel[9] = float[]("
-    "    0.00481007202f,"
-    "    0.0286864862f,"
-    "    0.102712765f,"
-    "    0.220796734f,"
-    "    0.284958780f,"
-    "    0.220796734f,"
-    "    0.102712765f,"
-    "    0.0286864862f,"
-    "    0.00481007202f"
-    ");"
-    "void main()"
-    "{"
-    "    vec4 sum = vec4(0.0);"
-    "    for (int i = -4; i <= 4; i++)"
-    "        sum += texture("
-    "            texFramebuffer,"
-    "            Texcoord + i * texOffset"
-    "        ) * kernel[i + 4];"
-    "    outColor = sum;"
-    "}";
+const GLchar* screenVertexSource = R"glsl(
+    #version 150 core
+    in vec2 position;
+    in vec2 texcoord;
+    out vec2 Texcoord;
+    void main()
+    {
+        Texcoord = texcoord;
+        gl_Position = vec4(position, 0.0, 1.0);
+    }
+)glsl";
+const GLchar* screenFragmentSource = R"glsl(
+    #version 150 core
+    in vec2 Texcoord;
+    out vec4 outColor;
+    uniform sampler2D texFramebuffer;
+    uniform vec2 texOffset;
+    const float kernel[9] = float[](
+        0.00481007202f,
+        0.0286864862f,
+        0.102712765f,
+        0.220796734f,
+        0.284958780f,
+        0.220796734f,
+        0.102712765f,
+        0.0286864862f,
+        0.00481007202f
+    );
+    void main()
+    {
+        vec4 sum = vec4(0.0);
+        for (int i = -4; i <= 4; i++)
+            sum += texture(
+                texFramebuffer,
+                Texcoord + i * texOffset
+            ) * kernel[i + 4];
+        outColor = sum;
+    }
+)glsl";
 
 // Cube vertices
 GLfloat cubeVertices[] = {
