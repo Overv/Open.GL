@@ -5,11 +5,10 @@
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
 
-// Shader macro
-#define GLSL(src) "#version 150 core\n" #src
-
 // Vertex shader
-const GLchar* vertexShaderSrc = GLSL(
+const GLchar* vertexShaderSrc = R"glsl(
+    #version 150 core
+
     in float inValue;
     out float outValue;
 
@@ -17,7 +16,7 @@ const GLchar* vertexShaderSrc = GLSL(
     {
         outValue = sqrt(inValue);
     }
-);
+)glsl";
 
 int main()
 {

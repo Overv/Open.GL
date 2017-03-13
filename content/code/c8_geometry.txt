@@ -5,11 +5,10 @@
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
 
-// Shader macro
-#define GLSL(src) "#version 150 core\n" #src
-
 // Vertex shader
-const GLchar* vertexShaderSrc = GLSL(
+const GLchar* vertexShaderSrc = R"glsl(
+    #version 150 core
+
     in float inValue;
     out float geoValue;
 
@@ -17,10 +16,12 @@ const GLchar* vertexShaderSrc = GLSL(
     {
         geoValue = sqrt(inValue);
     }
-);
+)glsl";
 
 // Geometry shader
-const GLchar* geoShaderSrc = GLSL(
+const GLchar* geoShaderSrc = R"glsl(
+    #version 150 core
+
     layout(points) in;
     layout(triangle_strip, max_vertices = 3) out;
 
@@ -36,7 +37,7 @@ const GLchar* geoShaderSrc = GLSL(
 
         EndPrimitive();
     }
-);
+)glsl";
 
 int main()
 {

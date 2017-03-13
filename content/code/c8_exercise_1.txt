@@ -6,11 +6,10 @@
 #include <SFML/Window.hpp>
 #include <chrono>
 
-// Shader macro
-#define GLSL(src) "#version 150 core\n" #src
-
 // Vertex shader
-const GLchar* vertexShaderSrc = GLSL(
+const GLchar* vertexShaderSrc = R"glsl(
+    #version 150 core
+
     in vec2 position;
     in vec2 velocity;
     in vec2 originalPos;
@@ -40,17 +39,19 @@ const GLchar* vertexShaderSrc = GLSL(
         outVelocity = newVelocity;
         gl_Position = vec4(newPosition, 0.0, 1.0);
     }
-);
+)glsl";
 
 // Fragment shader
-const GLchar* fragmentShaderSrc = GLSL(
+const GLchar* fragmentShaderSrc = R"glsl(
+    #version 150 core
+
     out vec4 outColor;
 
     void main()
     {
         outColor = vec4(1.0, 0.0, 0.0, 1.0);
     }
-);
+)glsl";
 
 int main()
 {

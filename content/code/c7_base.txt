@@ -9,23 +9,27 @@
 #define GLSL(src) "#version 150 core\n" #src
 
 // Vertex shader
-const GLchar* vertexShaderSrc = GLSL(
+const GLchar* vertexShaderSrc = R"glsl(
+    #version 150 core
+
     in vec2 pos;
 
     void main()
     {
         gl_Position = vec4(pos, 0.0, 1.0);
     }
-);
+)glsl";
 
 // Fragment shader
-const GLchar* fragmentShaderSrc = GLSL(
+const GLchar* fragmentShaderSrc = R"glsl(
+    #version 150 core
+    
     out vec4 outColor;
     void main()
     {
         outColor = vec4(1.0, 0.0, 0.0, 1.0);
     }
-);
+)glsl";
 
 // Shader creation helper
 GLuint createShader(GLenum type, const GLchar* src) {

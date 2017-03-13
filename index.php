@@ -21,7 +21,7 @@
 	// Determine how to load the requested content
 	$notfound = !preg_match("/^[a-z]+$/", $content) || !file_exists("content/articles-" . $lang . "/" . $content . ".md");
 	if ($notfound) {
-        $content = 'notfound';
+	        $content = 'notfound';
 		$contentFile = "content/articles-" . $lang . "/notfound.md";
 		$contentTitle = "Segmentation fault";
 	} else {

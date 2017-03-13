@@ -11,33 +11,35 @@
 #include <chrono>
 
 // Shader sources
-const GLchar* vertexSource =
-    "#version 150 core\n"
-    "in vec3 position;"
-    "in vec3 color;"
-    "in vec2 texcoord;"
-    "out vec3 Color;"
-    "out vec2 Texcoord;"
-    "uniform mat4 model;"
-    "uniform mat4 view;"
-    "uniform mat4 proj;"
-    "void main()"
-    "{"
-    "    Color = color;"
-    "    Texcoord = texcoord;"
-    "    gl_Position = proj * view * model * vec4(position, 1.0);"
-    "}";
-const GLchar* fragmentSource =
-    "#version 150 core\n"
-    "in vec3 Color;"
-    "in vec2 Texcoord;"
-    "out vec4 outColor;"
-    "uniform sampler2D texKitten;"
-    "uniform sampler2D texPuppy;"
-    "void main()"
-    "{"
-    "    outColor = vec4(Color, 1.0) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
-    "}";
+const GLchar* vertexSource = R"glsl(
+    #version 150 core
+    in vec3 position;
+    in vec3 color;
+    in vec2 texcoord;
+    out vec3 Color;
+    out vec2 Texcoord;
+    uniform mat4 model;
+    uniform mat4 view;
+    uniform mat4 proj;
+    void main()
+    {
+        Color = color;
+        Texcoord = texcoord;
+        gl_Position = proj * view * model * vec4(position, 1.0);
+    }
+)glsl";
+const GLchar* fragmentSource = R"glsl(
+    #version 150 core
+    in vec3 Color;
+    in vec2 Texcoord;
+    out vec4 outColor;
+    uniform sampler2D texKitten;
+    uniform sampler2D texPuppy;
+    void main()
+    {
+        outColor = vec4(Color, 1.0) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);
+    }
+)glsl";
 
 int main()
 {

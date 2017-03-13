@@ -29,37 +29,32 @@ Let's start by writing some simple code that just draws 4 red points to the
 screen.
 
     // Vertex shader
-    const char* vertexShaderSrc = GLSL(
+    const char* vertexShaderSrc = R"glsl(
         in vec2 pos;
 
         void main()
         {
             gl_Position = vec4(pos, 0.0, 1.0);
         }
-    );
+    )glsl";
     
     // Fragment shader
-    const char* fragmentShaderSrc = GLSL(
+    const char* fragmentShaderSrc = R"glsl(
         out vec4 outColor;
 
         void main()
         {
             outColor = vec4(1.0, 0.0, 0.0, 1.0);
         }
-    );
+    )glsl";
 
 We'll start by declaring two very simple vertex and fragment shaders at the top
 of the file. The vertex shader simply forwards the position attribute of each
 point and the fragment shader always outputs red. Nothing special there.
 
->I've made use here of a very convenient `GLSL` macro. It has the following
->definition:
->
->     #define GLSL(src) "#version 150 core\n" #src
->
->It is a lot more convenient to use than the multiline string syntax we've used
->before. Beware that newlines are ignored, which is the reason the `#version`
->preprocessor directive is separate.
+>I've made use here of a very convenient C++11 feature, known as raw string
+>literals. It is a lot more convenient to use than the multiline string syntax
+>we've used before.
 
 Let's also add a helper function to create and compile a shader:
 
@@ -243,7 +238,7 @@ There's not much to explain, geometry shaders are created and activated in
 exactly the same way as other types of shaders. Let's add a geometry shader to
 our 4 point sample that doesn't do anything yet.
 
-    const char* geometryShaderSrc = GLSL(
+    const char* geometryShaderSrc = R"glsl(
         layout(points) in;
         layout(points, max_vertices = 1) out;
 
@@ -253,7 +248,7 @@ our 4 point sample that doesn't do anything yet.
             EmitVertex();
             EndPrimitive();
         }
-    );
+    )glsl";
 
 This geometry shader should be fairly straightforward. For each input point, it
 generates one equivalent output point. This is the minimum amount of code
