@@ -69,7 +69,7 @@
 			  menuSettings: { context: "Browser" }
 			} );
 		</script>
-		<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 		<link rel="stylesheet" href="/includes/zenburn.min.css" />
 		<script type="text/javascript" src="//yandex.st/highlightjs/6.1/highlight.min.js"></script>
