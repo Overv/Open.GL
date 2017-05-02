@@ -21,6 +21,14 @@ willing to help you with your issues. Make sure to help us help you by
 specifying your platform, compiler, the relevant code section, the result you
 expect and what is actually happening.
 
+E-book
+======
+
+This guide is now available in e-book formats as well:
+
+* [EPUB](https://raw.githubusercontent.com/Overv/Open.GL/master/ebook/Modern%20OpenGL%20Guide.epub)
+* [PDF](https://raw.githubusercontent.com/Overv/Open.GL/master/ebook/Modern%20OpenGL%20Guide.pdf)
+
 Credits
 =======
 
