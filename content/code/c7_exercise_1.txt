@@ -43,7 +43,7 @@ const GLchar* geometryShaderSrc = R"glsl(
     {
         fColor = vColor[0];
 
-        gl_in[0].gl_Position = proj * view * model * gl_in[0].gl_Position;
+        gl_Position = proj * view * model * gl_in[0].gl_Position;
 
         // +X direction is "North", -X direction is "South"
         // +Y direction is "Up",    -Y direction is "Down"
@@ -224,7 +224,7 @@ int main()
         // Clear the screen to black
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        
+
         // Calculate transformation
         auto t_now = std::chrono::high_resolution_clock::now();
         float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
