@@ -116,7 +116,7 @@ Unfortunately it's a bit more difficult to cover the changes to the code step-by
 
 I've chosen to have only 2 position coordinates and 2 texture coordinates for my 2D rendering. My 2D shaders look like this:
 
-	#version 150
+	#version 150 core
 	in vec2 position;
 	in vec2 texcoord;
 	out vec2 Texcoord;
@@ -128,7 +128,7 @@ I've chosen to have only 2 position coordinates and 2 texture coordinates for my
 
 <span></span>
 
-	#version 150
+	#version 150 core
 	in vec2 Texcoord;
 	out vec4 outColor;
 	uniform sampler2D texFramebuffer;

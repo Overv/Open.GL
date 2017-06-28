@@ -30,6 +30,7 @@ screen.
 
     // Vertex shader
     const char* vertexShaderSrc = R"glsl(
+        #version 150 core
         in vec2 pos;
 
         void main()
@@ -37,9 +38,10 @@ screen.
             gl_Position = vec4(pos, 0.0, 1.0);
         }
     )glsl";
-    
+
     // Fragment shader
     const char* fragmentShaderSrc = R"glsl(
+        #version 150 core
         out vec4 outColor;
 
         void main()
@@ -51,10 +53,6 @@ screen.
 We'll start by declaring two very simple vertex and fragment shaders at the top
 of the file. The vertex shader simply forwards the position attribute of each
 point and the fragment shader always outputs red. Nothing special there.
-
->I've made use here of a very convenient C++11 feature, known as raw string
->literals. It is a lot more convenient to use than the multiline string syntax
->we've used before.
 
 Let's also add a helper function to create and compile a shader:
 
@@ -126,6 +124,8 @@ Basic geometry shader
 =====================
 
 To understand how a geometry shader works, let's look at an example:
+
+    #version 150 core
 
     layout(points) in;
     layout(line_strip, max_vertices = 2) out;
@@ -239,6 +239,8 @@ exactly the same way as other types of shaders. Let's add a geometry shader to
 our 4 point sample that doesn't do anything yet.
 
     const char* geometryShaderSrc = R"glsl(
+        #version 150 core
+
         layout(points) in;
         layout(points, max_vertices = 1) out;
 
@@ -270,6 +272,8 @@ because none are being generated!
 Now, try replacing the geometry shader code with the line strip generating code
 from the previous section:
 
+    #version 150 core
+
     layout(points) in;
     layout(line_strip, max_vertices = 2) out;
 
@@ -298,6 +302,8 @@ Geometry shaders and vertex attributes
 Let's add some variation to the lines that are being drawn by allowing each of
 them to have a unique color. By adding a color input variable to the vertex
 shader, we can specify a color per vertex and thus per generated line.
+
+    #version 150 core
 
     in vec2 pos;
     in vec3 color;
@@ -332,6 +338,8 @@ And update the point data to include an RGB color per point:
 
 Because the vertex shader is now not followed by a fragment shader, but a
 geometry shader, we have to handle the `vColor` variable as input there.
+
+    #version 150 core
 
     layout(points) in;
     layout(line_strip, max_vertices = 2) out;
@@ -370,6 +378,8 @@ Whenever `EmitVertex` is called now, a vertex is emitted with the current value
 of `fColor` as color attribute. We can now access that attribute in the fragment
 shader:
 
+    #version 150 core
+
     in vec3 fColor;
 
     out vec4 outColor;
@@ -406,6 +416,8 @@ We can do better with geometry shaders! We can write a shader that generates
 the appropriate resolution circle based on run-time conditions. Let's first
 modify the geometry shader to draw a 10-sided polygon at each point. If you
 remember your trigonometry, it should be a piece of cake:
+
+    #version 150 core
 
     layout(points) in;
     layout(line_strip, max_vertices = 11) out;
@@ -468,6 +480,8 @@ the new attribute to the data and to the specification:
                            6 * sizeof(float), (void*) (5 * sizeof(float)));
 
 Alter the vertex shader to pass the value to the geometry shader:
+
+    #version 150 core
 
     in vec2 pos;
     in vec3 color;

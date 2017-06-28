@@ -532,7 +532,7 @@ The second parameter of the `glUniformMatrix4fv` function specifies how many mat
 
 All that remains is updating the vertex shader to include this uniform and use it to transform each vertex:
 
-	#version 150
+	#version 150 core
 
 	in vec2 position;
 	in vec3 color;
@@ -620,7 +620,7 @@ The near and far planes are known as the clipping planes. Any vertex closer to t
 
 Now piecing it all together, the vertex shader looks something like this:
 
-	#version 150
+	#version 150 core
 
 	in vec2 position;
 	in vec3 color;

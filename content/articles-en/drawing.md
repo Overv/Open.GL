@@ -89,7 +89,7 @@ The vertex shader is a program on the graphics card that processes each vertex a
 
 Remember that our vertex position is already specified as device coordinates and no other attributes exist, so the vertex shader will be fairly bare bones.
 
-	#version 150
+	#version 150 core
 
 	in vec2 position;
 
@@ -98,7 +98,7 @@ Remember that our vertex position is already specified as device coordinates and
 		gl_Position = vec4(position, 0.0, 1.0);
 	}
 
-The `#version` preprocessor directive is used to indicate that the code that follows is GLSL 1.50 code. Next, we specify that there is only one attribute, the position. Apart from the regular C types, GLSL has built-in vector and matrix types identified by `vec*` and `mat*` identifiers. The type of the values within these constructs is always a `float`. The number after `vec` specifies the number of components (x, y, z, w) and the number after `mat` specifies the number of rows /columns. Since the position attribute consists of only an X and Y coordinate, `vec2` is perfect.
+The `#version` preprocessor directive is used to indicate that the code that follows is GLSL 1.50 code using OpenGL's core profile. Next, we specify that there is only one attribute, the position. Apart from the regular C types, GLSL has built-in vector and matrix types identified by `vec*` and `mat*` identifiers. The type of the values within these constructs is always a `float`. The number after `vec` specifies the number of components (x, y, z, w) and the number after `mat` specifies the number of rows /columns. Since the position attribute consists of only an X and Y coordinate, `vec2` is perfect.
 
 > You can be quite creative when working with these vertex types. In the example above a shortcut was used to set the first two components of the `vec4` to those of `vec2`. These two lines are equal:
 >
@@ -116,7 +116,7 @@ The output from the vertex shader is interpolated over all the pixels on the scr
 
 Our triangle only consists of white pixels, so the fragment shader simply outputs that color every time:
 
-	#version 150
+	#version 150 core
 
 	out vec4 outColor;
 
@@ -130,7 +130,20 @@ You'll immediately notice that we're not using some built-in variable for output
 Compiling shaders
 --------
 
-Compiling shaders is easy once you have loaded the source code (either from file or as a hard-coded string). Just like vertex buffers, it starts with creating a shader object and loading data into it.
+Compiling shaders is easy once you have loaded the source code (either from file or as a hard-coded string). You can easily include your shader source in the C++ code through C++11 raw string literals:
+
+    const char* vertexSource = R"glsl(
+    	#version 150 core
+
+	    in vec2 position;
+
+    	void main()
+	    {
+		    gl_Position = vec4(position, 0.0, 1.0);
+    	}
+    )glsl";
+
+Just like vertex buffers, creating a shader itself starts with creating a shader object and loading data into it.
 
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexSource, NULL);
@@ -257,7 +270,7 @@ Right now the white color of the triangle has been hard-coded into the shader co
 
 By making the color in the fragment shader a uniform, it will end up looking like this:
 
-	#version 150
+	#version 150 core
 
 	uniform vec3 triangleColor;
 
@@ -315,7 +328,7 @@ We'll first have to add the extra attributes to the vertex data. Transparency is
 
 Then we have to change the vertex shader to take it as input and pass it to the fragment shader:
 
-	#version 150
+	#version 150 core
 
 	in vec2 position;
 	in vec3 color;
@@ -330,7 +343,7 @@ Then we have to change the vertex shader to take it as input and pass it to the 
 
 And `Color` is added as input to the fragment shader:
 
-	#version 150
+	#version 150 core
 
 	in vec3 Color;
 

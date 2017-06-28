@@ -173,7 +173,7 @@ For this sample, the [image of the kitten](/content/code/sample.png) used above 
 
 To sample a pixel from a 2D texture using the sampler, the function `texture` can be called with the relevant sampler and texture coordinate as parameters. We'll also multiply the sampled color with the color attribute to get an interesting effect. Your fragment shader will now look like this:
 
-	#version 150
+	#version 150 core
 
 	in vec3 Color;
 	in vec2 Texcoord;
