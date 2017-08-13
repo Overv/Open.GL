@@ -49,7 +49,7 @@ Luckily OpenGL offers ways of telling it when to draw over a pixel and when not 
 Depth buffer
 ========
 
-*Z-buffering* is a way of keeping track of the depth of every pixel on the screen. The depth is proportional to the distance between the screen plane and a fragment that has been drawn. That means that the fragments on the sides of the cube further away from the viewer have a higher depth value, whereas fragments closer have a lower depth value.
+*Z-buffering* is a way of keeping track of the depth of every pixel on the screen. The depth is an increasing function of the distance between the screen plane and a fragment that has been drawn. That means that the fragments on the sides of the cube further away from the viewer have a higher depth value, whereas fragments closer have a lower depth value.
 
 If this depth is stored along with the color when a fragment is written, fragments drawn later can compare their depth to the existing depth to determine if the new fragment is closer to the viewer than the old fragment. If that is the case, it should be drawn over and otherwise it can simply be discarded. This is known as *depth testing*.
 
@@ -63,7 +63,7 @@ The depth buffer can be cleared along with the color buffer by extending the `gl
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-The default clear value for the depth is `1.0f`, which is equal to the depth of your far clipping plane and thus the furthest depth that can be represented. All fragments will be closer than that, so they will no longer be discarded. 
+The default clear value for the depth is `1.0f`, which is equal to the depth of your far clipping plane and thus the furthest depth that can be represented. All fragments will be closer than that, so they will no longer be discarded.
 
 <div class="livedemo_wrap">
 	<div class="livedemo" id="demo_c5_depth" style="background: url('/media/img/c5_window2.png')">
@@ -223,7 +223,7 @@ The new drawing code looks like this:
 		glStencilMask(0xFF); // Write to stencil buffer
 		glDepthMask(GL_FALSE); // Don't write to depth buffer
 		glClear(GL_STENCIL_BUFFER_BIT); // Clear stencil buffer (0 by default)
-			
+
 		glDrawArrays(GL_TRIANGLES, 36, 6);
 
 		// Draw cube reflection
