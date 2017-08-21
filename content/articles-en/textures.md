@@ -236,6 +236,11 @@ Now that the two samplers are ready, you'll have to assign the first two texture
 	SOIL_free_image_data(image);
 	glUniform1i(glGetUniformLocation(shaderProgram, "texKitten"), 0);
 
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, textures[1]);
 	image = SOIL_load_image("sample2.png", &width, &height, 0, SOIL_LOAD_RGB);
@@ -244,7 +249,12 @@ Now that the two samplers are ready, you'll have to assign the first two texture
 	SOIL_free_image_data(image);
 	glUniform1i(glGetUniformLocation(shaderProgram, "texPuppy"), 1);
 
-The texture units of the samplers are set using the `glUniform` function you've seen in the previous chapter. It simply accepts an integer specifying the texture unit. This code should result in the following image.
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+The texture units of the samplers are set using the `glUniform` function you've seen in the previous chapter. It simply accepts an integer specifying the texture unit. Make sure that at least the wrap texture parameters are set for both textures. This code should result in the following image.
 
 <img src="/media/img/c3_window2.png" alt="" />
 
