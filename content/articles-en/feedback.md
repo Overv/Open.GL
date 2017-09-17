@@ -108,7 +108,7 @@ create a VBO to hold these, just like the input vertices:
 Notice that we now pass a `nullptr` to create a buffer big enough to hold all of
 the resulting floats, but without specifying any initial data. The appropriate
 usage type is now `GL_STATIC_READ`, which indicates that we intend OpenGL to
-write to this buffer and our application to read from it. (See [reference](http://www.opengl.org/sdk/docs/man/xhtml/glBufferData.xml) for usage types)
+write to this buffer and our application to read from it. (See [reference](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferData.xhtml) for usage types)
 
 We've now made all preparations for the <del>rendering</del> computation
 process. As we don't intend to draw anything, the rasterizer should be disabled:
