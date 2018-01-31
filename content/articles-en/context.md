@@ -32,8 +32,6 @@ This program flow would look something like this in pseudocode:
 
 When rendering a frame, the results will be stored in an offscreen buffer known as the *back buffer* to make sure the user only sees the final result. The `presentGraphics()` call will copy the result from the back buffer to the visible window buffer, the *front buffer*. Every application that makes use of real-time graphics will have a program flow that comes down to this, whether it uses a library or native code.
 
-By default, libraries will create an OpenGL context that supports the legacy functions. This is unfortunate, because we're not interested in those and they may become unavailable at some point in the future. The good news is that it is possible to inform the drivers that our application is ready for the future and does not depend on the old functions. The bad news is that at this moment only the GLFW library allows us to specify this. This little shortcoming doesn't have any negative consequences right now, so don't let it influence your choice of library too much, but the advantage of a so-called core profile context is that accidentally calling any of the old functions results in an invalid operation error to set you straight.
-
 Supporting resizable windows with OpenGL introduces some complexities as resources need to be reloaded and buffers need to be recreated to fit the new window size. It's more convenient for the learning process to not bother with such details yet, so we'll only deal with fixed size (fullscreen) windows for now.
 
 Setup
@@ -130,7 +128,7 @@ A window can be opened by creating a new instance of `sf::Window`. The basic con
 
 The constructor can also take an `sf::ContextSettings` structure that allows you to request an OpenGL context and specify the anti-aliasing level and the accuracy of the depth and stencil buffers. The latter two will be discussed later, so you don't have to worry about these yet. In the latest version of SFML, you do need to request these manually with the code above. We request an OpenGL context of version 3.2 in the core profile as opposed to the compatibility mode which is default. Using the default compatibility mode may cause problems while using modern OpenGL on some systems, thus we use the core profile.
 
-Note that these settings are only a hint, SFML will try to find the closest valid match.  
+Note that these settings are only a hint, SFML will try to find the closest valid match.
 
 When running this, you'll notice that the application instantly closes after creating the window. Let's add the event loop to deal with that.
 
