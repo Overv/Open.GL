@@ -185,8 +185,8 @@ int main()
         // Calculate transformation
         auto t_now = std::chrono::high_resolution_clock::now();
         float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
-        
-        glm::mat4 model;
+
+        glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(
             model,
             time * glm::radians(180.0f),

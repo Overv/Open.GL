@@ -195,7 +195,7 @@ int main()
         float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_prev).count();
         t_prev = t_now;
 
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(
             model,
             glm::radians(angle),

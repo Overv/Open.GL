@@ -511,10 +511,10 @@ A simple transformation
 
 Before diving straight into 3D, let's first try a simple 2D rotation.
 
-	glm::mat4 trans;
+	glm::mat4 trans = glm::mat4(1.0f);
 	trans = glm::rotate(trans, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
-The first line creates a new 4-by-4 matrix, which is the identity matrix by default. The `glm::rotate` function multiplies this matrix by a rotation transformation of 180 degrees around the Z axis. Remember that since the screen lies in the XY plane, the Z axis is the axis you want to rotate points around.
+The first line creates a new 4-by-4 matrix and initializes it to the identity matrix. The `glm::rotate` function multiplies this matrix by a rotation transformation of 180 degrees around the Z axis. Remember that since the screen lies in the XY plane, the Z axis is the axis you want to rotate points around.
 
 To see if it works, let's try to rotate a vector with this transformation:
 
