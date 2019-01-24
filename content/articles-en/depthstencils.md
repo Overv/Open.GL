@@ -1,11 +1,9 @@
-Extra buffers
-========
+# Extra buffers
 
 Up until now there is only one type of output buffer you've made use of, the color buffer. This chapter will discuss two additional types, the *depth buffer* and the *stencil buffer*. For each of these a problem will be presented and subsequently solved with that specific buffer.
 
 
-Preparations
-========
+## Preparations
 
 To best demonstrate the use of these buffers, let's draw a cube instead of a flat shape. The vertex shader needs to be modified to accept a third coordinate:
 
@@ -29,16 +27,16 @@ Vertices are now 8 floats in size, so you'll have to update the vertex attribute
 		-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f
 	};
 
-Confirm that you've made all the required changes by running your program and checking if it still draws a flat spinning image of a kitten blended with a puppy. A single cube consists of 36 vertices (6 sides * 2 triangles * 3 vertices), so I will ease your life by providing the array [here](/content/code/c5_vertices.txt).
+Confirm that you've made all the required changes by running your program and checking if it still draws a flat spinning image of a kitten blended with a puppy. A single cube consists of 36 vertices (6 sides * 2 triangles * 3 vertices), so I will ease your life by providing the array [here](https://open.gl/content/code/c5_vertices.txt).
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
-We will not make use of element buffers for drawing this cube, so you can use `glDrawArrays` to draw it. If you were confused by this explanation, you can compare your program to [this reference code](/content/code/c5_cube.txt).
+We will not make use of element buffers for drawing this cube, so you can use `glDrawArrays` to draw it. If you were confused by this explanation, you can compare your program to [this reference code](https://open.gl/content/code/c5_cube.txt).
 
 <div class="livedemo_wrap">
 	<div class="livedemo" id="demo_c5_cube" style="background: url('/media/img/c5_window.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="/content/demos/c5_cube.js"></script>
+		<script type="text/javascript" src="https://open.gl/content/demos/c5_cube.js"></script>
 	</div>
 </div>
 
@@ -46,8 +44,7 @@ It immediately becomes clear that the cube is not rendered as expected when seei
 
 Luckily OpenGL offers ways of telling it when to draw over a pixel and when not to. I'll go over the two most important ways of doing that, depth testing and stencilling, in this chapter.
 
-Depth buffer
-========
+## Depth buffer
 
 *Z-buffering* is a way of keeping track of the depth of every pixel on the screen. The depth is an increasing function of the distance between the screen plane and a fragment that has been drawn. That means that the fragments on the sides of the cube further away from the viewer have a higher depth value, whereas fragments closer have a lower depth value.
 
@@ -68,20 +65,19 @@ The default clear value for the depth is `1.0f`, which is equal to the depth of 
 <div class="livedemo_wrap">
 	<div class="livedemo" id="demo_c5_depth" style="background: url('/media/img/c5_window2.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="/content/demos/c5_depth.js"></script>
+		<script type="text/javascript" src="https://open.gl/content/demos/c5_depth.js"></script>
 	</div>
 </div>
 
 With the depth test capability enabled, the cube is now rendered correctly. Just like the color buffer, the depth buffer has a certain amount of bits of precision which can be specified by you. Less bits of precision reduce the extra memory use, but can introduce rendering errors in more complex scenes.
 
-Stencil buffer
-========
+## Stencil buffer
 
 The stencil buffer is an optional extension of the depth buffer that gives you more control over the question of which fragments should be drawn and which shouldn't. Like the depth buffer, a value is stored for every pixel, but this time you get to control when and how this value changes and when a fragment should be drawn depending on this value. Note that if the depth test fails, the stencil test no longer determines whether a fragment is drawn or not, but these fragments can still affect values in the stencil buffer!
 
 To get a bit more acquainted with the stencil buffer before using it, let's start by analyzing a simple example.
 
-<img src="/media/img/c5_stencil.png" alt="" />
+![](media/img/c5_stencil.png)
 
 In this case the stencil buffer was first cleared with zeroes and then a rectangle of ones was drawn to it. The drawing operation of the cube uses the values from the stencil buffer to only draw fragments with a stencil value of 1.
 
@@ -91,8 +87,7 @@ Now that you have an understanding of what the stencil buffer does, we'll look a
 
 Stencil testing is enabled with a call to `glEnable`, just like depth testing. You don't have to add this call to your code just yet. I'll first go over the API details in the next two sections and then we'll make a cool demo.
 
-Setting values
---------
+### Setting values
 
 Regular drawing operations are used to determine which values in the stencil buffer are affected by any stencil operation. If you want to affect a rectangle of values like in the sample above, simply draw a 2D quad in that area. What happens to those values can be controlled by you using the `glStencilFunc`, `glStencilOp` and `glStencilMask` functions.
 
@@ -140,8 +135,7 @@ In this case the rectangle shouldn't actually be drawn to the color buffer, sinc
 
 The `glColorMask` function allows you to specify which data is written to the color buffer during a drawing operation. In this case you would want to disable all color channels (red, green, blue, alpha). Writing to the depth buffer needs to be disabled separately as well with `glDepthMask`, so that cube drawing operation won't be affected by leftover depth values of the rectangle. This is cleaner than simply clearing the depth buffer again later.
 
-Using values in drawing operations
---------
+### Using values in drawing operations
 
 With the knowledge about setting values, using them for testing fragments in drawing operations becomes very simple. All you need to do now is re-enable color and depth writing if you had disabled those earlier and setting the test function to determine which fragments are drawn based on the values in the stencil buffer.
 
@@ -153,8 +147,7 @@ If you use this call to set the test function, the stencil test will only pass f
 
 One small detail that is easy to overlook is that the cube draw call could still affect values in the stencil buffer. This problem can be solved by setting the stencil bit mask to all zeroes, which effectively disables stencil writing.
 
-Planar reflections
-========
+## Planar reflections
 
 Let's spice up the demo we have right now a bit by adding a floor with a reflection under the cube. I'll add the vertices for the floor to the same vertex buffer the cube is currently using to keep things simple:
 
@@ -187,7 +180,7 @@ I've set the color of the floor vertices to black so that the floor does not dis
 <div class="livedemo_wrap">
 	<div class="livedemo" id="demo_c5_floor" style="background: url('/media/img/c5_window3.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="/content/demos/c5_floor.js"></script>
+		<script type="text/javascript" src="https://open.gl/content/demos/c5_floor.js"></script>
 	</div>
 </div>
 
@@ -259,13 +252,12 @@ where `uniColor` is the return value of a `glGetUniformLocation` call.
 <div class="livedemo_wrap">
 	<div class="livedemo" id="demo_c5_reflection" style="background: url('/media/img/c5_window4.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="/content/demos/c5_reflection.js"></script>
+		<script type="text/javascript" src="https://open.gl/content/demos/c5_reflection.js"></script>
 	</div>
 </div>
 
-Awesome! I hope that, especially in chapters like these, you get the idea that working with an API as low-level as OpenGL can be a lot of fun and pose interesting challenges! As usual, the final code is available [here](/content/code/c5_reflection.txt).
+Awesome! I hope that, especially in chapters like these, you get the idea that working with an API as low-level as OpenGL can be a lot of fun and pose interesting challenges! As usual, the final code is available [here](https://open.gl/content/code/c5_reflection.txt).
 
-Exercises
-========
+## Exercises
 
 There are no real exercises for this chapter, but there are a lot more interesting effects you can create with the stencil buffer. I'll leave researching the implementation of other effects, such as [stencil shadows](http://en.wikipedia.org/wiki/Shadow_volume#Stencil_buffer_implementations) and [object outlining](http://www.flipcode.com/archives/Object_Outlining.shtml) as an exercise to you.

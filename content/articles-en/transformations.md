@@ -1,5 +1,4 @@
-Matrices
-========
+# Matrices
 
 Since this is a guide on graphics programming, this chapter will not cover a lot of the extensive theory behind matrices. Only the theory that applies to their use in computer graphics will be considered here and they will be explained from a programmer's perspective. If you want to learn more about the topic, [these Khan Academy videos](https://www.khanacademy.org/math/algebra2/algebra-matrices/Basic_matrix_operations/v/introduction-to-the-matrix) are a really good general introduction to the subject.
 
@@ -15,13 +14,11 @@ a = \begin{bmatrix}
 
 Matrices values are indexed by `(i,j)` where `i` is the row and `j` is the column. That is why the matrix displayed above is called a 3-by-2 matrix. To refer to a specific value in the matrix, for example `5`, the \(a_{31}\) notation is used.
 
-Basic operations
-========
+## Basic operations
 
 To get a bit more familiar with the concept of an array of numbers, let's first look at a few basic operations.
 
-Addition and subtraction
---------
+### Addition and subtraction
 
 Just like regular numbers, the addition and subtraction operators are also defined for matrices. The only requirement is that the two operands have exactly the same row and column dimensions.
 
@@ -71,8 +68,7 @@ Just like regular numbers, the addition and subtraction operators are also defin
 
 The values in the matrices are individually added or subtracted from each other.
 
-Scalar product
---------
+### Scalar product
 
 The product of a scalar and a matrix is as straightforward as addition and subtraction.
 
@@ -91,8 +87,7 @@ The product of a scalar and a matrix is as straightforward as addition and subtr
 
 The values in the matrices are each multiplied by the scalar.
 
-Matrix-Vector product
-========
+## Matrix-Vector product
 
 The product of a matrix with another matrix is quite a bit more involved and is often misunderstood, so for simplicity's sake I will only mention the specific cases that apply to graphics programming. To see how matrices are actually used to transform vectors, we'll first dive into the product of a matrix and a vector.
 
@@ -157,12 +152,11 @@ This matrix is called the *identity matrix*, because just like the number `1`, i
 
 Let's look at the most common vector transformations now and deduce how a matrix can be formed from them.
 
-Translation
---------
+### Translation
 
 To see why we're working with 4-by-1 vectors and subsequently 4-by-4 transformation matrices, let's see how a translation matrix is formed. A translation moves a vector a certain distance in a certain direction.
 
-<img src="/media/img/c4_translation.png" alt="" />
+![](media/img/c4_translation.png)
 
 Can you guess from the multiplication overview what the matrix should look like to translate a vector by `(X,Y,Z)`?
 
@@ -191,12 +185,11 @@ Can you guess from the multiplication overview what the matrix should look like 
 
 Without the fourth column and the bottom `1` value a translation wouldn't have been possible.
 
-Scaling
---------
+### Scaling
 
 A scale transformation scales each of a vector's components by a (different) scalar. It is commonly used to shrink or stretch a vector as demonstrated below.
 
-<img src="/media/img/c4_scaling.png" alt="" />
+![](media/img/c4_scaling.png)
 
 If you understand how the previous matrix was formed, it should not be difficult to come up with a matrix that scales a given vector by `(SX,SY,SZ)`.
 
@@ -225,12 +218,11 @@ If you understand how the previous matrix was formed, it should not be difficult
 
 If you think about it for a moment, you can see that scaling would also be possible with a mere 3-by-3 matrix.
 
-Rotation
---------
+### Rotation
 
 A rotation transformation rotates a vector around the origin `(0,0,0)` using a given *axis* and *angle*. To understand how the axis and the angle control a rotation, let's do a small experiment.
 
-<img src="/media/img/c4_rotation.png" alt="" />
+![](media/img/c4_rotation.png)
 
 Put your thumb up against your monitor and try rotating your hand around it. The object, your hand, is rotating around your thumb: the rotation axis. The further you rotate your hand away from its initial position, the higher the rotation angle.
 
@@ -314,8 +306,7 @@ Rotation around Z-axis:
 
 Don't worry about understanding the actual geometry behind this, explaining that is beyond the scope of this guide. What matters is that you have a solid idea of how a rotation is described by a rotation axis and an angle and that you've at least seen what a rotation matrix looks like.
 
-Matrix-Matrix product
-========
+## Matrix-Matrix product
 
 In the previous section you've seen how transformation matrices can be used to apply transformations to vectors, but this by itself is not very useful. It clearly takes far less effort to do a translation and scaling by hand without all those pesky matrices!
 
@@ -379,8 +370,7 @@ The above is commonly recognized among mathematicians as an *indecipherable mess
 
 Try to see the pattern here with help of the colors. The factors on the left side (`1,2` and `3,4`) of the multiplication dot are the values in the row of the first matrix. The factors on the right side are the values in the rows of the second matrix repeatedly. It is not necessary to remember how exactly this works, but it's good to have seen how it's done at least once.
 
-Combining transformations
---------
+### Combining transformations
 
 To demonstrate the multiplication of two matrices, let's try scaling a given vector by `(2,2,2)` and translating it by `(1,2,3)`. Given the translation and scaling matrices above, the following product is calculated:
 
@@ -437,22 +427,19 @@ Now, let's try to transform a vector and see if it worked:
 
 Perfect! The vector is first scaled by two and then shifted in position by `(1,2,3)`.
 
-Transformations in OpenGL
-========
+## Transformations in OpenGL
 
 You've seen in the previous sections how basic transformations can be applied to vectors to move them around in the world. The job of transforming 3D points into 2D coordinates on your screen is also accomplished through matrix transformations. Just like the graphics pipeline, transforming a vector is done step-by-step. Although OpenGL allows you to decide on these steps yourself, all 3D graphics applications use a variation of the process described here.
 
-<img src="/media/img/c4_transformation.png" alt="" />
+![](media/img/c4_transformation.png)
 
 Each transformation transforms a vector into a new coordinate system, thus moving to the next step. These transformations and coordinate systems will be discussed below in more detail.
 
-Model matrix
---------
+### Model matrix
 
 The model matrix transforms a position in a model to the position in the world. This position is affected by the position, scale and rotation of the model that is being drawn. It is generally a combination of the simple transformations you've seen before. If you are already specifying your vertices in world coordinates (common when drawing a simple test scene), then this matrix can simply be set to the identity matrix.
 
-View matrix
---------
+### View matrix
 
 In real life you're used to moving the camera to alter the view of a certain scene, in OpenGL it's the other way around. The camera in OpenGL cannot move and is defined to be located at `(0,0,0)` facing the negative Z direction. That means that instead of moving and rotating the camera, the world is moved and rotated around the camera to construct the appropriate view.
 
@@ -460,8 +447,7 @@ In real life you're used to moving the camera to alter the view of a certain sce
 
 That means that to simulate a camera transformation, you actually have to transform the world with the inverse of that transformation. Example: if you want to move the camera up, you have to move the world down instead.
 
-Projection matrix
---------
+### Projection matrix
 
 After the world has been aligned with your camera using the view transformation, the projection transformation can be applied, resulting in the clip coordinates. If you're doing a perspective transformation, these clip coordinates are not ready to be used as normalized device coordinates just yet.
 
@@ -480,8 +466,7 @@ The `x` and `y` coordinates will be in the familiar `-1` and `1` range now, whic
 
 The coordinates resulting from the projection transformation are called clipping coordinates because the value of `w` is used to determine whether an object is too close or behind the camera or too far away to be drawn. The projection matrix is created with those limits, so you'll be able to specify these yourself.
 
-Putting it all together
---------
+### Putting it all together
 
 To sum it all up, the final transformation of a vertex is the product of the model, view and projection matrices.
 
@@ -491,8 +476,7 @@ v' = M_\text{proj} \cdot M_\text{view} \cdot M_\text{model} \cdot v
 
 This operation is typically performed in the vertex shader and assigned to the `gl_Position` return value in clipping coordinates. OpenGL will perform the perspective division and transformation into window coordinates. It is important to be aware of these steps, because you'll have to do them yourself when working with techniques like shadow mapping.
 
-Using transformations for 3D
-========
+## Using transformations for 3D
 
 Now that you know three important transformations, it is time to implement these in code to create an actual 3D scene. You can use any of the programs developed in the last two chapters as a base, but I'll use the texture blending sample from the end of the last chapter here.
 
@@ -506,8 +490,7 @@ To use it, add the GLM root directory to your include path and include these thr
 
 The second header includes functions to ease the calculation of the view and projection matrices. The third header adds functionality for converting a matrix object into a float array for usage in OpenGL.
 
-A simple transformation
---------
+### A simple transformation
 
 Before diving straight into 3D, let's first try a simple 2D rotation.
 
@@ -552,7 +535,7 @@ All that remains is updating the vertex shader to include this uniform and use i
 
 The primitives in your scene will now be upside down.
 
-<img src="/media/img/c4_window.png" alt="" />
+![](media/img/c4_window.png)
 
 To spice things up a bit, you could change the rotation with time:
 
@@ -582,14 +565,13 @@ This will result in something like this:
 <div class="livedemo_wrap">
 	<div class="livedemo" id="demo_c4_rotation" style="background: url('/media/img/c4_window2.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="/content/demos/c4_rotation.js"></script>
+		<script type="text/javascript" src="https://open.gl/content/demos/c4_rotation.js"></script>
 	</div>
 </div>
 
-You can find the full code [here](/content/code/c4_transformation.txt) if you have any issues.
+You can find the full code [here](https://open.gl/content/code/c4_transformation.txt) if you have any issues.
 
-Going 3D
---------
+### Going 3D
 
 The rotation above can be considered the model transformation, because it transforms the vertices in object space to world space using the rotation of the object.
 
@@ -612,7 +594,7 @@ Similarly, GLM comes with the `glm::perspective` function to create a perspectiv
 > **Field-of-view** <br /><br />
 > The field-of-view defines the angle between the top and bottom of the 2D surface on which the world will be projected. Zooming in games is often accomplished by decreasing this angle as opposed to moving the camera closer, because it more closely resembles real life.
 >
-> <img src="/media/img/c4_fov.png" alt="" />
+> ![](media/img/c4_fov.png)
 >
 > By decreasing the angle, you can imagine that the "rays" from the camera spread out less and thus cover a smaller area of the scene.
 
@@ -645,14 +627,13 @@ Notice that I've renamed the matrix previously known as `trans` to `model` and i
 <div class="livedemo_wrap">
 	<div class="livedemo" id="demo_c4_3d" style="background: url('/media/img/c4_window3.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="/content/demos/c4_3d.js"></script>
+		<script type="text/javascript" src="https://open.gl/content/demos/c4_3d.js"></script>
 	</div>
 </div>
 
-Success! You can find the full code [here](/content/code/c4_3d.txt) if you get stuck.
+Success! You can find the full code [here](https://open.gl/content/code/c4_3d.txt) if you get stuck.
 
-Exercises
-========
+## Exercises
 
-- Make the rectangle with the blended image grow bigger and smaller with `sin`. ([Solution](/content/code/c4_exercise_1.txt))
-- Make the rectangle flip around the X axis after pressing the space bar and slowly stop again. ([Solution](/content/code/c4_exercise_2.txt))
+- Make the rectangle with the blended image grow bigger and smaller with `sin`. ([Solution](https://open.gl/content/code/c4_exercise_1.txt))
+- Make the rectangle flip around the X axis after pressing the space bar and slowly stop again. ([Solution](https://open.gl/content/code/c4_exercise_2.txt))

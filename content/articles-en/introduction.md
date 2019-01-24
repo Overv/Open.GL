@@ -1,5 +1,4 @@
-Introduction
-============
+# Introduction
 
 This guide will teach you the basics of using OpenGL to develop modern graphics
 applications. There are a lot of other guides on this topic, but there are some
@@ -21,16 +20,14 @@ willing to help you with your issues. Make sure to help us help you by
 specifying your platform, compiler, the relevant code section, the result you
 expect and what is actually happening.
 
-E-book
-======
+## E-book
 
 This guide is now available in e-book formats as well:
 
 * [EPUB](https://raw.githubusercontent.com/Overv/Open.GL/master/ebook/Modern%20OpenGL%20Guide.epub)
 * [PDF](https://raw.githubusercontent.com/Overv/Open.GL/master/ebook/Modern%20OpenGL%20Guide.pdf)
 
-Credits
-=======
+## Credits
 
 Thanks to all of the [contributors](https://github.com/Overv/Open.GL/graphs/contributors)
 for their help with improving the quality of this tutorial! Special thanks to
@@ -41,8 +38,7 @@ the following people for their essential contributions to the site:
 * [Elliott Sales de Andrade](https://github.com/QuLogic) (improving article text)
 * [Aaron Hamilton](https://github.com/xorgy) (improving article text)
 
-Prerequisites
-=============
+## Prerequisites
 
 Before we can take off, you need to make sure you have all the things you need.
 

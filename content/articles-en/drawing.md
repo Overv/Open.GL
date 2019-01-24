@@ -1,11 +1,10 @@
-The graphics pipeline
-========
+# The graphics pipeline
 
 By learning OpenGL, you've decided that you want to do all of the hard work yourself. That inevitably means that you'll be thrown in the deep, but once you understand the essentials, you'll see that doing things *the hard way* doesn't have to be so difficult after all. To top that all, the exercises at the end of this chapter will show you the sheer amount of control you have over the rendering process by doing things the modern way!
 
 The *graphics pipeline* covers all of the steps that follow each other up on processing the input data to get to the final output image. I'll explain these steps with help of the following illustration.
 
-<img src="/media/img/c2_pipeline.png" alt="" />
+![](media/img/c2_pipeline.png)
 
 It all begins with the *vertices*, these are the points from which shapes like triangles will later be constructed. Each of these points is stored with certain attributes and it's up to you to decide what kind of attributes you want to store. Commonly used attributes are 3D position in the world and texture coordinates.
 
@@ -23,8 +22,7 @@ Finally, the end result is composed from all these shape fragments by blending t
 
 Now that you know how your graphics card turns an array of vertices into an image on the screen, let's get to work!
 
-Vertex input
-========
+## Vertex input
 
 The first thing you have to decide on is what data the graphics card is going to need to draw your scene correctly. As mentioned above, this data comes in the form of vertex attributes. You're free to come up with any kind of attribute you want, but it all inevitably begins with the *world position*. Whether you're doing 2D graphics or 3D graphics, this is the attribute that will determine where the objects and shapes end up on your screen in the end.
 
@@ -32,7 +30,7 @@ The first thing you have to decide on is what data the graphics card is going to
 >
 > When your vertices have been processed by the pipeline outlined above, their coordinates will have been transformed into *device coordinates*. Device X and Y coordinates are mapped to the screen between -1 and 1.
 >
-> <br /><span style="text-align: center; display: block"><img src="/media/img/c2_dc.png" alt="" style="display: inline" /> <img src="/media/img/c2_dc2.png" alt="" style="display: inline" /></span><br />
+> <br /><span style="text-align: center; display: block">![](media/img/c2_dc.png) ![](media/img/c2_dc2.png)</span><br />
 >
 > Just like a graph, the center has coordinates `(0,0)` and the y axis is positive above the center. This seems unnatural because graphics applications usually have `(0,0)` in the top-left corner and `(width,height)` in the bottom-right corner, but it's an excellent way to simplify 3D calculations and to stay resolution independent.
 
@@ -75,15 +73,13 @@ This usage value will determine in what kind of memory the data is stored on you
 
 The vertices with their attributes have been copied to the graphics card now, but they're not quite ready to be used yet. Remember that we can make up any kind of attribute we want and in any order, so now comes the moment where you have to explain to the graphics card how to handle these attributes. This is where you'll see how flexible modern OpenGL really is.
 
-Shaders
-========
+## Shaders
 
 As discussed earlier, there are three shader stages your vertex data will pass through. Each shader stage has a strictly defined purpose and in older versions of OpenGL, you could only slightly tweak what happened and how it happened. With modern OpenGL, it's up to us to instruct the graphics card what to do with the data. This is why it's possible to decide per application what attributes each vertex should have. You'll have to implement both the vertex and fragment shader to get something on the screen, the geometry shader is optional and is discussed [later](geometry).
 
 Shaders are written in a C-style language called GLSL (OpenGL Shading Language). OpenGL will compile your program from source at runtime and copy it to the graphics card. Each version of OpenGL has its own version of the shader language with availability of a certain feature set and we will be using GLSL 1.50. This version number may seem a bit off when we're using OpenGL 3.2, but that's because shaders were only introduced in OpenGL 2.0 as GLSL 1.10. Starting from OpenGL 3.3, this problem was solved and the GLSL version is the same as the OpenGL version.
 
-Vertex shader
---------
+### Vertex shader
 
 The vertex shader is a program on the graphics card that processes each vertex and its attributes as they appear in the vertex array. Its duty is to output the final vertex position in device coordinates and to output any data the fragment shader requires. That's why the 3D transformation should take place here. The fragment shader depends on attributes like the color and texture coordinates, which will usually be passed from input to output without any calculations.
 
@@ -109,8 +105,7 @@ The `#version` preprocessor directive is used to indicate that the code that fol
 
 The final position of the vertex is assigned to the special `gl_Position` variable, because the position is needed for primitive assembly and many other built-in processes. For these to function correctly, the last value `w` needs to have a value of `1.0f`. Other than that, you're free to do anything you want with the attributes and we'll see how to output those when we add color to the triangle later in this chapter.
 
-Fragment shader
---------
+### Fragment shader
 
 The output from the vertex shader is interpolated over all the pixels on the screen covered by a primitive. These pixels are called fragments and this is what the fragment shader operates on. Just like the vertex shader it has one mandatory output, the final color of a fragment. It's up to you to write the code for computing this color from vertex colors, texture coordinates and any other data coming from the vertex shader.
 
@@ -127,8 +122,7 @@ Our triangle only consists of white pixels, so the fragment shader simply output
 
 You'll immediately notice that we're not using some built-in variable for outputting the color, say `gl_FragColor`. This is because a fragment shader can in fact output multiple colors and we'll see how to handle this when actually loading these shaders. The `outColor` variable uses the type `vec4`, because each color consists of a red, green, blue and alpha component. Colors in OpenGL are generally represented as floating point numbers between `0.0` and `1.0` instead of the common `0` and `255`.
 
-Compiling shaders
---------
+### Compiling shaders
 
 Compiling shaders is easy once you have loaded the source code (either from file or as a hard-coded string). You can easily include your shader source in the C++ code through C++11 raw string literals:
 
@@ -178,8 +172,7 @@ The fragment shader is compiled in exactly the same way:
 
 Again, be sure to check if your shader was compiled successfully, because it will save you from a headache later on.
 
-Combining shaders into a program
---------
+### Combining shaders into a program
 
 Up until now the vertex and fragment shaders have been two separate objects. While they've been programmed to work together, they aren't actually connected yet. This connection is made by creating a *program* out of these two shaders.
 
@@ -203,8 +196,7 @@ To actually start using the shaders in the program, you just have to call:
 
 Just like a vertex buffer, only one program can be active at a time.
 
-Making the link between vertex data and attributes
---------
+### Making the link between vertex data and attributes
 
 Although we have our vertex data and shaders now, OpenGL still doesn't know how the attributes are formatted and ordered. You first need to retrieve a reference to the `position` input in the vertex shader:
 
@@ -228,8 +220,7 @@ Don't worry if you don't fully understand this yet, as we'll see how to alter th
 
 Last, but not least, the vertex attribute array needs to be enabled.
 
-Vertex Array Objects
---------
+## Vertex Array Objects
 
 You can imagine that real graphics programs use many different shaders and vertex layouts to take care of a wide variety of needs and special effects. Changing the active shader program is easy enough with a call to `glUseProgram`, but it would be quite inconvenient if you had to set up all of the attributes again every time.
 
@@ -248,8 +239,7 @@ As soon as you've bound a certain VAO, every time you call `glVertexAttribPointe
 
 <blockquote class="important">Since only calls after binding a VAO stick to it, make sure that you've created and bound the VAO at the start of your program. Any vertex buffers and element buffers bound before it will be ignored.</blockquote>
 
-Drawing
-========
+## Drawing
 
 Now that you've loaded the vertex data, created the shader programs and linked the data to the attributes, you're ready to draw the triangle. The VAO that was used to store the attribute information is already bound, so you don't have to worry about that. All that's left is to simply call `glDrawArrays` in your main loop:
 
@@ -259,12 +249,11 @@ The first parameter specifies the kind of primitive (commonly point, line or tri
 
 When you run your program now, you should see the following:
 
-<img src="/media/img/c2_window.png" alt="" />
+![](media/img/c2_window.png)
 
-If you don't see anything, make sure that the shaders have compiled correctly, that the program has linked correctly, that the attribute array has been enabled, that the VAO has been bound before specifying the attributes, that your vertex data is correct and that `glGetError` returns `0`. If you can't find the problem, try comparing your code to [this sample](/content/code/c2_triangle.txt).
+If you don't see anything, make sure that the shaders have compiled correctly, that the program has linked correctly, that the attribute array has been enabled, that the VAO has been bound before specifying the attributes, that your vertex data is correct and that `glGetError` returns `0`. If you can't find the problem, try comparing your code to [this sample](https://open.gl/content/code/c2_triangle.txt).
 
-Uniforms
-========
+## Uniforms
 
 Right now the white color of the triangle has been hard-coded into the shader code, but what if you wanted to change it after compiling the shader? As it turns out, vertex attributes are not the only way to pass data to shader programs. There is another way to pass data to the shaders called *uniforms*. These are essentially global variables, having the same value for all vertices and/or fragments. To demonstrate how to use these, let's make it possible to change the color of the triangle from the program itself.
 
@@ -307,14 +296,13 @@ Although this example may not be very exciting, it does demonstrate that uniform
 <div class="livedemo_wrap">
 	<div class="livedemo" id="demo_c2_uniforms" style="background: url('/media/img/c2_window3.png')">
 		<canvas width="640" height="480"></canvas>
-		<script type="text/javascript" src="/content/demos/c2_uniforms.js"></script>
+		<script type="text/javascript" src="https://open.gl/content/demos/c2_uniforms.js"></script>
 	</div>
 </div>
 
-See [the code](/content/code/c2_triangle_uniform.txt) if you have any trouble getting this to work.
+See [the code](https://open.gl/content/code/c2_triangle_uniform.txt) if you have any trouble getting this to work.
 
-Adding some more colors
-========
+## Adding some more colors
 
 Although uniforms have their place, color is something we'd rather like to specify per corner of the triangle! Let's add a color attribute to the vertices to accomplish this.
 
@@ -372,12 +360,11 @@ The fifth parameter is set to `5*sizeof(float)` now, because each vertex consist
 
 And we're done!
 
-<img src="/media/img/c2_window2.png" alt="" />
+![](media/img/c2_window2.png)
 
-You should now have a reasonable understanding of vertex attributes and shaders. If you ran into problems, ask in the comments or have a look at the altered [source code](/content/code/c2_color_triangle.txt).
+You should now have a reasonable understanding of vertex attributes and shaders. If you ran into problems, ask in the comments or have a look at the altered [source code](https://open.gl/content/code/c2_color_triangle.txt).
 
-Element buffers
-========
+## Element buffers
 
 Right now, the vertices are specified in the order in which they are drawn. If you wanted to add another triangle, you would have to add 3 additional vertices to the vertex array. There is a way to control the order, which also enables you to reuse existing vertices. This can save you a lot of memory when working with real 3D models later on, because each point is usually occupied by a corner of three triangles!
 
@@ -444,15 +431,14 @@ The rectangle is rendered as it should, but the repetition of vertex data is a w
 
 The element buffer still specifies 6 vertices to form 2 triangles like before, but now we're able to reuse vertices! This may not seem like much of a big deal at this point, but when your graphics application loads many models into the relatively small graphics memory, element buffers will be an important area of optimization.
 
-<img src="/media/img/c2_window4.png" alt="" />
+![](media/img/c2_window4.png)
 
-If you run into trouble, have a look at the full [source code](/content/code/c2_triangle_elements.txt).
+If you run into trouble, have a look at the full [source code](https://open.gl/content/code/c2_triangle_elements.txt).
 
 This chapter has covered all of the core principles of drawing things with OpenGL and it's absolutely essential that you have a good understanding of them before continuing. Therefore I advise you to do the exercises below before diving into [textures](/textures).
 
-Exercises
-========
+## Exercises
 
-- Alter the vertex shader so that the triangle is upside down. ([Solution](/content/code/c2_exercise_1.txt))
-- Invert the colors of the triangle by altering the fragment shader. ([Solution](/content/code/c2_exercise_2.txt))
-- Change the program so that each vertex has only one color value, determining the shade of gray. ([Solution](/content/code/c2_exercise_3.txt))
+- Alter the vertex shader so that the triangle is upside down. ([Solution](https://open.gl/content/code/c2_exercise_1.txt))
+- Invert the colors of the triangle by altering the fragment shader. ([Solution](https://open.gl/content/code/c2_exercise_2.txt))
+- Change the program so that each vertex has only one color value, determining the shade of gray. ([Solution](https://open.gl/content/code/c2_exercise_3.txt))

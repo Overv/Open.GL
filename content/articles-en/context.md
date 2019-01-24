@@ -1,5 +1,4 @@
-Window and OpenGL context
-========
+# Window and OpenGL context
 
 Before you can start drawing things, you need to initialize OpenGL. This is done by creating an OpenGL context, which is essentially a state machine that stores all data related to the rendering of your application. When your application closes, the OpenGL context is destroyed and everything is cleaned up.
 
@@ -34,8 +33,7 @@ When rendering a frame, the results will be stored in an offscreen buffer known 
 
 Supporting resizable windows with OpenGL introduces some complexities as resources need to be reloaded and buffers need to be recreated to fit the new window size. It's more convenient for the learning process to not bother with such details yet, so we'll only deal with fixed size (fullscreen) windows for now.
 
-Setup
-=====
+## Setup
 
 >Instead of reading this chapter, you can make use of the [OpenGL quickstart boilerplate](https://github.com/Polytonic/Glitter), which makes setting up an OpenGL project with all of the required libraries very easy. You'll just have to install SOIL separately.
 
@@ -49,38 +47,31 @@ The first thing to do when starting a new OpenGL project is to dynamically link 
 
 The rest of the steps depend on which library you choose to use for creating the window and context.
 
-Libraries
-========
+## Libraries
 
 There are many libraries around that can create a window and an accompanying OpenGL context for you. There is no best library out there, because everyone has different needs and ideals. I've chosen to discuss the process for the three most popular libraries here for completeness, but you can find more detailed guides on their respective websites. All code after this chapter will be independent of your choice of library here.
 
-[SFML](#SFML)
---------
+### [SFML](#SFML)
 
 SFML is a cross-platform C++ multimedia library that provides access to graphics, input, audio, networking and the system. The downside of using this library is that it tries hard to be an all-in-one solution. You have little to no control over the creation of the OpenGL context, as it was designed to be used with its own set of drawing functions.
 
-[SDL](#SDL)
---------
+### [SDL](#SDL)
 
 SDL is also a cross-platform multimedia library, but targeted at C. That makes it a bit rougher to use for C++ programmers, but it's an excellent alternative to SFML. It supports more exotic platforms and most importantly, offers more control over the creation of the OpenGL context than SFML.
 
-[GLFW](#GLFW)
---------
+### [GLFW](#GLFW)
 
 GLFW, as the name implies, is a C library specifically designed for use with OpenGL. Unlike SDL and SFML it only comes with the absolute necessities: window and context creation and input management. It offers the most control over the OpenGL context creation out of these three libraries.
 
-Others
---------
+### Others
 
 There are a few other options, like [freeglut](http://freeglut.sourceforge.net/) and [OpenGLUT](http://openglut.sourceforge.net/), but I personally think the aforementioned libraries are vastly superior in control, ease of use and on top of that more up-to-date.
 
-SFML
-========
+## SFML
 
 The OpenGL context is created implicitly when opening a new window in SFML, so that's all you have to do. SFML also comes with a graphics package, but since we're going to use OpenGL directly, we don't need it.
 
-Building
---------
+### Building
 
 After you've downloaded the SFML binaries package or compiled it yourself, you'll find the needed files in the `lib` and `include` folders.
 
@@ -101,8 +92,7 @@ To verify that you've done this correctly, try compiling and running the followi
 
 It should show a console application and exit after a second. If you run into any trouble, you can find more detailed information for [Visual Studio](http://sfml-dev.org/tutorials/2.1/start-vc.php), [Code::Blocks](http://sfml-dev.org/tutorials/2.1/start-cb.php) and [gcc](http://sfml-dev.org/tutorials/2.1/start-linux.php) in the tutorials on the SFML website.
 
-Code
---------
+### Code
 
 Start by including the window package and defining the entry point of your application.
 
@@ -162,19 +152,17 @@ You have your window and the important events are acted upon, so you're now read
 
 When you run your application, you should see something like this:
 
-<img src="/media/img/c1_window.png" alt="" />
+![](media/img/c1_window.png)
 
 Note that SFML allows you to have multiple windows. If you want to make use of this feature, make sure to call `window.setActive()` to activate a certain window for drawing operations.
 
 Now that you have a window and a context, there's [one more thing](#Onemorething) that needs to be done.
 
-SDL
-========
+## SDL
 
 SDL comes with many different modules, but for creating a window with an accompanying OpenGL context we're only interested in the video module. It will take care of everything we need, so let's see how to use it.
 
-Building
---------
+### Building
 
 After you've downloaded the SDL binaries or compiled them yourself, you'll find the needed files in the `lib` and `include` folders.
 
@@ -198,8 +186,7 @@ To verify that you're ready, try compiling and running the following snippet of 
 
 It should show a console application and exit after a second. If you run into any trouble, you can find more [detailed information](http://wiki.libsdl.org/FrontPage) for all kinds of platforms and compilers in the tutorials on the web.
 
-Code
---------
+### Code
 
 Start by defining the entry point of your application and include the headers for SDL.
 
@@ -267,17 +254,15 @@ If you have a fullscreen window, it would be preferable to use the escape key as
 
 When you run your application now, you should see something like this:
 
-<img src="/media/img/c1_window.png" alt="" />
+![](media/img/c1_window.png)
 
 Now that you have a window and a context, there's [one more thing](#Onemorething) that needs to be done.
 
-GLFW
-========
+## GLFW
 
 GLFW is tailored specifically for using OpenGL, so it is by far the easiest to use for our purpose.
 
-Building
---------
+### Building
 
 After you've downloaded the GLFW binaries package from the website or compiled the library yourself, you'll find the headers in the `include` folder and the libraries for your compiler in one of the `lib` folders.
 
@@ -300,8 +285,7 @@ Here is a simple snippet of code to check your build configuration:
 
 It should show a console application and exit after a second. If you run into any trouble, just ask in the comments and you'll receive help.
 
-Code
---------
+### Code
 
 Start by simply including the GLFW header and define the entry point of the application.
 
@@ -354,12 +338,11 @@ The only required functions in the loop are `glfwSwapBuffers` to swap the back b
 
 If you want to learn more about handling input, you can refer to the [documentation](http://www.glfw.org/docs/3.0/group__input.html).
 
-<img src="/media/img/c1_window.png" alt="" />
+![](media/img/c1_window.png)
 
 You should now have a window or a full screen surface with an OpenGL context. Before you can start drawing stuff however, there's [one more thing](#Onemorething) that needs to be done.
 
-One more thing
-========
+## One more thing
 
 Unfortunately, we can't just call the functions we need yet. This is because it's the duty of the graphics card vendor to implement OpenGL functionality in their drivers based on what the graphics card supports. You wouldn't want your program to only be compatible with a single driver version and graphics card, so we'll have to do something clever.
 

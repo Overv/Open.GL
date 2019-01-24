@@ -1,5 +1,4 @@
-Transform feedback
-==================
+# Transform feedback
 
 Up until now we've always sent vertex data to the graphics processor and only
 produced drawn pixels in framebuffers in return. What if we want to retrieve the
@@ -14,8 +13,7 @@ way you don't have to transfer this data back and forth from graphics memory to
 main memory. On top of that, you get to benefit from the vast parallel
 processing power of today's GPUs.
 
-Basic feedback
-==============
+## Basic feedback
 
 We'll start from scratch so that the final program will clearly demonstrate
 how simple transform feedback is. Unfortunately there's no preview this time,
@@ -167,7 +165,7 @@ input in your terminal:
 
     printf("%f %f %f %f %f\n", feedback[0], feedback[1], feedback[2], feedback[3], feedback[4]);
 
-<img src="/media/img/c8_basic.png" alt="Basic result" />
+![](media/img/c8_basic.png)
 
 Congratulations, you now know how to make your GPU perform general purpose
 tasks with vertex shaders! Of course a real GPGPU framework like [OpenCL](http://en.wikipedia.org/wiki/OpenCL)
@@ -180,10 +178,9 @@ If you have a graphics card and driver that supports it, you could also use
 [compute shaders](http://www.opengl.org/wiki/Compute_Shader) in OpenGL 4.3
 instead, which were actually designed for tasks that are less related to drawing.
 
-You can find the full code [here](/content/code/c8_basic.txt).
+You can find the full code [here](https://open.gl/content/code/c8_basic.txt).
 
-Feedback transform and geometry shaders
-=======================================
+## Feedback transform and geometry shaders
 
 When you include a geometry shader, the transform feedback operation will
 capture the outputs of the geometry shader instead of the vertex shader. For
@@ -258,16 +255,15 @@ Retrieving the output still works the same:
         printf("%f\n", feedback[i]);
     }
 
-<img src="/media/img/c8_geometry.png" alt="Basic geometry shader result" />
+![](media/img/c8_geometry.png)
 
 Although you have to pay attention to the feedback primitive type and the size
 of your buffers, adding a geometry shader to the equation doesn't change much
 other than the shader responsible for output.
 
-The full code can be found [here](/content/code/c8_geometry.txt).
+The full code can be found [here](https://open.gl/content/code/c8_geometry.txt).
 
-Variable feedback
-=================
+## Variable feedback
 
 As we've seen in the previous chapter, geometry shaders have the unique property
 to generate a variable amount of data. Luckily, there are ways to keep track of
@@ -296,7 +292,7 @@ You can then print that value along with the other data:
 
     printf("%u primitives written!\n\n", primitives);
 
-<img src="/media/img/c8_query.png" alt="Query result" />
+![](media/img/c8_query.png)
 
 Notice that it returns the number of primitives, not the number of vertices.
 Since we have 15 vertices, with each triangle having 3, we have 5 primitives.
@@ -305,18 +301,16 @@ Query objects can also be used to record things such as `GL_PRIMITIVES_GENERATED
 when dealing with just geometry shaders and `GL_TIME_ELAPSED` to measure time
 spent on the server (graphics card) doing work.
 
-See [the full code](/content/code/c8_final.txt) if you got stuck somewhere on the way.
+See [the full code](https://open.gl/content/code/c8_final.txt) if you got stuck somewhere on the way.
 
-Conclusion
-==========
+## Conclusion
 
 You now know enough about geometry shaders and transform feedback to make your
 graphics card do some very interesting work besides just drawing! You can even
 combine transform feedback and rasterization to update vertices and draw them
 at the same time!
 
-Exercises
-=========
+## Exercises
 
 - Try writing a vertex shader that simulates gravity to make points hover around
-the mouse cursor using transform feedback to update the vertices. ([Solution](/content/code/c8_exercise_1.txt))
+the mouse cursor using transform feedback to update the vertices. ([Solution](https://open.gl/content/code/c8_exercise_1.txt))

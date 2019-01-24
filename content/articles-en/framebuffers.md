@@ -1,12 +1,10 @@
-Framebuffers
-========
+# Framebuffers
 
 In the previous chapters we've looked at the different types of buffers OpenGL offers: the color, depth and stencil buffers. These buffers occupy video memory like any other OpenGL object, but so far we've had little control over them besides specifying the pixel formats when you created the OpenGL context. This combination of buffers is known as the default *framebuffer* and as you've seen, a framebuffer is an area in memory that can be rendered to. What if you want to take a rendered result and do some additional operations on it, such as post-processing as seen in many modern games?
 
 In this chapter we'll look at *framebuffer objects*, which are a means of creating additional framebuffers to render to. The great thing about framebuffers is that they allow you to render a scene directly to a texture, which can then be used in other rendering operations. After discussing how framebuffer objects work, I'll show you how to use them to do post-processing on the scene from the previous chapter.
 
-Creating a new framebuffer
---------
+## Creating a new framebuffer
 
 The first thing you need is a framebuffer object to manage your new framebuffer.
 
@@ -32,13 +30,11 @@ The first parameter specifies the target the framebuffer should be attached to. 
 
 Don't forget to clean up after you're done.
 
-Attachments
---------
+## Attachments
 
 Your framebuffer can only be used as a render target if memory has been allocated to store the results. This is done by attaching *images* for each buffer (color, depth, stencil or a combination of depth and stencil). There are two kinds of objects that can function as images: texture objects and *renderbuffer objects*. The advantage of the former is that they can be directly used in shaders as seen in the previous chapters, but renderbuffer objects may be more optimized specifically as render targets depending on your implementation.
 
-Texture images
---------
+### Texture images
 
 We'd like to be able to render a scene and then use the result in the color buffer in another rendering operation, so a texture is ideal in this case. Creating a texture for use as an image for the color buffer of the new framebuffer is as simple as creating any texture.
 
@@ -65,8 +61,7 @@ The one thing that remains is attaching the image to the framebuffer.
 
 The second parameter implies that you can have multiple color attachments. A fragment shader can output different data to any of these by linking `out` variables to attachments with the `glBindFragDataLocation` function we used earlier. We'll stick to one output for now. The last parameter specifies the mipmap level the image should be attached to. Mipmapping is not of any use, since the color buffer image will be rendered at its original size when using it for post-processing.
 
-Renderbuffer Object images
---------
+### Renderbuffer Object images
 
 As we're using a depth and stencil buffer to render the spinning cube of cuteness, we'll have to create them as well. OpenGL allows you to combine those into one image, so we'll have to create just one more before we can use the framebuffer. Although we could do this by creating another texture, it is more efficient to store these buffers in a Renderbuffer Object, because we're only interested in reading the color buffer in a shader.
 
@@ -83,8 +78,7 @@ Creating a renderbuffer object is very similar to creating a texture, the differ
 
 Attaching it is easy as well. You can delete this object like any other object at a later time with a call to `glDeleteRenderbuffers`.
 
-Using a framebuffer
---------
+## Using a framebuffer
 
 Selecting a framebuffer as render target is very easy, in fact it can be done with a single call.
 
@@ -96,8 +90,7 @@ After this call, all rendering operations will store their result in the attachm
 
 Note that although only the default framebuffer will be visible on your screen, you can read any framebuffer that is currently bound with a call to `glReadPixels` as long as it's not only bound to `GL_DRAW_FRAMEBUFFER`.
 
-Post-processing
-========
+## Post-processing
 
 In games nowadays post-processing effects seem almost just as important as the actual scenes being rendered on screen, and indeed some spectacular results can be accomplished with different techniques. Post-processing effects in real-time graphics are commonly implemented in fragment shaders with the rendered scene as input in the form of a texture. Framebuffer objects allow us to use a texture to contain the color buffer, so we can use them to prepare input for a post-processing effect.
 
@@ -105,8 +98,7 @@ To use shaders to create a post-processing effect for a scene previously rendere
 
 Of course you can get creative with framebuffers and use them to do anything from portals to cameras in the game world by rendering a scene multiple times from different angles and display that on monitors or other objects in the final image. These uses are more specific, so I'll leave them as an exercise to you.
 
-Changing the code
---------
+## Changing the code
 
 Unfortunately it's a bit more difficult to cover the changes to the code step-by-step here, especially if you've strayed from the sample code here. Now that you know how a framebuffer is created and bound however and with some care put into it, you should be able to do it. Let's globally walk through the steps here.
 
@@ -165,19 +157,17 @@ With this shader, the output of your program should be the same as before you ev
 
 The 3D and 2D drawing operations both have their own vertex array (cube versus quad), shader program (3D vs 2D post-processing) and textures. You can see that binding the color buffer texture is just as easy as binding regular textures. Do mind that calls like `glBindTexture` which change the OpenGL state are relatively expensive, so try keeping them to a minimum.
 
-I think that no matter how well I explain the general structure of the program here, some of you just like to look at some [new sample code](/content/code/c6_base.txt) and perhaps run a `diff` on it and the code from the previous chapter.
+I think that no matter how well I explain the general structure of the program here, some of you just like to look at some [new sample code](https://open.gl/content/code/c6_base.txt) and perhaps run a `diff` on it and the code from the previous chapter.
 
-Post-processing effects
-========
+## Post-processing effects
 
 I will now discuss various interesting post-processing effects, how they work and what they look like.
 
-Color manipulation
---------
+### Color manipulation
 
 Inverting the colors is an option usually found in image manipulation programs, but you can also do it yourself using shaders!
 
-<img src="/media/img/c6_invert.png" alt="" style="align: center" />
+![](media/img/c6_invert.png)
 
 As color values are floating point values ranging from `0.0` to `1.0`, inverting a channel is as simple as calculating `1.0 - channel`. If you do this for each channel (red, green, blue) you'll get an inverted color. In the fragment shader, that can be done like this.
 
@@ -186,8 +176,8 @@ As color values are floating point values ranging from `0.0` to `1.0`, inverting
 This will also affect the alpha channel, but that doesn't matter because alpha blending is disabled by default.
 
 <div style="width: 87.5%; margin: auto">
-	<img src="/media/img/c6_grayscale.png" alt="" style="display: inline" />
-	<img src="/media/img/c6_grayscale2.png" alt="" style="display: inline" />
+    ![](media/img/c6_grayscale.png)
+    ![](media/img/c6_grayscale2.png)
 </div>
 
 Making colors grayscale can be naively done by calculating the average intensity of each channel.
@@ -202,12 +192,11 @@ This works fine, but humans are the most sensitive to green and the least to blu
 	float avg = 0.2126 * outColor.r + 0.7152 * outColor.g + 0.0722 * outColor.b;
 	outColor = vec4(avg, avg, avg, 1.0);
 
-Blur
---------
+### Blur
 
 There are two well known blur techniques: box blur and Gaussian blur. The latter results in a higher quality result, but the former is easier to implement and still approximates Gaussian blur fairly well.
 
-<img src="/media/img/c6_blur.png" alt="" style="align: center" />
+![](media/img/c6_blur.png)
 
 Blurring is done by sampling pixels around a pixel and calculating the average color.
 
@@ -227,12 +216,11 @@ Blurring is done by sampling pixels around a pixel and calculating the average c
 
 You can see that a total amount of 81 samples is taken. You can change the amount of samples on the X and Y axes to control the amount of blur. The `blurSize` variables are used to determine the distance between each sample. A higher sample count and lower sample distance results in a better approximation, but also rapidly decreases performance, so try finding a good balance.
 
-Sobel
---------
+### Sobel
 
 The Sobel operator is often used in edge detection algorithms, let's find out what it looks like.
 
-<img src="/media/img/c6_sobel.png" alt="" style="align: center" />
+![](media/img/c6_sobel.png)
 
 The fragment shader looks like this:
 
@@ -251,13 +239,11 @@ The fragment shader looks like this:
 
 Just like the blur shader, a few samples are taken and combined in an interesting way. You can read more about the [technical details](http://en.wikipedia.org/wiki/Sobel_operator) elsewhere.
 
-Conclusion
-========
+## Conclusion
 
 The cool thing about shaders is that you can manipulate images on a per-pixel basis in real time because of the immense parallel processing capabilities of your graphics card. It is no surprise that newer versions of software like Photoshop use the graphics card to accelerate image manipulation operations! There are many more complex effects like HDR, motion blur and SSAO (screen space ambient occlusion), but those involve a little more work than a single shader, so they're beyond the scope of this chapter.
 
-Exercises
-========
+## Exercises
 
-- Try implementing the two-pass Gaussian blur effect by adding another framebuffer. ([Solution](/content/code/c6_exercise_1.txt))
-- Try adding a panel in the 3D scene displaying that very scene from a different angle. ([Solution](/content/code/c6_exercise_2.txt))
+- Try implementing the two-pass Gaussian blur effect by adding another framebuffer. ([Solution](https://open.gl/content/code/c6_exercise_1.txt))
+- Try adding a panel in the 3D scene displaying that very scene from a different angle. ([Solution](https://open.gl/content/code/c6_exercise_2.txt))

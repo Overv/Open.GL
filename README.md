@@ -13,6 +13,8 @@ This guide is now available in e-book formats as well:
 * [EPUB](https://raw.githubusercontent.com/Overv/Open.GL/master/ebook/Modern%20OpenGL%20Guide.epub)
 * [PDF](https://raw.githubusercontent.com/Overv/Open.GL/master/ebook/Modern%20OpenGL%20Guide.pdf)
 
+The ebooks can be built by running `ebook/make_ebook.sh` from the root directory.
+
 License
 -------
 

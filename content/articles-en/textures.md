@@ -1,5 +1,4 @@
-Textures objects and parameters
-========
+# Textures objects and parameters
 
 Just like VBOs and VAOs, textures are objects that need to be generated first by calling a function. It shouldn't be a surprise at this point what this function is called.
 
@@ -14,8 +13,7 @@ Just like other objects, textures have to be bound to apply operations to them. 
 
 The pixels in the texture will be addressed using *texture coordinates* during drawing operations. These coordinates range from `0.0` to `1.0` where `(0,0)` is conventionally the bottom-left corner and `(1,1)` is the top-right corner of the texture image. The operation that uses these texture coordinates to retrieve color information from the pixels is called *sampling*. There are different ways to approach this problem, each being appropriate for different scenarios. OpenGL offers you many options to control how this sampling is done, of which the common ones will be discussed here.
 
-Wrapping
---------
+## Wrapping
 
 The first thing you'll have to consider is how the texture should be sampled when a coordinate outside the range of `0` to `1` is given. OpenGL offers 4 ways of handling this:
 
@@ -26,7 +24,7 @@ The first thing you'll have to consider is how the texture should be sampled whe
 
 These explanations may still be a bit cryptic and since OpenGL is all about graphics, let's see what all of these cases actually look like:
 
-<img src="/media/img/c3_clamping.png" alt="" />
+![](media/img/c3_clamping.png)
 
 The clamping can be set per coordinate, where the equivalent of `(x,y,z)` in texture coordinates is called `(s,t,r)`. Texture parameter are changed with the [`glTexParameter*`](http://docs.gl/gl3/glTexParameter) functions as demonstrated here.
 
@@ -40,8 +38,7 @@ As before, the `i` here indicates the type of the value you want to specify. If 
 
 This operation will set the border color to red.
 
-Filtering
---------
+## Filtering
 
 Since texture coordinates are resolution independent, they won't always match a pixel exactly. This happens when a texture image is stretched beyond its original size or when it's sized down. OpenGL offers various methods to decide on the sampled color when this happens. This process is called filtering and the following methods are available:
 
@@ -51,7 +48,7 @@ Since texture coordinates are resolution independent, they won't always match a 
 
 Before discussing mipmaps, let's first see the difference between nearest and linear interpolation. The original image is 16 times smaller than the rectangle it was rasterized on.
 
-<img src="/media/img/c3_filtering.png" alt="" />
+![](media/img/c3_filtering.png)
 
 While linear interpolation gives a smoother result, it isn't always the most ideal option. Nearest neighbour interpolation is more suited in games that want to mimic 8 bit graphics, because of the pixelated look.
 
@@ -75,8 +72,7 @@ To use mipmaps, select one of the four mipmap filtering methods.
 
 There are some other texture parameters available, but they're suited for specialized operations. You can read about them in the [specification](http://docs.gl/gl3/glTexParameter).
 
-Loading texture images
-========
+## Loading texture images
 
 Now that the texture object has been configured it's time to load the texture image. This is done by simply loading an array of pixels into it:
 
@@ -91,8 +87,7 @@ The first parameter after the texture target is the *level-of-detail*, where `0`
 
 But how is the pixel array itself established? Textures in graphics applications will usually be a lot more sophisticated than simple patterns and will be loaded from files. Best practice is to have your files in a format that is natively supported by the hardware, but it may sometimes be more convenient to load textures from common image formats like JPG and PNG. Unfortunately OpenGL doesn't offer any helper functions to load pixels from these image files, but that's where third-party libraries come in handy again! The SOIL library will be discussed here along with some of the alternatives.
 
-SOIL
---------
+### SOIL
 
 [SOIL](http://www.lonesock.net/soil.html) (Simple OpenGL Image Library) is a small and easy-to-use library that loads image files directly into texture objects or creates them for you. You can start using it in your project by linking with `SOIL` and adding the `src` directory to your include path. It includes Visual Studio project files to compile it yourself.
 
@@ -112,13 +107,11 @@ You can clean up the image data right after you've loaded it into the texture.
 
 >As mentioned before, OpenGL expects the first pixel to be located in the bottom-left corner, which means that textures will be flipped when loaded with SOIL directly. To counteract that, the code in the tutorial will use flipped Y coordinates for texture coordinates from now on. That means that `0, 0` will be assumed to be the top-left corner instead of the bottom-left. This practice might make texture coordinates more intuitive as a side-effect.
 
-Alternative options
---------
+### Alternative options
 
 Other libraries that support a wide range of file types like SOIL are [DevIL](http://openil.sourceforge.net/) and [FreeImage](http://freeimage.sourceforge.net/). If you're just interested in one file type, it's also possible to use libraries like [libpng](http://www.libpng.org/pub/png/libpng.html) and [libjpeg](http://libjpeg.sourceforge.net/) directly. If you're looking for more of an adventure, have a look at the specification of the [BMP](http://en.wikipedia.org/wiki/BMP_file_format) and [TGA](http://en.wikipedia.org/wiki/Truevision_TGA) file formats, it's not that hard to implement a loader for them yourself.
 
-Using a texture
-========
+## Using a texture
 
 As you've seen, textures are sampled using texture coordinates and you'll have to add these as attributes to your vertices. Let's modify the last sample from the previous chapter to include these texture coordinates. The new vertex array will now include the `s` and `t` coordinates for each vertex:
 
@@ -162,7 +155,7 @@ As two floats were added for the coordinates, one vertex is now 7 floats in size
 
 Now just one thing remains: providing access to the texture in the fragment shader to sample pixels from it. This is done by adding a uniform of type `sampler2D`, which will have a default value of 0. This only needs to be changed when access has to be provided to multiple textures, which will be considered in the next section.
 
-For this sample, the [image of the kitten](/content/code/sample.png) used above will be loaded using the SOIL library. Make sure that it is located in the working directory of the application.
+For this sample, the [image of the kitten](https://open.gl/content/code/sample.png) used above will be loaded using the SOIL library. Make sure that it is located in the working directory of the application.
 
 	int width, height;
 	unsigned char* image =
@@ -189,12 +182,11 @@ To sample a pixel from a 2D texture using the sampler, the function `texture` ca
 
 When running this application, you should get the following result:
 
-<img src="/media/img/c3_window.png" alt="" />
+![](media/img/c3_window.png)
 
-If you get a black screen, make sure that your shaders compiled successfully and that the image is correctly loaded. If you can't find the problem, try comparing your code to the [sample code](/content/code/c3_basic.txt).
+If you get a black screen, make sure that your shaders compiled successfully and that the image is correctly loaded. If you can't find the problem, try comparing your code to the [sample code](https://open.gl/content/code/c3_basic.txt).
 
-Texture units
-========
+## Texture units
 
 The sampler in your fragment shader is bound to texture unit `0`. Texture units are references to texture objects that can be sampled in a shader. Textures are bound to texture units using the `glBindTexture` function you've used before. Because you didn't explicitly specify which texture unit to use, the texture was bound to `GL_TEXTURE0`. That's why the default value of `0` for the sampler in your shader worked fine.
 
@@ -204,7 +196,7 @@ The function `glActiveTexture` specifies which texture unit a texture object is 
 
 The amount of texture units supported differs per graphics card, but it will be at least 48. It is safe to say that you will never hit this limit in even the most extreme graphics applications.
 
-To practice with sampling from multiple textures, let's try blending the images of the kitten and [one of a puppy](/content/code/sample2.png) to get the best of both worlds! Let's first modify the fragment shader to sample from two textures and blend the pixels:
+To practice with sampling from multiple textures, let's try blending the images of the kitten and [one of a puppy](https://open.gl/content/code/sample2.png) to get the best of both worlds! Let's first modify the fragment shader to sample from two textures and blend the pixels:
 
 	...
 
@@ -256,15 +248,14 @@ Now that the two samplers are ready, you'll have to assign the first two texture
 
 The texture units of the samplers are set using the `glUniform` function you've seen in the previous chapter. It simply accepts an integer specifying the texture unit. Make sure that at least the wrap texture parameters are set for both textures. This code should result in the following image.
 
-<img src="/media/img/c3_window2.png" alt="" />
+![](media/img/c3_window2.png)
 
-As always, have a look at the sample [source code](/content/code/c3_multitexture.txt) if you have trouble getting the program to work.
+As always, have a look at the sample [source code](https://open.gl/content/code/c3_multitexture.txt) if you have trouble getting the program to work.
 
 Now that texture sampling has been covered in this chapter, you're finally ready to dive into transformations and ultimately 3D. The knowledge you have at this point should be sufficient for producing most types of 2D games, except for transformations like rotation and scaling which will be covered in the [next chapter](/transformations).
 
-Exercises
-========
+## Exercises
 
-- Animate the blending between the textures by adding a `time` uniform. ([Solution](/content/code/c3_exercise_1.txt))
-- Draw a reflection of the kitten in the lower half of the rectangle. ([Solution](/content/code/c3_exercise_2.txt))
-- Now try adding distortion with `sin` and the time variable to simulate water. ([Expected result](/media/img/c3_window3.png), [Solution](/content/code/c3_exercise_3.txt))
+- Animate the blending between the textures by adding a `time` uniform. ([Solution](https://open.gl/content/code/c3_exercise_1.txt))
+- Draw a reflection of the kitten in the lower half of the rectangle. ([Solution](https://open.gl/content/code/c3_exercise_2.txt))
+- Now try adding distortion with `sin` and the time variable to simulate water. ([Expected result](/media/img/c3_window3.png), [Solution](https://open.gl/content/code/c3_exercise_3.txt))

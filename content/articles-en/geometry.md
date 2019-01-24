@@ -1,5 +1,4 @@
-Geometry shaders
-================
+# Geometry shaders
 
 So far we've used vertex and fragment shaders to manipulate our input vertices
 into pixels on the screen. Since OpenGL 3.2 there is a third optional type of
@@ -11,7 +10,7 @@ Since we've neglected the kitten from the previous chapters for too long, it ran
 off to a new home. This gives us a good opportunity to start fresh. At the end
 of this chapter, we'll have the following demo:
 
-<img src="/media/img/c7_result.png" alt="End result" />
+![](media/img/c7_result.png)
 
 That doesn't look all that exciting... until you consider that the result above
 was produced with a single draw call:
@@ -22,8 +21,7 @@ Note that everything geometry shaders can do can be accomplished in other ways,
 but their ability to generate geometry from a small amount of input data allows
 you to reduce CPU -> GPU bandwidth usage.
 
-Setup
-=====
+## Setup
 
 Let's start by writing some simple code that just draws 4 red points to the
 screen.
@@ -116,12 +114,11 @@ And finally the render loop:
 With this code, you should now see 4 red points on a black background as shown
 below:
 
-<img src="/media/img/c7_points.png" alt="" />
+![](media/img/c7_points.png)
 
-If you are having problems, have a look at the [reference source code](/content/code/c7_base.txt).
+If you are having problems, have a look at the [reference source code](https://open.gl/content/code/c7_base.txt).
 
-Basic geometry shader
-=====================
+## Basic geometry shader
 
 To understand how a geometry shader works, let's look at an example:
 
@@ -141,8 +138,7 @@ To understand how a geometry shader works, let's look at an example:
         EndPrimitive();
     }
 
-Input types
------------
+### Input types
 
 Whereas a vertex shader processes vertices and a fragment shader processes
 fragments, a geometry shader processes entire primitives. The first line
@@ -161,8 +157,7 @@ command types:
 
 Since we're drawing `GL_POINTS`, the `points` type is appropriate.
 
-Output types
-------------
+### Output types
 
 The next line describes the output of the shader. What's interesting about
 geometry shaders is that they can output an entirely different type of geometry
@@ -184,8 +179,7 @@ These types seem somewhat restricted, but if you think about it, these types
 are sufficient to cover all possible types of primitives. For example, a
 triangle_strip with only 3 vertices is equivalent to a regular triangle.
 
-Vertex input
-------------
+### Vertex input
 
 The `gl_Position`, as set in the vertex shader, can be accessed using the
 `gl_in` array in the geometry shader. It is an array of structs that looks like
@@ -201,8 +195,7 @@ this:
 Notice that vertex attributes like `pos` and `color` are not included, we'll
 look into accessing those later.
 
-Vertex output
--------------
+### Vertex output
 
 The geometry shader program can call two special functions to generate
 primitives, `EmitVertex` and `EndPrimitive`. Each time the program calls
@@ -231,8 +224,7 @@ shader does?
     It creates a single horizontal line for each point coordinate passed to it.
 </p>
 
-Creating a geometry shader
-==========================
+## Creating a geometry shader
 
 There's not much to explain, geometry shaders are created and activated in
 exactly the same way as other types of shaders. Let's add a geometry shader to
@@ -291,13 +283,12 @@ from the previous section:
 Even though we've made no changes to our draw call, the GPU is suddenly drawing
 tiny lines instead of points!
 
-<img src="/media/img/c7_lines.png" alt="" />
+![](media/img/c7_lines.png)
 
 Try experimenting a bit to get a feel for it. For example, try [outputting
-rectangles](/content/code/c7_rectangles.txt) by using `triangle_strip`.
+rectangles](https://open.gl/content/code/c7_rectangles.txt) by using `triangle_strip`.
 
-Geometry shaders and vertex attributes
-======================================
+## Geometry shaders and vertex attributes
 
 Let's add some variation to the lines that are being drawn by allowing each of
 them to have a unique color. By adding a color input variable to the vertex
@@ -394,14 +385,13 @@ shader as input. The vertex shader can then choose to output it to the geometry
 shader. And then the geometry shader can choose to further output it to the
 fragment shader.
 
-<img src="/media/img/c7_color_lines.png" alt="" />
+![](media/img/c7_color_lines.png)
 
 However, this demo is not very interesting. We could easily replicate this
 behaviour by creating a vertex buffer with a single line and issuing a couple
 of draw calls with different colors and positions set with uniform variables.
 
-Dynamically generating geometry
-===============================
+## Dynamically generating geometry
 
 The real power of geometry shader lies in the ability to generate a varying
 amount of primitives, so let's create a demo that properly abuses this ability.
@@ -448,7 +438,7 @@ remember your trigonometry, it should be a piece of cake:
 The first point is repeated to close the line loop, which is why 11 vertices are
 drawn. The result is as expected:
 
-<img src="/media/img/c7_circles.png" alt="" />
+![](media/img/c7_circles.png)
 
 It is now trivial to add a vertex attribute to control the amount of sides. Add
 the new attribute to the data and to the specification:
@@ -519,15 +509,14 @@ input, otherwise the circles with more vertices will be cut off.
 You can now create a circles with any amount of sides you desire by simply
 adding more points!
 
-<img src="/media/img/c7_result.png" alt="End result" />
+![](media/img/c7_result.png)
 
 Without a geometry shader, we'd have to rebuild the entire vertex buffer
 whenever any of these circles have to change, now we can simply change the value
 of a vertex attribute. In a game setting, this attribute could be changed based
-on player distance as described above. You can find the full code [here](/content/code/c7_final.txt).
+on player distance as described above. You can find the full code [here](https://open.gl/content/code/c7_final.txt).
 
-Conclusion
-==========
+## Conclusion
 
 Granted, geometry shaders may not have as many real world use cases as things
 like framebuffers and textures have, but they can definitely help with creating
@@ -542,8 +531,7 @@ Lastly, with regards to portability, the latest WebGL and OpenGL ES standards do
 not yet support geometry shaders, so keep that in mind if you're considering the
 development of a mobile or web application.
 
-Exercises
-=========
+## Exercises
 
 - Try using a geometry shader in a 3D scenario to create more complex meshes
-like cubes from points. ([Solution](/content/code/c7_exercise_1.txt))
+like cubes from points. ([Solution](https://open.gl/content/code/c7_exercise_1.txt))
