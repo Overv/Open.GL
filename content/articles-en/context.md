@@ -67,7 +67,7 @@ GLFW, as the name implies, is a C library specifically designed for use with Ope
 
 There are a few other options, like [freeglut](http://freeglut.sourceforge.net/) and [OpenGLUT](http://openglut.sourceforge.net/), but I personally think the aforementioned libraries are vastly superior in control, ease of use and on top of that more up-to-date.
 
-## SFML
+## SFML {#SFML}
 
 The OpenGL context is created implicitly when opening a new window in SFML, so that's all you have to do. SFML also comes with a graphics package, but since we're going to use OpenGL directly, we don't need it.
 
@@ -158,7 +158,7 @@ Note that SFML allows you to have multiple windows. If you want to make use of t
 
 Now that you have a window and a context, there's [one more thing](#Onemorething) that needs to be done.
 
-## SDL
+## SDL {#SDL}
 
 SDL comes with many different modules, but for creating a window with an accompanying OpenGL context we're only interested in the video module. It will take care of everything we need, so let's see how to use it.
 
@@ -258,7 +258,7 @@ When you run your application now, you should see something like this:
 
 Now that you have a window and a context, there's [one more thing](#Onemorething) that needs to be done.
 
-## GLFW
+## GLFW {#GLFW}
 
 GLFW is tailored specifically for using OpenGL, so it is by far the easiest to use for our purpose.
 
@@ -342,7 +342,7 @@ If you want to learn more about handling input, you can refer to the [documentat
 
 You should now have a window or a full screen surface with an OpenGL context. Before you can start drawing stuff however, there's [one more thing](#Onemorething) that needs to be done.
 
-## One more thing
+## One more thing {#Onemorething}
 
 Unfortunately, we can't just call the functions we need yet. This is because it's the duty of the graphics card vendor to implement OpenGL functionality in their drivers based on what the graphics card supports. You wouldn't want your program to only be compatible with a single driver version and graphics card, so we'll have to do something clever.
 
