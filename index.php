@@ -82,22 +82,6 @@
 			var disqus_url = "http://open.gl/?content=<?php print( $content ); ?>";
 			var disqus_identifier = "<?php print( $content ); ?>";
 
-			// Google Analytics
-			var _gaq = _gaq || [];
-			_gaq.push(["_setAccount", "UA-25119105-1"]);
-			_gaq.push(["_setDomainName", "open.gl"]);
-			_gaq.push(["_setAllowHash", "false"]);
-			_gaq.push(["_trackPageview"]);
-
-			(function()
-			{
-				var ga = document.createElement("script");
-				ga.type = "text/javascript";
-				ga.async = true;
-				ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
-				var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
-			})();
-
 			// WebGL demos
 			var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
 			var callbacks = [];
@@ -121,6 +105,25 @@
 		<!--[if lt IE 9]>
 		<script src="media/html5shiv.js"></script>
 		<![endif]-->
+
+		<!-- Matomo -->
+		<script type="text/javascript">
+		  var _paq = _paq || [];
+		  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+		  _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+		  _paq.push(["setCookieDomain", "*.open.gl"]);
+		  _paq.push(["setDomains", ["*.open.gl"]]);
+		  _paq.push(['trackPageView']);
+		  _paq.push(['enableLinkTracking']);
+		  (function() {
+		    var u="//matomo.while.io/";
+		    _paq.push(['setTrackerUrl', u+'piwik.php']);
+		    _paq.push(['setSiteId', '4']);
+		    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+		    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+		  })();
+		</script>
+		<!-- End Matomo Code -->
 	</head>
 
 	<body>
