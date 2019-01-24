@@ -119,7 +119,7 @@ A window can be opened by creating a new instance of `sf::Window`. The basic con
     settings.depthBits = 24;
     settings.stencilBits = 8;
     settings.antialiasingLevel = 2; // Optional
-    // Request OpenGL version 3.2 (optional but recommended)
+    // Request OpenGL version 3.2
     settings.majorVersion = 3;
     settings.minorVersion = 2;
     settings.attributeFlags = sf::ContextSettings::Core;
@@ -128,7 +128,7 @@ A window can be opened by creating a new instance of `sf::Window`. The basic con
 
 The constructor can also take an `sf::ContextSettings` structure that allows you to request an OpenGL context and specify the anti-aliasing level and the accuracy of the depth and stencil buffers. The latter two will be discussed later, so you don't have to worry about these yet. In the latest version of SFML, you do need to request these manually with the code above. We request an OpenGL context of version 3.2 in the core profile as opposed to the compatibility mode which is default. Using the default compatibility mode may cause problems while using modern OpenGL on some systems, thus we use the core profile.
 
-Note that these settings are only a hint, SFML will try to find the closest valid match.
+Note that these settings are only a hint, SFML will try to find the closest valid match. It will, for example, likely create a context with a newer OpenGL version than we specified.
 
 When running this, you'll notice that the application instantly closes after creating the window. Let's add the event loop to deal with that.
 
