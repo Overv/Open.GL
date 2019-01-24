@@ -179,6 +179,12 @@
                         }
                         $contentSource = preg_replace_callback("/\\(#([a-z]+)\)/", "callback", $contentSource);
 
+                        // Correct LaTeX delimiters
+                        function callback2($matches) {
+                            return "\\[" . $matches[1] . "\\]";
+                        }
+                        $contentSource = preg_replace_callback("/\\$\\$([^$]+)\\$\\$/", "callback2", $contentSource);
+
 						print(Markdown($contentSource));
 					?>
 				</article>

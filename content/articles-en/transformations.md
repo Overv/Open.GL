@@ -4,13 +4,13 @@ Since this is a guide on graphics programming, this chapter will not cover a lot
 
 A matrix is a rectangular array of mathematical expressions, much like a two-dimensional array. Below is an example of a matrix displayed in the common square brackets form.
 
-\[
+$$
 a = \begin{bmatrix}
     1 & 2 \\
     3 & 4 \\
     5 & 6
   \end{bmatrix}
-\]
+$$
 
 Matrices values are indexed by `(i,j)` where `i` is the row and `j` is the column. That is why the matrix displayed above is called a 3-by-2 matrix. To refer to a specific value in the matrix, for example `5`, the \(a_{31}\) notation is used.
 
@@ -22,7 +22,7 @@ To get a bit more familiar with the concept of an array of numbers, let's first 
 
 Just like regular numbers, the addition and subtraction operators are also defined for matrices. The only requirement is that the two operands have exactly the same row and column dimensions.
 
-\[
+$$
   \begin{bmatrix}
     3 & 2 \\
     0 & 4
@@ -42,9 +42,9 @@ Just like regular numbers, the addition and subtraction operators are also defin
     7 & 4 \\
     2 & 6
   \end{bmatrix}
-\]
+$$
 
-\[
+$$
   \begin{bmatrix}
     4 & 2 \\
     2 & 7
@@ -64,7 +64,7 @@ Just like regular numbers, the addition and subtraction operators are also defin
     1 & 0 \\
     2 & 3
   \end{bmatrix}
-\]
+$$
 
 The values in the matrices are individually added or subtracted from each other.
 
@@ -72,7 +72,7 @@ The values in the matrices are individually added or subtracted from each other.
 
 The product of a scalar and a matrix is as straightforward as addition and subtraction.
 
-\[
+$$
 2 \cdot
   \begin{bmatrix}
     1 & 2 \\
@@ -83,7 +83,7 @@ The product of a scalar and a matrix is as straightforward as addition and subtr
     2 & 4 \\
     6 & 8
    \end{bmatrix}
-\]
+$$
 
 The values in the matrices are each multiplied by the scalar.
 
@@ -91,12 +91,12 @@ The values in the matrices are each multiplied by the scalar.
 
 The product of a matrix with another matrix is quite a bit more involved and is often misunderstood, so for simplicity's sake I will only mention the specific cases that apply to graphics programming. To see how matrices are actually used to transform vectors, we'll first dive into the product of a matrix and a vector.
 
-\[
+$$
   \begin{bmatrix}
     \color{red}a & \color{red}b & \color{red}c & \color{red}d \\
     \color{blue}e & \color{blue}f & \color{blue}g & \color{blue}h \\
     \color{green}i & \color{green}j & \color{green}k & \color{green}l \\
-    \color{purple}m & \color{purple}n & \color{purple}o & \color{purple}p
+    \color{magenta}m & \color{magenta}n & \color{magenta}o & \color{magenta}p
   \end{bmatrix}
   \cdot
   \begin{pmatrix}
@@ -110,20 +110,20 @@ The product of a matrix with another matrix is quite a bit more involved and is 
     \color{red}a\cdot x + \color{red}b\cdot y + \color{red}c\cdot z + \color{red}d\cdot 1 \\
     \color{blue}e\cdot x + \color{blue}f\cdot y + \color{blue}g\cdot z + \color{blue}h\cdot 1 \\
     \color{green}i\cdot x + \color{green}j\cdot y + \color{green}k\cdot z + \color{green}l\cdot 1 \\
-    \color{purple}m\cdot x + \color{purple}n\cdot y + \color{purple}o\cdot z + \color{purple}p\cdot 1
+    \color{magenta}m\cdot x + \color{magenta}n\cdot y + \color{magenta}o\cdot z + \color{magenta}p\cdot 1
   \end{pmatrix}
-\]
+$$
 
 To calculate the product of a matrix and a vector, the vector is written as a 4-by-1 matrix. The expressions to the right of the equals sign show how the new `x`, `y` and `z` values are calculated after the vector has been transformed. For those among you who aren't very math savvy, the dot is a multiplication sign.
 
 I will mention each of the common vector transformations in this section and how a matrix can be formed that performs them. For completeness, let's first consider a transformation that does absolutely nothing.
 
-\[
+$$
   \begin{bmatrix}
     \color{red}1 & \color{red}0 & \color{red}0 & \color{red}0 \\
     \color{blue}0 & \color{blue}1 & \color{blue}0 & \color{blue}0 \\
     \color{green}0 & \color{green}0 & \color{green}1 & \color{green}0 \\
-    \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
+    \color{magenta}0 & \color{magenta}0 & \color{magenta}0 & \color{magenta}1
   \end{bmatrix}
   \cdot
   \begin{pmatrix}
@@ -137,16 +137,16 @@ I will mention each of the common vector transformations in this section and how
     \color{red}1\cdot x + \color{red}0\cdot y + \color{red}0\cdot z + \color{red}0\cdot 1 \\
     \color{blue}0\cdot x + \color{blue}1\cdot y + \color{blue}0\cdot z + \color{blue}0\cdot 1 \\
     \color{green}0\cdot x + \color{green}0\cdot y + \color{green}1\cdot z + \color{green}0\cdot 1 \\
-    \color{purple}0\cdot x + \color{purple}0\cdot y + \color{purple}0\cdot z + \color{purple}1\cdot 1
+    \color{magenta}0\cdot x + \color{magenta}0\cdot y + \color{magenta}0\cdot z + \color{magenta}1\cdot 1
   \end{pmatrix}
   =
   \begin{pmatrix}
     \color{red}1\cdot x \\
     \color{blue}1\cdot y \\
     \color{green}1\cdot z \\
-    \color{purple}1\cdot 1
+    \color{magenta}1\cdot 1
   \end{pmatrix}
-\]
+$$
 
 This matrix is called the *identity matrix*, because just like the number `1`, it will always return the value it was originally multiplied by.
 
@@ -160,12 +160,12 @@ To see why we're working with 4-by-1 vectors and subsequently 4-by-4 transformat
 
 Can you guess from the multiplication overview what the matrix should look like to translate a vector by `(X,Y,Z)`?
 
-\[
+$$
   \begin{bmatrix}
     \color{red}1 & \color{red}0 & \color{red}0 & \color{red}X \\
     \color{blue}0 & \color{blue}1 & \color{blue}0 & \color{blue}Y \\
     \color{green}0 & \color{green}0 & \color{green}1 & \color{green}Z \\
-    \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
+    \color{magenta}0 & \color{magenta}0 & \color{magenta}0 & \color{magenta}1
   \end{bmatrix}
   \cdot
   \begin{pmatrix}
@@ -181,7 +181,7 @@ Can you guess from the multiplication overview what the matrix should look like 
     z+\color{green}Z\cdot 1 \\
     1
   \end{pmatrix}
-\]
+$$
 
 Without the fourth column and the bottom `1` value a translation wouldn't have been possible.
 
@@ -193,12 +193,12 @@ A scale transformation scales each of a vector's components by a (different) sca
 
 If you understand how the previous matrix was formed, it should not be difficult to come up with a matrix that scales a given vector by `(SX,SY,SZ)`.
 
-\[
+$$
   \begin{bmatrix}
     \color{red}{SX} & \color{red}0 & \color{red}0 & \color{red}0 \\
     \color{blue}0 & \color{blue}{SY} & \color{blue}0 & \color{blue}0 \\
     \color{green}0 & \color{green}0 & \color{green}{SZ} & \color{green}0 \\
-    \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
+    \color{magenta}0 & \color{magenta}0 & \color{magenta}0 & \color{magenta}1
   \end{bmatrix}
   \cdot
   \begin{pmatrix}
@@ -214,7 +214,7 @@ If you understand how the previous matrix was formed, it should not be difficult
     \color{blue}{SZ}\cdot z \\
     1
   \end{pmatrix}
-\]
+$$
 
 If you think about it for a moment, you can see that scaling would also be possible with a mere 3-by-3 matrix.
 
@@ -230,15 +230,15 @@ In this way the rotation axis can be imagined as an arrow an object is rotating 
 
 Objects can be rotated around any given axis, but for now only the X, Y and Z axis are important. You'll see later in this chapter that any rotation axis can be established by rotating around the X, Y and Z axis simultaneously.
 
-The matrices for rotating around the three axes are specified here. The rotation angle is indicated by the theta (\(\theta\)).
+The matrices for rotating around the three axes are specified here. The rotation angle is indicated by the theta ($\theta$).
 
 Rotation around X-axis:
-\[
+$$
   \begin{bmatrix}
     \color{red}1 & \color{red}0 & \color{red}0 & \color{red}0 \\
     \color{blue}0 & \color{blue}{\cos\theta} & \color{blue}{-\sin\theta} & \color{blue}0 \\
     \color{green}0 & \color{green}{\sin\theta} & \color{green}{\cos\theta} & \color{green}0 \\
-    \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
+    \color{magenta}0 & \color{magenta}0 & \color{magenta}0 & \color{magenta}1
   \end{bmatrix}
   \cdot
   \begin{pmatrix}
@@ -254,15 +254,15 @@ Rotation around X-axis:
     \color{green}{\sin\theta}\cdot y + \color{green}{\cos\theta}\cdot z \\
     1
   \end{pmatrix}
-\]
+$$
 
 Rotation around Y-axis:
-\[
+$$
   \begin{bmatrix}
     \color{red}{\cos\theta} & \color{red}0 & \color{red}{\sin\theta} & \color{red}0 \\
     \color{blue}0 & \color{blue}1 & \color{blue}0 & \color{blue}0 \\
     \color{green}{-\sin\theta} & \color{green}0 & \color{green}{\cos\theta} & \color{green}0 \\
-    \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
+    \color{magenta}0 & \color{magenta}0 & \color{magenta}0 & \color{magenta}1
   \end{bmatrix}
   \cdot
   \begin{pmatrix}
@@ -278,15 +278,15 @@ Rotation around Y-axis:
     \color{green}{-\sin\theta}\cdot x + \color{green}{\cos\theta}\cdot z \\
     1
   \end{pmatrix}
-\]
+$$
 
 Rotation around Z-axis:
-\[
+$$
   \begin{bmatrix}
     \color{red}{\cos\theta} & \color{red}{-\sin\theta} & \color{red}0 & \color{red}0 \\
     \color{blue}{\sin\theta} & \color{blue}{\cos\theta} & \color{blue}0 & \color{blue}0 \\
     \color{green}0 & \color{green}0 & \color{green}1 & \color{green}0 \\
-    \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
+    \color{magenta}0 & \color{magenta}0 & \color{magenta}0 & \color{magenta}1
   \end{bmatrix}
   \cdot
   \begin{pmatrix}
@@ -302,7 +302,7 @@ Rotation around Z-axis:
     z \\
     1
   \end{pmatrix}
-\]
+$$
 
 Don't worry about understanding the actual geometry behind this, explaining that is beyond the scope of this guide. What matters is that you have a solid idea of how a rotation is described by a rotation axis and an angle and that you've at least seen what a rotation matrix looks like.
 
@@ -314,59 +314,59 @@ Now, what if I told you that it is possible to combine as many transformations a
 
 In the same style as the previous section, this is how the product of two 4-by-4 matrices is determined:
 
-\[
+$$
  \begin{bmatrix}
     \color{red}a & \color{red}b & \color{red}c & \color{red}d \\
     \color{blue}e & \color{blue}f & \color{blue}g & \color{blue}h \\
     \color{green}i & \color{green}j & \color{green}k & \color{green}l \\
-    \color{purple}m & \color{purple}n & \color{purple}o & \color{purple}p
+    \color{magenta}m & \color{magenta}n & \color{magenta}o & \color{magenta}p
   \end{bmatrix}
   \cdot
   \begin{bmatrix}
-    \color{red}A & \color{blue}B & \color{green}C & \color{purple}D \\
-    \color{red}E & \color{blue}F & \color{green}G & \color{purple}H \\
-    \color{red}I & \color{blue}J & \color{green}K & \color{purple}L \\
-    \color{red}M & \color{blue}N & \color{green}O & \color{purple}P
+    \color{red}A & \color{blue}B & \color{green}C & \color{magenta}D \\
+    \color{red}E & \color{blue}F & \color{green}G & \color{magenta}H \\
+    \color{red}I & \color{blue}J & \color{green}K & \color{magenta}L \\
+    \color{red}M & \color{blue}N & \color{green}O & \color{magenta}P
   \end{bmatrix}
   = \\
   \begin{bmatrix}
     \color{red}{aA} + \color{red}{bE} + \color{red}{cI} + \color{red}{dM} &
       \color{red}a\color{blue}B + \color{red}b\color{blue}F + \color{red}c\color{blue}J + \color{red}d\color{blue}N &
       \color{red}a\color{green}C + \color{red}b\color{green}G + \color{red}c\color{green}K + \color{red}d\color{green}O &
-      \color{red}a\color{purple}D + \color{red}b\color{purple}H + \color{red}c\color{purple}L + \color{red}d\color{purple}P \\
+      \color{red}a\color{magenta}D + \color{red}b\color{magenta}H + \color{red}c\color{magenta}L + \color{red}d\color{magenta}P \\
     \color{blue}e\color{red}A + \color{blue}f\color{red}E + \color{blue}g\color{red}I + \color{blue}h\color{red}M &
       \color{blue}{eB} + \color{blue}{fF} + \color{blue}{gJ} + \color{blue}{hN} &
       \color{blue}e\color{green}C + \color{blue}f\color{green}G + \color{blue}g\color{green}K + \color{blue}h\color{green}O &
-      \color{blue}e\color{purple}D + \color{blue}f\color{purple}H + \color{blue}g\color{purple}L + \color{blue}h\color{purple}P \\
+      \color{blue}e\color{magenta}D + \color{blue}f\color{magenta}H + \color{blue}g\color{magenta}L + \color{blue}h\color{magenta}P \\
     \color{green}i\color{red}A + \color{green}j\color{red}E + \color{green}k\color{red}I + \color{green}l\color{red}M &
       \color{green}i\color{blue}B + \color{green}j\color{blue}F + \color{green}k\color{blue}J + \color{green}l\color{blue}N &
       \color{green}{iC} + \color{green}{jG} + \color{green}{kK} + \color{green}{lO} &
-      \color{green}i\color{purple}D + \color{green}j\color{purple}H + \color{green}k\color{purple}L + \color{green}l\color{purple}P \\
-    \color{purple}m\color{red}A + \color{purple}n\color{red}E + \color{purple}o\color{red}I + \color{purple}p\color{red}M &
-      \color{purple}m\color{blue}B + \color{purple}n\color{blue}F + \color{purple}o\color{blue}J + \color{purple}p\color{blue}N &
-      \color{purple}m\color{green}C + \color{purple}n\color{green}G + \color{purple}o\color{green}K + \color{purple}p\color{green}O &
-      \color{purple}{mD} + \color{purple}{nH} + \color{purple}{oL} + \color{purple}{pP}
+      \color{green}i\color{magenta}D + \color{green}j\color{magenta}H + \color{green}k\color{magenta}L + \color{green}l\color{magenta}P \\
+    \color{magenta}m\color{red}A + \color{magenta}n\color{red}E + \color{magenta}o\color{red}I + \color{magenta}p\color{red}M &
+      \color{magenta}m\color{blue}B + \color{magenta}n\color{blue}F + \color{magenta}o\color{blue}J + \color{magenta}p\color{blue}N &
+      \color{magenta}m\color{green}C + \color{magenta}n\color{green}G + \color{magenta}o\color{green}K + \color{magenta}p\color{green}O &
+      \color{magenta}{mD} + \color{magenta}{nH} + \color{magenta}{oL} + \color{magenta}{pP}
   \end{bmatrix}
-\]
+$$
 
 The above is commonly recognized among mathematicians as an *indecipherable mess*. To get a better idea of what's going on, let's consider two 2-by-2 matrices instead.
 
-\[
+$$
   \begin{bmatrix}
     \color{red}1 & \color{red}2 \\
     \color{blue}3 & \color{blue}4
   \end{bmatrix}
   \cdot
   \begin{bmatrix}
-    \color{green}a & \color{purple}b \\
-    \color{green}c & \color{purple}d
+    \color{green}a & \color{magenta}b \\
+    \color{green}c & \color{magenta}d
   \end{bmatrix}
   =
   \begin{bmatrix}
-    \color{red}1\cdot \color{green}a + \color{red}2 \cdot \color{green}c & \color{red}1 \cdot \color{purple}b + \color{red}2 \cdot \color{purple}d \\
-    \color{blue}3\cdot \color{green}a + \color{blue}4 \cdot \color{green}c & \color{blue}3 \cdot \color{purple}b + \color{blue}4 \cdot \color{purple}d
+    \color{red}1\cdot \color{green}a + \color{red}2 \cdot \color{green}c & \color{red}1 \cdot \color{magenta}b + \color{red}2 \cdot \color{magenta}d \\
+    \color{blue}3\cdot \color{green}a + \color{blue}4 \cdot \color{green}c & \color{blue}3 \cdot \color{magenta}b + \color{blue}4 \cdot \color{magenta}d
   \end{bmatrix}
-\]
+$$
 
 Try to see the pattern here with help of the colors. The factors on the left side (`1,2` and `3,4`) of the multiplication dot are the values in the row of the first matrix. The factors on the right side are the values in the rows of the second matrix repeatedly. It is not necessary to remember how exactly this works, but it's good to have seen how it's done at least once.
 
@@ -374,40 +374,40 @@ Try to see the pattern here with help of the colors. The factors on the left sid
 
 To demonstrate the multiplication of two matrices, let's try scaling a given vector by `(2,2,2)` and translating it by `(1,2,3)`. Given the translation and scaling matrices above, the following product is calculated:
 
-\[
+$$
 M_\text{translate}\cdot M_\text{scale} =
   \begin{bmatrix}
     \color{red}1 & \color{red}0 & \color{red}0 & \color{red}1 \\
     \color{blue}0 & \color{blue}1 & \color{blue}0 & \color{blue}2 \\
     \color{green}0 & \color{green}0 & \color{green}1 & \color{green}3 \\
-    \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
+    \color{magenta}0 & \color{magenta}0 & \color{magenta}0 & \color{magenta}1
   \end{bmatrix}
   \cdot
   \begin{bmatrix}
     \color{red}{2} & \color{red}0 & \color{red}0 & \color{red}0 \\
     \color{blue}0 & \color{blue}{2} & \color{blue}0 & \color{blue}0 \\
     \color{green}0 & \color{green}0 & \color{green}{2} & \color{green}0 \\
-    \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
+    \color{magenta}0 & \color{magenta}0 & \color{magenta}0 & \color{magenta}1
   \end{bmatrix}
   =
   \begin{bmatrix}
     \color{red}{2} & \color{red}0 & \color{red}0 & \color{red}1 \\
     \color{blue}0 & \color{blue}{2} & \color{blue}0 & \color{blue}2 \\
     \color{green}0 & \color{green}0 & \color{green}{2} & \color{green}3 \\
-    \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
+    \color{magenta}0 & \color{magenta}0 & \color{magenta}0 & \color{magenta}1
   \end{bmatrix}
-\]
+$$
 
 Notice how we want to scale the vector first, but the scale transformation comes last in the multiplication. Pay attention to this when combining transformations or you'll get the opposite of what you've asked for.
 
 Now, let's try to transform a vector and see if it worked:
 
-\[
+$$
  \begin{bmatrix}
     \color{red}{2} & \color{red}0 & \color{red}0 & \color{red}1 \\
     \color{blue}0 & \color{blue}{2} & \color{blue}0 & \color{blue}2 \\
     \color{green}0 & \color{green}0 & \color{green}{2} & \color{green}3 \\
-    \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1
+    \color{magenta}0 & \color{magenta}0 & \color{magenta}0 & \color{magenta}1
   \end{bmatrix}
   \cdot
   \begin{pmatrix}
@@ -423,7 +423,7 @@ Now, let's try to transform a vector and see if it worked:
     \color{green}2z + \color{green}3 \\
     1
   \end{pmatrix}
-\]
+$$
 
 Perfect! The vector is first scaled by two and then shifted in position by `(1,2,3)`.
 
@@ -453,14 +453,14 @@ After the world has been aligned with your camera using the view transformation,
 
 To transform the clipping coordinate into a normalized device coordinate, *perspective division* has to be performed. A clipping coordinate resulting from a perspective projection has a number different than 1 in the fourth row, also known as `w`. This number directly reflects the effect of objects further away being smaller than those up front.
 
-\[
+$$
 v_\text{normalized} =
   \begin{pmatrix}
     x_\text{clip} / w_\text{clip} \\
     y_\text{clip} / w_\text{clip} \\
     z_\text{clip} / w_\text{clip}
   \end{pmatrix}
-\]
+$$
 
 The `x` and `y` coordinates will be in the familiar `-1` and `1` range now, which OpenGL can transform into window coordinates. The `z` is known as the depth and will play an important role in the next chapter.
 
@@ -470,9 +470,9 @@ The coordinates resulting from the projection transformation are called clipping
 
 To sum it all up, the final transformation of a vertex is the product of the model, view and projection matrices.
 
-\[
+$$
 v' = M_\text{proj} \cdot M_\text{view} \cdot M_\text{model} \cdot v
-\]
+$$
 
 This operation is typically performed in the vertex shader and assigned to the `gl_Position` return value in clipping coordinates. OpenGL will perform the perspective division and transformation into window coordinates. It is important to be aware of these steps, because you'll have to do them yourself when working with techniques like shadow mapping.
 
