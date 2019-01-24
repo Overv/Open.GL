@@ -1,4 +1,4 @@
-# Matrices
+# Matrices {#transformations}
 
 Since this is a guide on graphics programming, this chapter will not cover a lot of the extensive theory behind matrices. Only the theory that applies to their use in computer graphics will be considered here and they will be explained from a programmer's perspective. If you want to learn more about the topic, [these Khan Academy videos](https://www.khanacademy.org/math/algebra2/algebra-matrices/Basic_matrix_operations/v/introduction-to-the-matrix) are a really good general introduction to the subject.
 

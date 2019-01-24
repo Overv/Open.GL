@@ -1,4 +1,4 @@
-# Window and OpenGL context
+# Window and OpenGL context {#context}
 
 Before you can start drawing things, you need to initialize OpenGL. This is done by creating an OpenGL context, which is essentially a state machine that stores all data related to the rendering of your application. When your application closes, the OpenGL context is destroyed and everything is cleaned up.
 
@@ -398,4 +398,4 @@ Your program should compile and run without issues and display the number `1` in
 
 Now that we're past all of the configuration and initialization work, I'd advise you to make a copy of your current project so that you won't have to write all of the boilerplate code again when starting a new project.
 
-Now, let's get to [drawing things](/drawing)!
+Now, let's get to [drawing things](#drawing)!

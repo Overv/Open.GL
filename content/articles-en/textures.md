@@ -1,4 +1,4 @@
-# Textures objects and parameters
+# Textures objects and parameters {#textures}
 
 Just like VBOs and VAOs, textures are objects that need to be generated first by calling a function. It shouldn't be a surprise at this point what this function is called.
 
@@ -252,7 +252,7 @@ The texture units of the samplers are set using the `glUniform` function you've 
 
 As always, have a look at the sample [source code](https://open.gl/content/code/c3_multitexture.txt) if you have trouble getting the program to work.
 
-Now that texture sampling has been covered in this chapter, you're finally ready to dive into transformations and ultimately 3D. The knowledge you have at this point should be sufficient for producing most types of 2D games, except for transformations like rotation and scaling which will be covered in the [next chapter](/transformations).
+Now that texture sampling has been covered in this chapter, you're finally ready to dive into transformations and ultimately 3D. The knowledge you have at this point should be sufficient for producing most types of 2D games, except for transformations like rotation and scaling which will be covered in the [next chapter](#transformations).
 
 ## Exercises
 

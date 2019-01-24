@@ -173,6 +173,12 @@
 					<?php
 						include_once("includes/markdown.php");
 
+                        // Convert links to other chapters
+                        function callback($matches) {
+                            return "($matches[1])";
+                        }
+                        $contentSource = preg_replace_callback("/\\(#([a-z]+)\)/", "callback", $contentSource);
+
 						print(Markdown($contentSource));
 					?>
 				</article>

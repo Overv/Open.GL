@@ -53,4 +53,4 @@ Context creation will be explained for *SFML*, *GLFW* and *SDL*, so use whatever
 
 > You also have the option of creating the context yourself using Win32, Xlib or Cocoa, but your code will not be portable anymore. That means you can not use the same code for all platforms.
 
-If you've got everything you need, let's [begin](/context).
+If you've got everything you need, let's [begin](#context).

@@ -1,4 +1,4 @@
-# The graphics pipeline
+# The graphics pipeline {#drawing}
 
 By learning OpenGL, you've decided that you want to do all of the hard work yourself. That inevitably means that you'll be thrown in the deep, but once you understand the essentials, you'll see that doing things *the hard way* doesn't have to be so difficult after all. To top that all, the exercises at the end of this chapter will show you the sheer amount of control you have over the rendering process by doing things the modern way!
 
@@ -435,7 +435,7 @@ The element buffer still specifies 6 vertices to form 2 triangles like before, b
 
 If you run into trouble, have a look at the full [source code](https://open.gl/content/code/c2_triangle_elements.txt).
 
-This chapter has covered all of the core principles of drawing things with OpenGL and it's absolutely essential that you have a good understanding of them before continuing. Therefore I advise you to do the exercises below before diving into [textures](/textures).
+This chapter has covered all of the core principles of drawing things with OpenGL and it's absolutely essential that you have a good understanding of them before continuing. Therefore I advise you to do the exercises below before diving into [textures](#textures).
 
 ## Exercises
 
