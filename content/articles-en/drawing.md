@@ -30,7 +30,7 @@ The first thing you have to decide on is what data the graphics card is going to
 >
 > When your vertices have been processed by the pipeline outlined above, their coordinates will have been transformed into *device coordinates*. Device X and Y coordinates are mapped to the screen between -1 and 1.
 >
-> <br /><span style="text-align: center; display: block"><span style="padding-bottom: 1rem;">![](media/img/c2_dc.png)</span> ![](media/img/c2_dc2.png)</span><br />
+> <br /><span style="text-align: center; display: block"><div style="padding-bottom: 1rem;">![](media/img/c2_dc.png)</div> ![](media/img/c2_dc2.png)</span><br />
 >
 > Just like a graph, the center has coordinates `(0,0)` and the y axis is positive above the center. This seems unnatural because graphics applications usually have `(0,0)` in the top-left corner and `(width,height)` in the bottom-right corner, but it's an excellent way to simplify 3D calculations and to stay resolution independent.
 
