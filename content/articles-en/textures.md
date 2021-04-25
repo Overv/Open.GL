@@ -26,7 +26,7 @@ These explanations may still be a bit cryptic and since OpenGL is all about grap
 
 ![](media/img/c3_clamping.png)
 
-The clamping can be set per coordinate, where the equivalent of `(x,y,z)` in texture coordinates is called `(s,t,r)`. Texture parameter are changed with the [`glTexParameter*`](http://docs.gl/gl3/glTexParameter) functions as demonstrated here.
+The wrapping can be set per coordinate, where the equivalent of `(x,y,z)` in texture coordinates is called `(s,t,r)`. Texture parameter are changed with the [`glTexParameter*`](http://docs.gl/gl3/glTexParameter) functions as demonstrated here.
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
