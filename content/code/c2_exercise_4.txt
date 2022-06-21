@@ -64,8 +64,8 @@ int main()
     glGenBuffers(1, &ebo);
 
     GLuint elements[] = {
-        0, 1, 2,
-        2, 3, 0
+        2, 1, 0,  // Anti-clockwise winding
+        0, 3, 2,
     };
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
